@@ -1,0 +1,46 @@
+{
+  "title": "Shop Migrator - Przejście na PrestaShop 9 przez transfer danych",
+  "subtitle": "Instrukcja obsługi",
+  "labels": { "version": "Wersja", "author": "Autor", "contact": "Kontakt", "page": "Strona", "contents": "Spis treści", "compat": "Zgodność" },
+  "sections": [
+    { "title": "Przegląd", "content": [
+      { "p": "Shop Migrator kopiuje dane ze starego sklepu PrestaShop (1.6, 1.7, 8 lub 9) do nowego sklepu PrestaShop 9. Instalujesz mały łącznik w starym sklepie, wklejasz jego adres i klucz w nowym, wybierasz, co skopiować, i klikasz Start. Stary sklep jest tylko odczytywany, nigdy zmieniany." },
+      { "p": "**Co można przenieść:**" },
+      { "ul": ["Podatki i reguły podatkowe, marki, dostawców, kategorie, atrybuty i cechy", "Produkty z kombinacjami, cenami, cenami specyficznymi, stanami, pakietami, tagami, polami personalizacji i zdjęciami", "Przewoźników ze strefami oraz przedziałami cen i wagi", "Klientów z adresami, grupami i koszykami, łącznie ze starymi hasłami", "Zamówienia ze szczegółami, historią, przewoźnikami, fakturami, płatnościami, korektami, zwrotami i wiadomościami", "Reguły koszyka (kupony), reguły cen katalogowych, strony i kategorie CMS, kontakty obsługi klienta i pracowników"] },
+      { "p": "ID są zachowywane, więc numery zamówień, linki i adresy URL pozostają bez zmian." }
+    ] },
+    { "title": "Wymagania", "content": [
+      { "ul": ["Nowy sklep: PrestaShop 9.0 lub nowszy, PHP 8.1 lub nowszy, z zainstalowanymi językami i walutami starego sklepu", "Stary sklep: PrestaShop 1.6, 1.7, 8 lub 9 (PHP 5.6 lub nowszy), dostępny z nowego sklepu przez HTTP lub HTTPS"] }
+    ] },
+    { "title": "Instalacja", "content": [
+      { "ol": ["W **starym sklepie** wgraj **shopmigratorbridge.zip** w Moduły > Menedżer modułów i zainstaluj go.", "Otwórz jego stronę konfiguracji: pokazuje adres sklepu i 64-znakowy klucz połączenia.", "W **nowym sklepie PrestaShop 9** wgraj i zainstaluj **shopmigrator.zip**, a następnie kliknij **Konfiguruj**."] }
+    ] },
+    { "title": "Uruchamianie migracji", "content": [
+      { "ol": ["**Połącz:** wklej adres starego sklepu i klucz, potem kliknij **Testuj połączenie**. Zobaczysz wersję starego sklepu oraz liczbę produktów, klientów i zamówień.", "**Wybór danych:** zaznacz, co skopiować. Dane potrzebne innym zaznaczają się same (zamówienia wymagają klientów, produktów i przewoźników).", "**Szybkość:** Ostrożnie dla hostingu współdzielonego, Normalnie lub Szybko dla serwera dedykowanego.", "**Tryb:** Pełna kopia lub Tylko nowe dane (patrz niżej).", "Kliknij **Rozpocznij migrację** i obserwuj paski postępu.", "**Raport:** zobacz, co skopiowano i ewentualne ostrzeżenia, oraz pobierz raport."] },
+      { "note": "Przed pełną kopią wykonaj kopię zapasową nowego sklepu: wybrane dane zostaną zastąpione." }
+    ] },
+    { "title": "Pauza, wznawianie i duże sklepy", "content": [
+      { "p": "Migracja działa krótkimi krokami po kilka sekund i zapisuje pozycję po każdej partii. Możesz ją wstrzymać i wznowić w dowolnej chwili lub zamknąć stronę: po powrocie kontynuuje od tego samego wiersza. Błędy sieci są automatycznie ponawiane." },
+      { "ul": ["Wielkość partii dopasowuje się do serwerów (od 10 do 5000 wierszy na żądanie).", "Duże tabele są czytane stronicowaniem po kluczu: wiersz 5 000 000 jest tak samo szybki jak wiersz 1.", "Indeks wyszukiwania i reguły cen są odbudowywane małymi porcjami i nigdy nie przekraczają limitu czasu.", "Przy bardzo dużych katalogach możesz pominąć miniatury w trakcie migracji i wygenerować je później w Wygląd > Ustawienia zdjęć."] },
+      { "p": "Zmierzone na sklepie testowym: 2,6 mln wierszy (300 000 klientów, 300 000 zamówień, 100 000 produktów) skopiowane w 6 minut 16 sekund." }
+    ] },
+    { "title": "Tylko nowe dane", "content": [
+      { "p": "Sprzedawaj dalej w starym sklepie, gdy przygotowujesz nowy. Gdy będziesz gotowy do przełączenia, uruchom migrację ponownie w trybie **Tylko nowe dane**: dodane zostaną tylko zamówienia, klienci, produkty i inne rekordy utworzone od ostatniego uruchomienia, a wszystko, co zmieniłeś w nowym sklepie, zostanie zachowane." }
+    ] },
+    { "title": "Hasła i pracownicy", "content": [
+      { "ul": ["Klienci zachowują swoje hasła. Stare hasła z PrestaShop 1.6 są rozpoznawane przy pierwszym logowaniu klienta i automatycznie zamieniane na nowoczesne, bezpieczne skróty.", "Pracownicy już obecni w nowym sklepie nigdy nie są zmieniani. Starzy pracownicy są dodawani tylko, gdy ich ID i e-mail są wolne. Pracownicy ze starym typem hasła są wymienieni w raporcie i powinni raz użyć **Nie pamiętasz hasła?**."] }
+    ] },
+    { "title": "Stare adresy URL", "content": [
+      { "p": "Po migracji linki w formatach starszych wersji (na przykład /women/5-faded-short.html, /3_marka lub /2__dostawca z PrestaShop 1.6) są przekierowywane kodem 301 do tego samego produktu, kategorii, strony CMS, marki lub dostawcy w nowym sklepie, więc wyszukiwarki i klienci trafiają na właściwą stronę." }
+    ] },
+    { "title": "Rozwiązywanie problemów", "content": [
+      { "ul": ["**Nieprawidłowy klucz:** skopiuj klucz ponownie ze strony łącznika, bez spacji.", "**Brak połączenia ze starym sklepem:** sprawdź adres (z http:// lub https://) i czy sklep działa. Zapora lub tryb konserwacji mogą blokować łącznik.", "**Język nie jest zainstalowany:** zainstaluj brakujący język w Lokalizacja > Tłumaczenia i uruchom migrację ponownie.", "**Migracja została przerwana:** przeczytaj błąd, popraw go i kliknij **Wznów**: migracja ruszy od miejsca zatrzymania."] }
+    ] },
+    { "title": "Bezpieczeństwo i porządki", "content": [
+      { "p": "Łącznik odpowiada tylko na żądania POST z kluczem i nigdy nie zapisuje niczego w starym sklepie. Po zakończeniu migracji odinstaluj Shop Migrator Bridge ze starego sklepu lub utwórz nowy klucz, aby wyłączyć stary." }
+    ] },
+    { "title": "Pomoc", "content": [
+      { "p": "Potrzebujesz pomocy, migracji na zamówienie lub nowej funkcji? Napisz na iamshoaibktk@gmail.com, na WhatsApp +923459016286 lub zatrudnij mnie na Fiverr: https://www.fiverr.com/shoaibktk" }
+    ] }
+  ]
+}

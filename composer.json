@@ -1,0 +1,15 @@
+{
+  "name": "iamshoaibktk/shopmigrator",
+  "description": "Copy products, categories, customers, orders and more from any PrestaShop 1.6, 1.7, 8 or 9 shop into a new PrestaShop 9 store. The old shop is never changed.",
+  "type": "prestashop-module",
+  "license": "AFL-3.0",
+  "authors": [
+    { "name": "iamshoaibktk", "email": "iamshoaibktk@gmail.com", "role": "Developer" }
+  ],
+  "support": { "email": "iamshoaibktk@gmail.com" },
+  "require": { "php": ">=8.1" },
+  "autoload": {
+    "psr-4": { "Iamshoaibktk\\Shopmigrator\\": "src/" }
+  },
+  "config": { "prepend-autoloader": false, "optimize-autoloader": true }
+}

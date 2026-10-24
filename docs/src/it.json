@@ -1,0 +1,46 @@
+{
+  "title": "Shop Migrator - Passa a PrestaShop 9 con trasferimento dati",
+  "subtitle": "Guida utente",
+  "labels": { "version": "Versione", "author": "Autore", "contact": "Contatto", "page": "Pagina", "contents": "Indice", "compat": "Compatibilità" },
+  "sections": [
+    { "title": "Panoramica", "content": [
+      { "p": "Shop Migrator copia i dati da un vecchio negozio PrestaShop (1.6, 1.7, 8 o 9) in un nuovo negozio PrestaShop 9. Installi un piccolo connettore sul vecchio negozio, incolli indirizzo e chiave nel nuovo, scegli cosa copiare e clicchi Avvia. Il vecchio negozio viene solo letto, mai modificato." },
+      { "p": "**Cosa si può migrare:**" },
+      { "ul": ["Tasse e regole fiscali, marchi, fornitori, categorie, attributi e caratteristiche", "Prodotti con combinazioni, prezzi, prezzi specifici, magazzino, pacchetti, tag, campi di personalizzazione e immagini", "Corrieri con zone e fasce di prezzo e peso", "Clienti con indirizzi, gruppi e carrelli, comprese le vecchie password", "Ordini con dettagli, cronologia, corrieri, fatture, pagamenti, note di credito, resi e messaggi", "Regole carrello (buoni sconto), regole prezzi catalogo, pagine e categorie CMS, contatti del servizio clienti e dipendenti"] },
+      { "p": "Gli ID vengono mantenuti, quindi riferimenti ordine, link e URL restano uguali." }
+    ] },
+    { "title": "Requisiti", "content": [
+      { "ul": ["Nuovo negozio: PrestaShop 9.0 o successivo, PHP 8.1 o successivo, con le lingue e le valute del vecchio negozio installate", "Vecchio negozio: PrestaShop 1.6, 1.7, 8 o 9 (PHP 5.6 o successivo), raggiungibile dal nuovo negozio via HTTP o HTTPS"] }
+    ] },
+    { "title": "Installazione", "content": [
+      { "ol": ["Sul **vecchio negozio**, carica **shopmigratorbridge.zip** in Moduli > Gestione moduli e installalo.", "Apri la sua pagina di configurazione: mostra l'indirizzo del negozio e una chiave di connessione di 64 caratteri.", "Sul **nuovo negozio PrestaShop 9**, carica e installa **shopmigrator.zip**, poi clicca **Configura**."] }
+    ] },
+    { "title": "Eseguire una migrazione", "content": [
+      { "ol": ["**Connetti:** incolla l'indirizzo del vecchio negozio e la chiave, poi clicca **Prova connessione**. Vedi la versione del vecchio negozio e quanti prodotti, clienti e ordini contiene.", "**Scegli i dati:** spunta cosa copiare. I dati richiesti da altri vengono spuntati automaticamente (gli ordini richiedono clienti, prodotti e corrieri).", "**Velocità:** Prudente per hosting condiviso, Normale, o Veloce per un server dedicato.", "**Modalità:** Copia completa o Solo dati nuovi (vedi sotto).", "Clicca **Avvia migrazione** e segui le barre di avanzamento.", "**Report:** vedi cosa è stato copiato ed eventuali avvisi, e scarica il report."] },
+      { "note": "Esegui un backup del nuovo negozio prima di una copia completa: i dati selezionati vengono sostituiti." }
+    ] },
+    { "title": "Pausa, ripresa e negozi grandi", "content": [
+      { "p": "La migrazione procede a brevi passi di pochi secondi e salva la posizione dopo ogni blocco. Puoi metterla in pausa e riprenderla quando vuoi, o chiudere la pagina: al ritorno continua dalla stessa riga. Gli errori di rete vengono ritentati automaticamente." },
+      { "ul": ["La dimensione dei blocchi si adatta ai tuoi server (da 10 a 5.000 righe per richiesta).", "Le tabelle grandi vengono lette con paginazione per chiave: la riga 5.000.000 è veloce quanto la riga 1.", "Indice di ricerca e regole prezzi vengono ricostruiti a piccoli blocchi e non vanno mai in timeout.", "Per cataloghi molto grandi puoi saltare le miniature durante la migrazione e rigenerarle poi in Aspetto > Impostazioni immagini."] },
+      { "p": "Misurato su un negozio di prova: 2,6 milioni di righe (300.000 clienti, 300.000 ordini, 100.000 prodotti) copiate in 6 minuti e 16 secondi." }
+    ] },
+    { "title": "Solo dati nuovi", "content": [
+      { "p": "Continua a vendere sul vecchio negozio mentre prepari il nuovo. Quando sei pronto al passaggio, esegui di nuovo la migrazione con **Solo dati nuovi**: vengono aggiunti solo ordini, clienti, prodotti e altri record creati dall'ultima esecuzione, e tutto ciò che hai modificato sul nuovo negozio viene mantenuto." }
+    ] },
+    { "title": "Password e dipendenti", "content": [
+      { "ul": ["I clienti mantengono la loro password. Le vecchie password di PrestaShop 1.6 vengono riconosciute al primo accesso del cliente e convertite automaticamente in hash sicuri moderni.", "I dipendenti già presenti sul nuovo negozio non vengono mai modificati. I vecchi dipendenti vengono aggiunti solo se ID ed email sono liberi. Quelli con password di vecchio tipo sono elencati nel report e devono usare una volta **Password dimenticata?**."] }
+    ] },
+    { "title": "Vecchi URL", "content": [
+      { "p": "Dopo la migrazione, i link nei formati delle versioni precedenti (per esempio /women/5-faded-short.html, /3_marchio o /2__fornitore di PrestaShop 1.6) vengono reindirizzati con un 301 allo stesso prodotto, categoria, pagina CMS, marchio o fornitore del nuovo negozio, così motori di ricerca e clienti arrivano sulla pagina giusta." }
+    ] },
+    { "title": "Risoluzione dei problemi", "content": [
+      { "ul": ["**Chiave non valida:** copia di nuovo la chiave dalla pagina del connettore, senza spazi.", "**Impossibile raggiungere il vecchio negozio:** controlla l'indirizzo (con http:// o https://) e che il negozio sia online. Un firewall o la modalità manutenzione possono bloccare il connettore.", "**Lingua non installata:** installa la lingua mancante in Internazionale > Traduzioni e riesegui la migrazione.", "**La migrazione si è interrotta:** leggi l'errore, correggilo e clicca **Riprendi**: continua da dove si era fermata."] }
+    ] },
+    { "title": "Sicurezza e pulizia", "content": [
+      { "p": "Il connettore risponde solo a richieste POST con la chiave e non scrive mai nel vecchio negozio. Al termine della migrazione, disinstalla Shop Migrator Bridge dal vecchio negozio, o crea una nuova chiave per disattivare quella vecchia." }
+    ] },
+    { "title": "Assistenza", "content": [
+      { "p": "Ti serve aiuto, una migrazione su misura o una nuova funzione? Scrivimi a iamshoaibktk@gmail.com, su WhatsApp al +923459016286, o ingaggiami su Fiverr: https://www.fiverr.com/shoaibktk" }
+    ] }
+  ]
+}

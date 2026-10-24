@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="shopmigrator" source-language="en-US" target-language="cs-CZ" datatype="plaintext">
+    <body>
+      <trans-unit id="c749c83b0facc95726db16c7a83e2a4d">
+        <source>Shop Migrator - Upgrade to PrestaShop 9 by Data Transfer</source>
+        <target>Shop Migrator - Přechod na PrestaShop 9 přenosem dat</target>
+      </trans-unit>
+      <trans-unit id="96a4d1f5f65a0b1a05852b6bc2fc6020">
+        <source>Copy products, categories, customers, orders and more from any PrestaShop 1.6, 1.7, 8 or 9 shop into a new PrestaShop 9 store. The old shop is never changed.</source>
+        <target>Zkopírujte produkty, kategorie, zákazníky, objednávky a další z jakéhokoli obchodu PrestaShop 1.6, 1.7, 8 nebo 9 do nového obchodu PrestaShop 9. Starý obchod se nikdy nemění.</target>
+      </trans-unit>
+      <trans-unit id="bb8956c67b82c7444a80c6b2433dd8b4">
+        <source>Are you sure you want to uninstall this module?</source>
+        <target>Opravdu chcete tento modul odinstalovat?</target>
+      </trans-unit>
+      <trans-unit id="f38f5974cdc23279ffe6d203641a8bdf">
+        <source>Settings updated.</source>
+        <target>Nastavení aktualizováno.</target>
+      </trans-unit>
+      <trans-unit id="f4f70727dc34561dfde1a3c529b6205c">
+        <source>Settings</source>
+        <target>Nastavení</target>
+      </trans-unit>
+      <trans-unit id="2faec1f9f8cc7f8f40d521c4dd574f49">
+        <source>Enable</source>
+        <target>Povolit</target>
+      </trans-unit>
+      <trans-unit id="93cba07454f06a4a960172bbd6e2a435">
+        <source>Yes</source>
+        <target>Ano</target>
+      </trans-unit>
+      <trans-unit id="bafd7322c6e97d25b6299b5d6fe8920b">
+        <source>No</source>
+        <target>Ne</target>
+      </trans-unit>
+      <trans-unit id="c9cc8cce247e49bae79f15173ce97354">
+        <source>Save</source>
+        <target>Uložit</target>
+      </trans-unit>
+      <trans-unit id="0b9cba5e32be92459abae9324535e757">
+        <source>Top Rated on Fiverr</source>
+        <target>Top Rated na Fiverru</target>
+      </trans-unit>
+      <trans-unit id="76344130f12a1a5b20c45500ea5bb523">
+        <source>PrestaShop developer</source>
+        <target>Vývojář PrestaShopu</target>
+      </trans-unit>
+      <trans-unit id="7df57fc7789ecb855336f929a3fc35af">
+        <source>Need help with this module, or a custom feature for your store? I reply quickly.</source>
+        <target>Potřebujete pomoc s modulem nebo funkci na míru pro svůj obchod? Odpovídám rychle.</target>
+      </trans-unit>
+      <trans-unit id="808c092a179c6a13566d93bdd950acdf">
+        <source>Hire me on Fiverr</source>
+        <target>Najměte mě na Fiverru</target>
+      </trans-unit>
+      <trans-unit id="8b777ebcc5034ce0fe96dd154bcb370e">
+        <source>WhatsApp</source>
+        <target>WhatsApp</target>
+      </trans-unit>
+      <trans-unit id="ce8ae9da5b7cd6c3df2929543a9af92d">
+        <source>Email</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="ef4fe0645b9d16a6cf36f16c07d949ca">
+        <source>Taxes and tax rules</source>
+        <target>Daně a daňová pravidla</target>
+      </trans-unit>
+      <trans-unit id="84be54bb4bd1b755a27d86388700d097">
+        <source>Brands</source>
+        <target>Značky</target>
+      </trans-unit>
+      <trans-unit id="1814d65a76028fdfbadab64a5a8076df">
+        <source>Suppliers</source>
+        <target>Dodavatelé</target>
+      </trans-unit>
+      <trans-unit id="af1b98adf7f686b84cd0b443e022b7a0">
+        <source>Categories</source>
+        <target>Kategorie</target>
+      </trans-unit>
+      <trans-unit id="9f01727257947894592d356628f1d74f">
+        <source>Attributes and features</source>
+        <target>Atributy a vlastnosti</target>
+      </trans-unit>
+      <trans-unit id="b80f1b450ae8d83b760b66f6c7662bf7">
+        <source>Products (combinations, prices, stock, images)</source>
+        <target>Produkty (kombinace, ceny, sklad, obrázky)</target>
+      </trans-unit>
+      <trans-unit id="a70a7b44f53c84c1eb927454f9533d5e">
+        <source>Carriers and shipping prices</source>
+        <target>Dopravci a ceny dopravy</target>
+      </trans-unit>
+      <trans-unit id="f3af9ebd515fa95506f0438373f503e6">
+        <source>Customers (addresses, groups, carts, passwords)</source>
+        <target>Zákazníci (adresy, skupiny, košíky, hesla)</target>
+      </trans-unit>
+      <trans-unit id="dcbacdb7a151e2a5c6511ef4b492e1e7">
+        <source>Cart rules (vouchers)</source>
+        <target>Pravidla košíku (slevové kupóny)</target>
+      </trans-unit>
+      <trans-unit id="cb973210d1c3dc7375a444cb21d069ec">
+        <source>Customer service contacts</source>
+        <target>Kontakty zákaznického servisu</target>
+      </trans-unit>
+      <trans-unit id="95c9ec39a66b37f21e0c2ed738251107">
+        <source>Employees (existing ones are kept)</source>
+        <target>Zaměstnanci (stávající zůstanou)</target>
+      </trans-unit>
+      <trans-unit id="06a70bde7c28ed3d5041d01afccd2e46">
+        <source>Orders (invoices, payments, history, credit slips, messages)</source>
+        <target>Objednávky (faktury, platby, historie, dobropisy, zprávy)</target>
+      </trans-unit>
+      <trans-unit id="e5bfab8b7f97b8f0b19ad7e393d7c566">
+        <source>Catalog price rules</source>
+        <target>Cenová pravidla katalogu</target>
+      </trans-unit>
+      <trans-unit id="d2ffdb6d84d24667d3d34e77ecef9eb8">
+        <source>CMS pages and categories</source>
+        <target>Stránky a kategorie CMS</target>
+      </trans-unit>
+      <trans-unit id="043eed2ef67026f8d535ec913366c620">
+        <source>Images and thumbnails</source>
+        <target>Obrázky a náhledy</target>
+      </trans-unit>
+      <trans-unit id="e1d65c77e55558cde76936a8ac6d2a98">
+        <source>Enter the old shop address (starting with http:// or https://) and the 64-character key from Shop Migrator Bridge.</source>
+        <target>Zadejte adresu starého obchodu (začínající http:// nebo https://) a 64znakový klíč ze Shop Migrator Bridge.</target>
+      </trans-unit>
+      <trans-unit id="6614eb1371a4c0adaa913b4c26338a24">
+        <source>Choose at least one type of data to migrate.</source>
+        <target>Vyberte alespoň jeden typ dat k migraci.</target>
+      </trans-unit>
+      <trans-unit id="182e7eda4e721ad00737460b88701dee">
+        <source>Connecting…</source>
+        <target>Připojování…</target>
+      </trans-unit>
+      <trans-unit id="24f44a03fc7d3e57b05a1637650eca23">
+        <source>Migrating…</source>
+        <target>Probíhá migrace…</target>
+      </trans-unit>
+      <trans-unit id="e99180abf47a8b3a856e0bcb2656990a">
+        <source>Paused</source>
+        <target>Pozastaveno</target>
+      </trans-unit>
+      <trans-unit id="8f37af07e001a9dba63e9f916751ee83">
+        <source>Migration complete</source>
+        <target>Migrace dokončena</target>
+      </trans-unit>
+      <trans-unit id="bf378d9bf882f4d46f465dba05aa265d">
+        <source>The migration stopped</source>
+        <target>Migrace se zastavila</target>
+      </trans-unit>
+      <trans-unit id="5706de961fb376d701be6e7762d8b09c">
+        <source>Waiting</source>
+        <target>Čeká</target>
+      </trans-unit>
+      <trans-unit id="4c47d773229e34af9783ee7409398124">
+        <source>Working on</source>
+        <target>Zpracovává se</target>
+      </trans-unit>
+      <trans-unit id="93d5b3cd68033d6022fe022bae2bf819">
+        <source>The selected data on this shop will be deleted and replaced by the old shop’s data. Continue?</source>
+        <target>Vybraná data tohoto obchodu budou smazána a nahrazena daty starého obchodu. Pokračovat?</target>
+      </trans-unit>
+      <trans-unit id="86024cad1e83101d97359d7351051156">
+        <source>products</source>
+        <target>produkty</target>
+      </trans-unit>
+      <trans-unit id="9256e4c379ff4a504a88c567d54dcb97">
+        <source>combinations</source>
+        <target>kombinace</target>
+      </trans-unit>
+      <trans-unit id="b0b5ccb4a195a07fd3eed14affb8695f">
+        <source>categories</source>
+        <target>kategorie</target>
+      </trans-unit>
+      <trans-unit id="59b514174bffe4ae402b3d63aad79fe0">
+        <source>images</source>
+        <target>obrázky</target>
+      </trans-unit>
+      <trans-unit id="4b6f7d34a58ba399f077685951d06738">
+        <source>customers</source>
+        <target>zákazníci</target>
+      </trans-unit>
+      <trans-unit id="12c500ed0b7879105fb46af0f246be87">
+        <source>orders</source>
+        <target>objednávky</target>
+      </trans-unit>
+      <trans-unit id="70d161bab8c608404115d5f402583a26">
+        <source>Start a new migration? The current progress and report will be cleared.</source>
+        <target>Spustit novou migraci? Aktuální průběh a zpráva budou vymazány.</target>
+      </trans-unit>
+      <trans-unit id="c8d72af475035f1a6b582d6589919493">
+        <source>Not installed here, its texts will be skipped:</source>
+        <target>Zde není nainstalováno, texty budou přeskočeny:</target>
+      </trans-unit>
+      <trans-unit id="49ab28040dfa07f53544970c6d147e1e">
+        <source>Connect</source>
+        <target>Připojit</target>
+      </trans-unit>
+      <trans-unit id="62e9d34ff963ccf5b807d3dd00878f70">
+        <source>Choose data</source>
+        <target>Výběr dat</target>
+      </trans-unit>
+      <trans-unit id="10b5b21ed1ee90eca305b558caf7d03b">
+        <source>Migrate</source>
+        <target>Migrace</target>
+      </trans-unit>
+      <trans-unit id="4b1b4dc8cf38b3c64b1d657da8f5ac8c">
+        <source>Report</source>
+        <target>Zpráva</target>
+      </trans-unit>
+      <trans-unit id="eae02b5672c093bc37a6ba4862dd5a5c">
+        <source>Connect your old shop</source>
+        <target>Připojte svůj starý obchod</target>
+      </trans-unit>
+      <trans-unit id="64adb2e315e4cb0e3d1c552ca1709dc5">
+        <source>Install the Shop Migrator Bridge module on your old shop (PrestaShop 1.6, 1.7, 8 or 9).</source>
+        <target>Nainstalujte modul Shop Migrator Bridge do starého obchodu (PrestaShop 1.6, 1.7, 8 nebo 9).</target>
+      </trans-unit>
+      <trans-unit id="cf3b4dded3765ff7db564567d3fbe9a6">
+        <source>Open its configuration page and copy the shop address and the key here.</source>
+        <target>Otevřete jeho konfigurační stránku a zkopírujte sem adresu obchodu a klíč.</target>
+      </trans-unit>
+      <trans-unit id="2c37083cde93e9fa23e40a31b7f894fa">
+        <source>Old shop address</source>
+        <target>Adresa starého obchodu</target>
+      </trans-unit>
+      <trans-unit id="536d3eb80dc51583345eb1c7cab06bee">
+        <source>Connection key</source>
+        <target>Klíč připojení</target>
+      </trans-unit>
+      <trans-unit id="39838db537c95bc8df810c5601601d5b">
+        <source>Test connection</source>
+        <target>Otestovat připojení</target>
+      </trans-unit>
+      <trans-unit id="10ac3d04253ef7e1ddc73e6091c0cd55">
+        <source>Next</source>
+        <target>Další</target>
+      </trans-unit>
+      <trans-unit id="1103119043ff007f13a666bf78fa8357">
+        <source>Choose what to migrate</source>
+        <target>Vyberte, co migrovat</target>
+      </trans-unit>
+      <trans-unit id="44877c6aa8e93fa5a91c9361211464fb">
+        <source>Speed</source>
+        <target>Rychlost</target>
+      </trans-unit>
+      <trans-unit id="b6fa9126d4d536b174d76c70edfc6f0e">
+        <source>Careful (shared hosting)</source>
+        <target>Opatrně (sdílený hosting)</target>
+      </trans-unit>
+      <trans-unit id="960b44c579bc2f6818d2daaf9e4c16f0">
+        <source>Normal</source>
+        <target>Normální</target>
+      </trans-unit>
+      <trans-unit id="64b397f49c0548d54f634a741b249d6d">
+        <source>Fast (dedicated server)</source>
+        <target>Rychle (dedikovaný server)</target>
+      </trans-unit>
+      <trans-unit id="d953b0b426e4eec27c5252d25e0b0674">
+        <source>Build image thumbnails during the migration (untick for very large catalogs, then use Regenerate thumbnails in Design &gt; Image Settings afterwards)</source>
+        <target>Vytvářet náhledy obrázků během migrace (u velmi velkých katalogů zrušte a poté použijte Znovu vygenerovat náhledy v Vzhled &gt; Nastavení obrázků)</target>
+      </trans-unit>
+      <trans-unit id="650be61892bf690026089544abbd9d26">
+        <source>Mode</source>
+        <target>Režim</target>
+      </trans-unit>
+      <trans-unit id="77047329aaad6cff9971f65d8e6e6fdc">
+        <source>Fresh copy: replace the selected data on this shop</source>
+        <target>Nová kopie: nahradit vybraná data tohoto obchodu</target>
+      </trans-unit>
+      <trans-unit id="2355936f7b9940c90e790f9230552f14">
+        <source>New data only: add what was created on the old shop since the last migration (new orders, customers, products…), keep everything here</source>
+        <target>Pouze nová data: přidat, co vzniklo ve starém obchodě od poslední migrace (objednávky, zákazníci, produkty…), vše zde ponechat</target>
+      </trans-unit>
+      <trans-unit id="47acb683a9184152ed55702ee3e31549">
+        <source>Fresh copy, IDs kept.</source>
+        <target>Nová kopie, ID zachována.</target>
+      </trans-unit>
+      <trans-unit id="fce1e336c7d40486b5207ced761211c9">
+        <source>The selected data on this shop is deleted and replaced by the old shop’s data, with the same IDs, so links, order references and URLs stay the same. Back up this shop first. The old shop is never changed.</source>
+        <target>Vybraná data tohoto obchodu se smažou a nahradí daty starého obchodu se stejnými ID, takže odkazy, čísla objednávek a URL zůstanou stejné. Nejprve tento obchod zálohujte. Starý obchod se nikdy nemění.</target>
+      </trans-unit>
+      <trans-unit id="0557fa923dcee4d0f86b1409f5c2167f">
+        <source>Back</source>
+        <target>Zpět</target>
+      </trans-unit>
+      <trans-unit id="bc217893b6c8acb6a9707403d9220858">
+        <source>Start migration</source>
+        <target>Spustit migraci</target>
+      </trans-unit>
+      <trans-unit id="3a7140a51d033358a42ff05cc3def3b2">
+        <source>You can close this page: the migration pauses and continues from the same point when you come back.</source>
+        <target>Tuto stránku můžete zavřít: migrace se pozastaví a po návratu pokračuje od stejného místa.</target>
+      </trans-unit>
+      <trans-unit id="105b296a83f9c105355403f3332af50f">
+        <source>Pause</source>
+        <target>Pozastavit</target>
+      </trans-unit>
+      <trans-unit id="f1cefec9e2196c672a622347f1fbc325">
+        <source>Resume</source>
+        <target>Pokračovat</target>
+      </trans-unit>
+      <trans-unit id="e17fdb615452f440c793b5ddad90dd5e">
+        <source>Warnings</source>
+        <target>Upozornění</target>
+      </trans-unit>
+      <trans-unit id="671b3beee69d9180412202b6528ec8f7">
+        <source>Download report</source>
+        <target>Stáhnout zprávu</target>
+      </trans-unit>
+      <trans-unit id="83b124f2b96f4af7efbef8f7c6b60e17">
+        <source>New migration</source>
+        <target>Nová migrace</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
