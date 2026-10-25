@@ -21,6 +21,12 @@
       <span style="color:#6b7280">· {l s='PrestaShop developer' d='Modules.Shopmigrator.Admin'}</span>
     </div>
     <div style="margin-top:4px;color:#6b7280">{l s='Need help with this module, or a custom feature for your store? I reply quickly.' d='Modules.Shopmigrator.Admin'}</div>
+    <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600"><i class="material-icons" style="font-size:14px;color:#e85d2a">brush</i>{l s='Store design' d='Modules.Shopmigrator.Admin'}</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600"><i class="material-icons" style="font-size:14px;color:#e85d2a">extension</i>{l s='Custom module development' d='Modules.Shopmigrator.Admin'}</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600"><i class="material-icons" style="font-size:14px;color:#e85d2a">sync_alt</i>{l s='Custom data migration (blogs, reviews, any platform)' d='Modules.Shopmigrator.Admin'}</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600"><i class="material-icons" style="font-size:14px;color:#e85d2a">build</i>{l s='Upgrades and bug fixes' d='Modules.Shopmigrator.Admin'}</span>
+    </div>
   </div>
   <div style="margin-left:auto;display:flex;flex-wrap:wrap;gap:8px">
     <a href="https://www.fiverr.com/shoaibktk" target="_blank" rel="noopener" class="btn" style="background:#1dbf73;border-color:#1dbf73;color:#fff;font-weight:600">
@@ -29,8 +35,8 @@
     <a href="https://wa.me/923459016286" target="_blank" rel="noopener" class="btn" style="background:#25d366;border-color:#25d366;color:#fff;font-weight:600">
       {l s='WhatsApp' d='Modules.Shopmigrator.Admin'}
     </a>
-    <a href="mailto:iamshoaibktk@gmail.com" class="btn btn-default" style="font-weight:600">
-      {l s='Email' d='Modules.Shopmigrator.Admin'}
+    <a href="mailto:iamshoaibktk@gmail.com" class="btn btn-default" style="font-weight:600;display:inline-flex;align-items:center;gap:6px;user-select:all" title="iamshoaibktk@gmail.com">
+      <i class="material-icons" style="font-size:16px">mail_outline</i>iamshoaibktk@gmail.com
     </a>
   </div>
 </div>

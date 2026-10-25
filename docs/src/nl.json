@@ -1,46 +1,154 @@
 {
   "title": "Shop Migrator - Upgraden naar PrestaShop 9 via gegevensoverdracht",
   "subtitle": "Gebruikershandleiding",
-  "labels": { "version": "Versie", "author": "Auteur", "contact": "Contact", "page": "Pagina", "contents": "Inhoud", "compat": "Compatibiliteit" },
+  "labels": {
+    "version": "Versie",
+    "author": "Auteur",
+    "contact": "Contact",
+    "page": "Pagina",
+    "contents": "Inhoud",
+    "compat": "Compatibiliteit"
+  },
   "sections": [
-    { "title": "Overzicht", "content": [
-      { "p": "Shop Migrator kopieert uw gegevens van een oude PrestaShop-winkel (1.6, 1.7, 8 of 9) naar een nieuwe PrestaShop 9 winkel. U installeert een kleine connector in de oude winkel, plakt het adres en de sleutel in de nieuwe, kiest wat u wilt kopiëren en klikt op Starten. De oude winkel wordt alleen gelezen, nooit gewijzigd." },
-      { "p": "**Wat kan worden gemigreerd:**" },
-      { "ul": ["Belastingen en belastingregels, merken, leveranciers, categorieën, attributen en kenmerken", "Producten met combinaties, prijzen, specifieke prijzen, voorraad, pakketten, tags, personalisatievelden en afbeeldingen", "Vervoerders met zones en prijs- en gewichtsklassen", "Klanten met adressen, groepen en winkelwagens, inclusief hun oude wachtwoorden", "Bestellingen met regels, historie, vervoerders, facturen, betalingen, creditnota's, retouren en berichten", "Winkelwagenregels (kortingsbonnen), catalogusprijsregels, CMS-pagina's en -categorieën, klantenservicecontacten en medewerkers"] },
-      { "p": "ID's blijven behouden, dus bestelreferenties, links en URL's blijven gelijk." }
-    ] },
-    { "title": "Vereisten", "content": [
-      { "ul": ["Nieuwe winkel: PrestaShop 9.0 of nieuwer, PHP 8.1 of nieuwer, met de talen en valuta van de oude winkel geïnstalleerd", "Oude winkel: PrestaShop 1.6, 1.7, 8 of 9 (PHP 5.6 of nieuwer), bereikbaar vanaf de nieuwe winkel via HTTP of HTTPS"] }
-    ] },
-    { "title": "Installatie", "content": [
-      { "ol": ["Upload in de **oude winkel** **shopmigratorbridge.zip** via Modules > Modulebeheer en installeer hem.", "Open de configuratiepagina: die toont het winkeladres en een verbindingssleutel van 64 tekens.", "Upload en installeer in de **nieuwe PrestaShop 9 winkel** **shopmigrator.zip** en klik op **Configureren**."] }
-    ] },
-    { "title": "Een migratie uitvoeren", "content": [
-      { "ol": ["**Verbinden:** plak het adres van de oude winkel en de sleutel en klik op **Verbinding testen**. U ziet de versie van de oude winkel en hoeveel producten, klanten en bestellingen die heeft.", "**Gegevens kiezen:** vink aan wat gekopieerd moet worden. Gegevens die andere nodig hebben worden automatisch aangevinkt (bestellingen hebben klanten, producten en vervoerders nodig).", "**Snelheid:** Voorzichtig voor gedeelde hosting, Normaal, of Snel voor een dedicated server.", "**Modus:** Volledige kopie of Alleen nieuwe gegevens (zie hieronder).", "Klik op **Migratie starten** en volg de voortgangsbalken.", "**Rapport:** zie wat er is gekopieerd en eventuele waarschuwingen, en download het rapport."] },
-      { "note": "Maak een back-up van de nieuwe winkel vóór een volledige kopie: de geselecteerde gegevens worden daar vervangen." }
-    ] },
-    { "title": "Pauzeren, hervatten en grote winkels", "content": [
-      { "p": "De migratie loopt in korte stappen van enkele seconden en bewaart haar positie na elke batch. U kunt op elk moment pauzeren en hervatten, of de pagina sluiten: als u terugkomt gaat ze verder bij dezelfde rij. Netwerkfouten worden automatisch opnieuw geprobeerd." },
-      { "ul": ["De batchgrootte past zich aan uw servers aan (van 10 tot 5.000 rijen per verzoek).", "Grote tabellen worden gelezen met paginering op sleutel: rij 5.000.000 is net zo snel als rij 1.", "Zoekindex en catalogusprijsregels worden in kleine stukken opnieuw opgebouwd en lopen nooit in een time-out.", "Bij zeer grote catalogi kunt u miniaturen tijdens de migratie overslaan en ze daarna opnieuw genereren in Design > Afbeeldingsinstellingen."] },
-      { "p": "Gemeten op een testwinkel: 2,6 miljoen rijen (300.000 klanten, 300.000 bestellingen, 100.000 producten) gekopieerd in 6 minuten en 16 seconden." }
-    ] },
-    { "title": "Alleen nieuwe gegevens", "content": [
-      { "p": "Blijf verkopen in de oude winkel terwijl u de nieuwe voorbereidt. Wanneer u overstapt, voert u de migratie opnieuw uit met **Alleen nieuwe gegevens**: alleen bestellingen, klanten, producten en andere records die sinds de vorige keer zijn aangemaakt worden toegevoegd, en alles wat u in de nieuwe winkel hebt gewijzigd blijft behouden." }
-    ] },
-    { "title": "Wachtwoorden en medewerkers", "content": [
-      { "ul": ["Klanten behouden hun wachtwoord. Oude wachtwoorden uit PrestaShop 1.6 worden bij de eerste aanmelding van de klant herkend en automatisch omgezet in moderne, veilige hashes.", "Medewerkers die al in de nieuwe winkel staan worden nooit gewijzigd. Oude medewerkers worden alleen toegevoegd als hun ID en e-mail vrij zijn. Medewerkers met een oud type wachtwoord staan in het rapport en moeten één keer **Wachtwoord vergeten?** gebruiken."] }
-    ] },
-    { "title": "Oude URL's", "content": [
-      { "p": "Na een migratie worden links in de formaten van oudere versies (bijvoorbeeld /women/5-faded-short.html, /3_merk of /2__leverancier uit PrestaShop 1.6) met een 301 doorgestuurd naar hetzelfde product, dezelfde categorie, CMS-pagina, merk of leverancier in de nieuwe winkel, zodat zoekmachines en klanten op de juiste pagina komen." }
-    ] },
-    { "title": "Problemen oplossen", "content": [
-      { "ul": ["**Ongeldige sleutel:** kopieer de sleutel opnieuw van de pagina van de connector, zonder spaties.", "**Oude winkel niet bereikbaar:** controleer het adres (met http:// of https://) en of de winkel online is. Een firewall of onderhoudsmodus kan de connector blokkeren.", "**Taal niet geïnstalleerd:** installeer de ontbrekende taal via Internationaal > Vertalingen en voer de migratie opnieuw uit.", "**De migratie is gestopt:** lees de fout, los hem op en klik op **Hervatten**: ze gaat verder waar ze stopte."] }
-    ] },
-    { "title": "Beveiliging en opruimen", "content": [
-      { "p": "De connector beantwoordt alleen POST-verzoeken met de sleutel en schrijft nooit naar de oude winkel. Verwijder Shop Migrator Bridge na de migratie uit de oude winkel, of maak een nieuwe sleutel aan om de oude uit te schakelen." }
-    ] },
-    { "title": "Ondersteuning", "content": [
-      { "p": "Hulp nodig, een migratie op maat of een nieuwe functie? Mail naar iamshoaibktk@gmail.com, WhatsApp +923459016286, of huur mij in op Fiverr: https://www.fiverr.com/shoaibktk" }
-    ] }
+    {
+      "title": "Overzicht",
+      "content": [
+        {
+          "p": "Shop Migrator kopieert uw gegevens van een oude PrestaShop-winkel (1.6, 1.7, 8 of 9) naar een nieuwe PrestaShop 9 winkel. U installeert een kleine connector in de oude winkel, plakt het adres en de sleutel in de nieuwe, kiest wat u wilt kopiëren en klikt op Starten. De oude winkel wordt alleen gelezen, nooit gewijzigd."
+        },
+        {
+          "p": "**Wat kan worden gemigreerd:**"
+        },
+        {
+          "ul": [
+            "Belastingen en belastingregels, merken, leveranciers, categorieën, attributen en kenmerken",
+            "Producten met combinaties, prijzen, specifieke prijzen, voorraad, pakketten, tags, personalisatievelden en afbeeldingen",
+            "Vervoerders met zones en prijs- en gewichtsklassen",
+            "Klanten met adressen, groepen en winkelwagens, inclusief hun oude wachtwoorden",
+            "Bestellingen met regels, historie, vervoerders, facturen, betalingen, creditnota's, retouren en berichten",
+            "Winkelwagenregels (kortingsbonnen), catalogusprijsregels, CMS-pagina's en -categorieën, klantenservicecontacten en medewerkers"
+          ]
+        },
+        {
+          "p": "ID's blijven behouden, dus bestelreferenties, links en URL's blijven gelijk."
+        }
+      ]
+    },
+    {
+      "title": "Vereisten",
+      "content": [
+        {
+          "ul": [
+            "Nieuwe winkel: PrestaShop 9.0 of nieuwer, PHP 8.1 of nieuwer. Ontbrekende talen en valuta van de oude winkel worden automatisch toegevoegd",
+            "Oude winkel: PrestaShop 1.6, 1.7, 8 of 9 (PHP 5.6 of nieuwer), bereikbaar vanaf de nieuwe winkel via HTTP of HTTPS"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Installatie",
+      "content": [
+        {
+          "ol": [
+            "Upload in de **oude winkel** **shopmigratorbridge.zip** via Modules > Modulebeheer en installeer hem.",
+            "Open de configuratiepagina: die toont het winkeladres en een verbindingssleutel van 64 tekens.",
+            "Upload en installeer in de **nieuwe PrestaShop 9 winkel** **shopmigrator.zip** en klik op **Configureren**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Een migratie uitvoeren",
+      "content": [
+        {
+          "ol": [
+            "**Verbinden:** plak het adres van de oude winkel en de sleutel en klik op **Verbinding testen**. U ziet de versie van de oude winkel en hoeveel producten, klanten en bestellingen die heeft.",
+            "**Gegevens kiezen:** vink aan wat gekopieerd moet worden. Gegevens die andere nodig hebben worden automatisch aangevinkt (bestellingen hebben klanten, producten en vervoerders nodig).",
+            "**Snelheid:** Voorzichtig voor gedeelde hosting, Normaal, of Snel voor een dedicated server.",
+            "**Modus:** Volledige kopie of Alleen nieuwe gegevens (zie hieronder).",
+            "Klik op **Migratie starten** en volg de voortgangsbalken.",
+            "**Rapport:** zie wat er is gekopieerd en eventuele waarschuwingen, en download het rapport."
+          ]
+        },
+        {
+          "note": "Maak een back-up van de nieuwe winkel vóór een volledige kopie: de geselecteerde gegevens worden daar vervangen."
+        }
+      ]
+    },
+    {
+      "title": "Pauzeren, hervatten en grote winkels",
+      "content": [
+        {
+          "p": "De migratie loopt in korte stappen van enkele seconden en bewaart haar positie na elke batch. U kunt op elk moment pauzeren en hervatten, of de pagina sluiten: als u terugkomt gaat ze verder bij dezelfde rij. Netwerkfouten worden automatisch opnieuw geprobeerd."
+        },
+        {
+          "ul": [
+            "De batchgrootte past zich aan uw servers aan (van 10 tot 5.000 rijen per verzoek).",
+            "Grote tabellen worden gelezen met paginering op sleutel: rij 5.000.000 is net zo snel als rij 1.",
+            "Zoekindex en catalogusprijsregels worden in kleine stukken opnieuw opgebouwd en lopen nooit in een time-out.",
+            "Bij zeer grote catalogi kunt u miniaturen tijdens de migratie overslaan en ze daarna opnieuw genereren in Design > Afbeeldingsinstellingen."
+          ]
+        },
+        {
+          "p": "Gemeten op een testwinkel: 2,6 miljoen rijen (300.000 klanten, 300.000 bestellingen, 100.000 producten) gekopieerd in 6 minuten en 16 seconden."
+        }
+      ]
+    },
+    {
+      "title": "Alleen nieuwe gegevens",
+      "content": [
+        {
+          "p": "Blijf verkopen in de oude winkel terwijl u de nieuwe voorbereidt. Wanneer u overstapt, voert u de migratie opnieuw uit met **Alleen nieuwe gegevens**: alleen bestellingen, klanten, producten en andere records die sinds de vorige keer zijn aangemaakt worden toegevoegd, en alles wat u in de nieuwe winkel hebt gewijzigd blijft behouden."
+        }
+      ]
+    },
+    {
+      "title": "Wachtwoorden en medewerkers",
+      "content": [
+        {
+          "ul": [
+            "Klanten behouden hun wachtwoord. Oude wachtwoorden uit PrestaShop 1.6 worden bij de eerste aanmelding van de klant herkend en automatisch omgezet in moderne, veilige hashes.",
+            "Medewerkers die al in de nieuwe winkel staan worden nooit gewijzigd. Oude medewerkers worden alleen toegevoegd als hun ID en e-mail vrij zijn. Medewerkers met een oud type wachtwoord staan in het rapport en moeten één keer **Wachtwoord vergeten?** gebruiken."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Oude URL's",
+      "content": [
+        {
+          "p": "Na een migratie worden links in de formaten van oudere versies (bijvoorbeeld /women/5-faded-short.html, /3_merk of /2__leverancier uit PrestaShop 1.6) met een 301 doorgestuurd naar hetzelfde product, dezelfde categorie, CMS-pagina, merk of leverancier in de nieuwe winkel, zodat zoekmachines en klanten op de juiste pagina komen."
+        }
+      ]
+    },
+    {
+      "title": "Problemen oplossen",
+      "content": [
+        {
+          "ul": [
+            "**Ongeldige sleutel:** kopieer de sleutel opnieuw van de pagina van de connector, zonder spaties.",
+            "**Oude winkel niet bereikbaar:** controleer het adres (met http:// of https://) en of de winkel online is. Een firewall of onderhoudsmodus kan de connector blokkeren.",
+            "**Taal niet geïnstalleerd:** installeer de ontbrekende taal via Internationaal > Vertalingen en voer de migratie opnieuw uit.",
+            "**De migratie is gestopt:** lees de fout, los hem op en klik op **Hervatten**: ze gaat verder waar ze stopte."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Beveiliging en opruimen",
+      "content": [
+        {
+          "p": "De connector beantwoordt alleen POST-verzoeken met de sleutel en schrijft nooit naar de oude winkel. Verwijder Shop Migrator Bridge na de migratie uit de oude winkel, of maak een nieuwe sleutel aan om de oude uit te schakelen."
+        }
+      ]
+    },
+    {
+      "title": "Ondersteuning",
+      "content": [
+        {
+          "p": "Hulp nodig, een migratie op maat of een nieuwe functie? Mail naar iamshoaibktk@gmail.com, WhatsApp +923459016286, of huur mij in op Fiverr: https://www.fiverr.com/shoaibktk"
+        }
+      ]
+    }
   ]
 }

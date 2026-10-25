@@ -24,7 +24,7 @@ class Shopmigrator extends Module
     {
         $this->name = 'shopmigrator';
         $this->tab = 'migration_tools';
-        $this->version = '1.0.0';
+        $this->version = '1.0.1';
         $this->author = 'iamshoaibktk@gmail.com';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '9.0.0', 'max' => _PS_VERSION_];
@@ -54,6 +54,7 @@ class Shopmigrator extends Module
         Configuration::deleteByName('SHOPMIGRATOR_KEY');
         Configuration::deleteByName('SHOPMIGRATOR_PASSWORD_SALT');
         Configuration::deleteByName('SHOPMIGRATOR_REDIRECTS');
+        Configuration::deleteByName('SHOPMIGRATOR_LAST_SOURCE');
 
         return Runner::uninstall() && parent::uninstall();
     }
@@ -96,8 +97,9 @@ class Shopmigrator extends Module
             'sm_types_json' => json_encode($this->typeLabels(), JSON_UNESCAPED_UNICODE),
             'sm_needs_json' => json_encode(Plan::NEEDS),
             'sm_target' => ['version' => _PS_VERSION_, 'name' => Configuration::get('PS_SHOP_NAME')],
-            'sm_css' => $this->_path . 'views/css/wizard.css',
-            'sm_js' => $this->_path . 'views/js/wizard.js',
+            // ?v= the file date: browsers never keep an old copy after an update.
+            'sm_css' => $this->_path . 'views/css/wizard.css?v=' . filemtime(__DIR__ . '/views/css/wizard.css'),
+            'sm_js' => $this->_path . 'views/js/wizard.js?v=' . filemtime(__DIR__ . '/views/js/wizard.js'),
         ]);
 
         return $this->renderAuthor() . $this->display(__FILE__, 'views/templates/admin/wizard.tpl');
@@ -197,8 +199,17 @@ class Shopmigrator extends Module
         if (!$types) {
             throw new \RuntimeException($this->trans('Choose at least one type of data to migrate.', [], 'Modules.Shopmigrator.Admin'));
         }
+        $url = (string) Configuration::get('SHOPMIGRATOR_URL');
+        // "New data only" adds what is above the IDs already here, which only makes sense when
+        // those IDs came from this same old shop: anything else would mix two shops' data.
+        if (Tools::getValue('sm_mode') === 'new' && Runner::sourceKey($url) !== (string) Configuration::get('SHOPMIGRATOR_LAST_SOURCE')) {
+            throw new \RuntimeException($this->trans('"New data only" continues a fresh copy made from this same old shop. Run a fresh copy from it first.', [], 'Modules.Shopmigrator.Admin'));
+        }
+        if (Tools::getValue('sm_addloc') !== '0') {
+            $this->addMissingLocalization((new Client($url, (string) Configuration::get('SHOPMIGRATOR_KEY')))->info());
+        }
         $runner->start(
-            (string) Configuration::get('SHOPMIGRATOR_URL'),
+            $url,
             (string) Configuration::get('SHOPMIGRATOR_KEY'),
             $types,
             (int) Tools::getValue('sm_batch', 100),
@@ -207,6 +218,51 @@ class Shopmigrator extends Module
         );
 
         return $runner->progress();
+    }
+
+    /**
+     * Creates the old shop's languages and currencies that this shop doesn't have, so no text
+     * is skipped and orders keep their currency. Matching is by ISO code.
+     */
+    private function addMissingLocalization(array $info): void
+    {
+        foreach ($info['languages'] as $l) {
+            if (Language::getIdByIso($l['iso_code'])) {
+                continue;
+            }
+            $params = array_intersect_key($l, array_flip(['name', 'language_code', 'locale', 'date_format_lite', 'date_format_full', 'is_rtl']));
+            // Downloads PrestaShop's translations for it when the server can reach prestashop.com.
+            try {
+                Language::checkAndAddLanguage($l['iso_code'], false, false, $params);
+                @Language::downloadAndInstallLanguagePack($l['iso_code']);
+            } catch (\Throwable $e) {
+                // Another module's hook on the new language failed after it was saved, before
+                // PrestaShop copied the default language's texts into it: finish that here.
+                if ($id = (int) Language::getIdByIso($l['iso_code'], true)) {
+                    (new Language($id))->loadUpdateSQL();
+                }
+            }
+            Db::getInstance()->update('lang', ['active' => (int) $l['active']], "iso_code = '" . pSQL($l['iso_code']) . "'");
+        }
+        Language::resetCache();
+
+        // Exchange rates relative to this shop's default currency, taken from the old shop.
+        $default = new Currency((int) Configuration::get('PS_CURRENCY_DEFAULT'));
+        $rates = array_column($info['currencies'] ?? [], 'conversion_rate', 'iso_code');
+        $base = (float) ($rates[$default->iso_code] ?? 0);
+        foreach ($info['currencies'] ?? [] as $c) {
+            if (Currency::getIdByIsoCode($c['iso_code'], 0, true)) {
+                continue;
+            }
+            $rate = $base > 0 && !empty($c['conversion_rate']) ? (float) $c['conversion_rate'] / $base : 1.0;
+            try {
+                $this->get('prestashop.core.command_bus')->handle(
+                    new \PrestaShop\PrestaShop\Core\Domain\Currency\Command\AddCurrencyCommand($c['iso_code'], round($rate, 6) ?: 1.0, (bool) ($c['active'] ?? true))
+                );
+            } catch (\Throwable $e) {
+                // Not an official ISO code: the Runner reports it as missing.
+            }
+        }
     }
 
     private function json(array $data): void

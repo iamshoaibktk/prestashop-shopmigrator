@@ -1,46 +1,154 @@
 {
   "title": "Shop Migrator - Přechod na PrestaShop 9 přenosem dat",
   "subtitle": "Uživatelská příručka",
-  "labels": { "version": "Verze", "author": "Autor", "contact": "Kontakt", "page": "Strana", "contents": "Obsah", "compat": "Kompatibilita" },
+  "labels": {
+    "version": "Verze",
+    "author": "Autor",
+    "contact": "Kontakt",
+    "page": "Strana",
+    "contents": "Obsah",
+    "compat": "Kompatibilita"
+  },
   "sections": [
-    { "title": "Přehled", "content": [
-      { "p": "Shop Migrator zkopíruje data ze starého obchodu PrestaShop (1.6, 1.7, 8 nebo 9) do nového obchodu PrestaShop 9. Do starého obchodu nainstalujete malý konektor, jeho adresu a klíč vložíte do nového obchodu, vyberete, co kopírovat, a kliknete na Spustit. Starý obchod se pouze čte, nikdy se nemění." },
-      { "p": "**Co lze přenést:**" },
-      { "ul": ["Daně a daňová pravidla, značky, dodavatele, kategorie, atributy a vlastnosti", "Produkty s kombinacemi, cenami, specifickými cenami, skladem, balíčky, štítky, poli přizpůsobení a obrázky", "Dopravce se zónami a cenovými a hmotnostními rozsahy", "Zákazníky s adresami, skupinami a košíky včetně jejich starých hesel", "Objednávky s položkami, historií, dopravci, fakturami, platbami, dobropisy, vratkami a zprávami", "Pravidla košíku (slevové kupóny), cenová pravidla katalogu, stránky a kategorie CMS, kontakty zákaznického servisu a zaměstnance"] },
-      { "p": "ID zůstávají zachována, takže čísla objednávek, odkazy a URL se nemění." }
-    ] },
-    { "title": "Požadavky", "content": [
-      { "ul": ["Nový obchod: PrestaShop 9.0 nebo novější, PHP 8.1 nebo novější, s nainstalovanými jazyky a měnami starého obchodu", "Starý obchod: PrestaShop 1.6, 1.7, 8 nebo 9 (PHP 5.6 nebo novější), dostupný z nového obchodu přes HTTP nebo HTTPS"] }
-    ] },
-    { "title": "Instalace", "content": [
-      { "ol": ["Ve **starém obchodě** nahrajte **shopmigratorbridge.zip** v Moduly > Správce modulů a nainstalujte jej.", "Otevřete jeho konfigurační stránku: zobrazí adresu obchodu a 64znakový klíč připojení.", "V **novém obchodě PrestaShop 9** nahrajte a nainstalujte **shopmigrator.zip** a klikněte na **Konfigurovat**."] }
-    ] },
-    { "title": "Spuštění migrace", "content": [
-      { "ol": ["**Připojit:** vložte adresu starého obchodu a klíč a klikněte na **Otestovat připojení**. Uvidíte verzi starého obchodu a počet produktů, zákazníků a objednávek.", "**Výběr dat:** zaškrtněte, co kopírovat. Data potřebná pro jiná data se zaškrtnou sama (objednávky potřebují zákazníky, produkty a dopravce).", "**Rychlost:** Opatrně pro sdílený hosting, Normální, nebo Rychle pro dedikovaný server.", "**Režim:** Nová kopie nebo Pouze nová data (viz níže).", "Klikněte na **Spustit migraci** a sledujte ukazatele průběhu.", "**Zpráva:** zjistěte, co bylo zkopírováno a případná upozornění, a zprávu si stáhněte."] },
-      { "note": "Před novou kopií zálohujte nový obchod: vybraná data v něm budou nahrazena." }
-    ] },
-    { "title": "Pozastavení, pokračování a velké obchody", "content": [
-      { "p": "Migrace běží v krátkých krocích po několika sekundách a po každé dávce uloží svou pozici. Můžete ji kdykoli pozastavit a obnovit nebo zavřít stránku: po návratu pokračuje od stejného řádku. Chyby sítě se automaticky opakují." },
-      { "ul": ["Velikost dávky se přizpůsobí vašim serverům (10 až 5 000 řádků na požadavek).", "Velké tabulky se čtou stránkováním podle klíče: řádek 5 000 000 je stejně rychlý jako řádek 1.", "Index vyhledávání a cenová pravidla se obnovují po malých částech a nikdy nevyprší časový limit.", "U velmi velkých katalogů můžete náhledy během migrace vynechat a později je znovu vygenerovat ve Vzhled > Nastavení obrázků."] },
-      { "p": "Změřeno na testovacím obchodě: 2,6 milionu řádků (300 000 zákazníků, 300 000 objednávek, 100 000 produktů) zkopírováno za 6 minut 16 sekund." }
-    ] },
-    { "title": "Pouze nová data", "content": [
-      { "p": "Prodávejte dál ve starém obchodě, zatímco připravujete nový. Až budete připraveni přepnout, spusťte migraci znovu v režimu **Pouze nová data**: přidají se jen objednávky, zákazníci, produkty a další záznamy vytvořené od posledního běhu a vše, co jste v novém obchodě změnili, zůstane zachováno." }
-    ] },
-    { "title": "Hesla a zaměstnanci", "content": [
-      { "ul": ["Zákazníci si ponechají svá hesla. Stará hesla z PrestaShop 1.6 se rozpoznají při prvním přihlášení zákazníka a automaticky se převedou na moderní bezpečné hashe.", "Zaměstnanci, kteří už v novém obchodě jsou, se nikdy nemění. Staří zaměstnanci se přidají jen tehdy, když je jejich ID a e-mail volný. Zaměstnanci se starým typem hesla jsou uvedeni ve zprávě a měli by jednou použít **Zapomněli jste heslo?**."] }
-    ] },
-    { "title": "Staré URL", "content": [
-      { "p": "Po migraci jsou odkazy ve formátech starších verzí (například /women/5-faded-short.html, /3_znacka nebo /2__dodavatel z PrestaShop 1.6) přesměrovány kódem 301 na stejný produkt, kategorii, stránku CMS, značku nebo dodavatele v novém obchodě, takže vyhledávače i zákazníci skončí na správné stránce." }
-    ] },
-    { "title": "Řešení problémů", "content": [
-      { "ul": ["**Neplatný klíč:** zkopírujte klíč znovu ze stránky konektoru, bez mezer.", "**Starý obchod je nedostupný:** zkontrolujte adresu (s http:// nebo https://) a zda je obchod online. Firewall nebo režim údržby může konektor blokovat.", "**Jazyk není nainstalován:** nainstalujte chybějící jazyk v Mezinárodní > Překlady a spusťte migraci znovu.", "**Migrace se zastavila:** přečtěte chybu, opravte ji a klikněte na **Pokračovat**: migrace naváže tam, kde skončila."] }
-    ] },
-    { "title": "Bezpečnost a úklid", "content": [
-      { "p": "Konektor odpovídá jen na požadavky POST s klíčem a do starého obchodu nikdy nezapisuje. Po dokončení migrace odinstalujte Shop Migrator Bridge ze starého obchodu, nebo vytvořte nový klíč a starý tím zneplatněte." }
-    ] },
-    { "title": "Podpora", "content": [
-      { "p": "Potřebujete pomoc, migraci na míru nebo novou funkci? Napište mi na iamshoaibktk@gmail.com, přes WhatsApp na +923459016286, nebo si mě najměte na Fiverr: https://www.fiverr.com/shoaibktk" }
-    ] }
+    {
+      "title": "Přehled",
+      "content": [
+        {
+          "p": "Shop Migrator zkopíruje data ze starého obchodu PrestaShop (1.6, 1.7, 8 nebo 9) do nového obchodu PrestaShop 9. Do starého obchodu nainstalujete malý konektor, jeho adresu a klíč vložíte do nového obchodu, vyberete, co kopírovat, a kliknete na Spustit. Starý obchod se pouze čte, nikdy se nemění."
+        },
+        {
+          "p": "**Co lze přenést:**"
+        },
+        {
+          "ul": [
+            "Daně a daňová pravidla, značky, dodavatele, kategorie, atributy a vlastnosti",
+            "Produkty s kombinacemi, cenami, specifickými cenami, skladem, balíčky, štítky, poli přizpůsobení a obrázky",
+            "Dopravce se zónami a cenovými a hmotnostními rozsahy",
+            "Zákazníky s adresami, skupinami a košíky včetně jejich starých hesel",
+            "Objednávky s položkami, historií, dopravci, fakturami, platbami, dobropisy, vratkami a zprávami",
+            "Pravidla košíku (slevové kupóny), cenová pravidla katalogu, stránky a kategorie CMS, kontakty zákaznického servisu a zaměstnance"
+          ]
+        },
+        {
+          "p": "ID zůstávají zachována, takže čísla objednávek, odkazy a URL se nemění."
+        }
+      ]
+    },
+    {
+      "title": "Požadavky",
+      "content": [
+        {
+          "ul": [
+            "Nový obchod: PrestaShop 9.0 nebo novější, PHP 8.1 nebo novější. Chybějící jazyky a měny starého obchodu se přidají automaticky",
+            "Starý obchod: PrestaShop 1.6, 1.7, 8 nebo 9 (PHP 5.6 nebo novější), dostupný z nového obchodu přes HTTP nebo HTTPS"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Instalace",
+      "content": [
+        {
+          "ol": [
+            "Ve **starém obchodě** nahrajte **shopmigratorbridge.zip** v Moduly > Správce modulů a nainstalujte jej.",
+            "Otevřete jeho konfigurační stránku: zobrazí adresu obchodu a 64znakový klíč připojení.",
+            "V **novém obchodě PrestaShop 9** nahrajte a nainstalujte **shopmigrator.zip** a klikněte na **Konfigurovat**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Spuštění migrace",
+      "content": [
+        {
+          "ol": [
+            "**Připojit:** vložte adresu starého obchodu a klíč a klikněte na **Otestovat připojení**. Uvidíte verzi starého obchodu a počet produktů, zákazníků a objednávek.",
+            "**Výběr dat:** zaškrtněte, co kopírovat. Data potřebná pro jiná data se zaškrtnou sama (objednávky potřebují zákazníky, produkty a dopravce).",
+            "**Rychlost:** Opatrně pro sdílený hosting, Normální, nebo Rychle pro dedikovaný server.",
+            "**Režim:** Nová kopie nebo Pouze nová data (viz níže).",
+            "Klikněte na **Spustit migraci** a sledujte ukazatele průběhu.",
+            "**Zpráva:** zjistěte, co bylo zkopírováno a případná upozornění, a zprávu si stáhněte."
+          ]
+        },
+        {
+          "note": "Před novou kopií zálohujte nový obchod: vybraná data v něm budou nahrazena."
+        }
+      ]
+    },
+    {
+      "title": "Pozastavení, pokračování a velké obchody",
+      "content": [
+        {
+          "p": "Migrace běží v krátkých krocích po několika sekundách a po každé dávce uloží svou pozici. Můžete ji kdykoli pozastavit a obnovit nebo zavřít stránku: po návratu pokračuje od stejného řádku. Chyby sítě se automaticky opakují."
+        },
+        {
+          "ul": [
+            "Velikost dávky se přizpůsobí vašim serverům (10 až 5 000 řádků na požadavek).",
+            "Velké tabulky se čtou stránkováním podle klíče: řádek 5 000 000 je stejně rychlý jako řádek 1.",
+            "Index vyhledávání a cenová pravidla se obnovují po malých částech a nikdy nevyprší časový limit.",
+            "U velmi velkých katalogů můžete náhledy během migrace vynechat a později je znovu vygenerovat ve Vzhled > Nastavení obrázků."
+          ]
+        },
+        {
+          "p": "Změřeno na testovacím obchodě: 2,6 milionu řádků (300 000 zákazníků, 300 000 objednávek, 100 000 produktů) zkopírováno za 6 minut 16 sekund."
+        }
+      ]
+    },
+    {
+      "title": "Pouze nová data",
+      "content": [
+        {
+          "p": "Prodávejte dál ve starém obchodě, zatímco připravujete nový. Až budete připraveni přepnout, spusťte migraci znovu v režimu **Pouze nová data**: přidají se jen objednávky, zákazníci, produkty a další záznamy vytvořené od posledního běhu a vše, co jste v novém obchodě změnili, zůstane zachováno."
+        }
+      ]
+    },
+    {
+      "title": "Hesla a zaměstnanci",
+      "content": [
+        {
+          "ul": [
+            "Zákazníci si ponechají svá hesla. Stará hesla z PrestaShop 1.6 se rozpoznají při prvním přihlášení zákazníka a automaticky se převedou na moderní bezpečné hashe.",
+            "Zaměstnanci, kteří už v novém obchodě jsou, se nikdy nemění. Staří zaměstnanci se přidají jen tehdy, když je jejich ID a e-mail volný. Zaměstnanci se starým typem hesla jsou uvedeni ve zprávě a měli by jednou použít **Zapomněli jste heslo?**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Staré URL",
+      "content": [
+        {
+          "p": "Po migraci jsou odkazy ve formátech starších verzí (například /women/5-faded-short.html, /3_znacka nebo /2__dodavatel z PrestaShop 1.6) přesměrovány kódem 301 na stejný produkt, kategorii, stránku CMS, značku nebo dodavatele v novém obchodě, takže vyhledávače i zákazníci skončí na správné stránce."
+        }
+      ]
+    },
+    {
+      "title": "Řešení problémů",
+      "content": [
+        {
+          "ul": [
+            "**Neplatný klíč:** zkopírujte klíč znovu ze stránky konektoru, bez mezer.",
+            "**Starý obchod je nedostupný:** zkontrolujte adresu (s http:// nebo https://) a zda je obchod online. Firewall nebo režim údržby může konektor blokovat.",
+            "**Jazyk není nainstalován:** nainstalujte chybějící jazyk v Mezinárodní > Překlady a spusťte migraci znovu.",
+            "**Migrace se zastavila:** přečtěte chybu, opravte ji a klikněte na **Pokračovat**: migrace naváže tam, kde skončila."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Bezpečnost a úklid",
+      "content": [
+        {
+          "p": "Konektor odpovídá jen na požadavky POST s klíčem a do starého obchodu nikdy nezapisuje. Po dokončení migrace odinstalujte Shop Migrator Bridge ze starého obchodu, nebo vytvořte nový klíč a starý tím zneplatněte."
+        }
+      ]
+    },
+    {
+      "title": "Podpora",
+      "content": [
+        {
+          "p": "Potřebujete pomoc, migraci na míru nebo novou funkci? Napište mi na iamshoaibktk@gmail.com, přes WhatsApp na +923459016286, nebo si mě najměte na Fiverr: https://www.fiverr.com/shoaibktk"
+        }
+      ]
+    }
   ]
 }

@@ -1,46 +1,154 @@
 {
   "title": "Shop Migrator - Upgrade auf PrestaShop 9 per Datenübertragung",
   "subtitle": "Benutzerhandbuch",
-  "labels": { "version": "Version", "author": "Autor", "contact": "Kontakt", "page": "Seite", "contents": "Inhalt", "compat": "Kompatibilität" },
+  "labels": {
+    "version": "Version",
+    "author": "Autor",
+    "contact": "Kontakt",
+    "page": "Seite",
+    "contents": "Inhalt",
+    "compat": "Kompatibilität"
+  },
   "sections": [
-    { "title": "Überblick", "content": [
-      { "p": "Shop Migrator kopiert Ihre Daten aus einem alten PrestaShop-Shop (1.6, 1.7, 8 oder 9) in einen neuen PrestaShop 9 Shop. Sie installieren einen kleinen Connector im alten Shop, fügen dessen Adresse und Schlüssel im neuen Shop ein, wählen die Daten und klicken auf Starten. Der alte Shop wird nur gelesen, nie verändert." },
-      { "p": "**Was migriert werden kann:**" },
-      { "ul": ["Steuern und Steuerregeln, Marken, Lieferanten, Kategorien, Attribute und Eigenschaften", "Produkte mit Kombinationen, Preisen, Sonderpreisen, Lagerbestand, Paketen, Tags, Anpassungsfeldern und Bildern", "Versanddienste mit Zonen, Preis- und Gewichtsbereichen", "Kunden mit Adressen, Gruppen und Warenkörben, einschließlich ihrer alten Passwörter", "Bestellungen mit Positionen, Verlauf, Versand, Rechnungen, Zahlungen, Gutschriften, Rücksendungen und Nachrichten", "Warenkorbregeln (Gutscheine), Katalog-Preisregeln, CMS-Seiten und -Kategorien, Kundenservice-Kontakte und Mitarbeiter"] },
-      { "p": "Die IDs bleiben erhalten, daher bleiben Bestellreferenzen, Links und URLs gleich." }
-    ] },
-    { "title": "Voraussetzungen", "content": [
-      { "ul": ["Neuer Shop: PrestaShop 9.0 oder neuer, PHP 8.1 oder neuer, mit den installierten Sprachen und Währungen des alten Shops", "Alter Shop: PrestaShop 1.6, 1.7, 8 oder 9 (PHP 5.6 oder neuer), vom neuen Shop per HTTP oder HTTPS erreichbar"] }
-    ] },
-    { "title": "Installation", "content": [
-      { "ol": ["Laden Sie im **alten Shop** **shopmigratorbridge.zip** unter Module > Modulmanager hoch und installieren Sie es.", "Öffnen Sie die Konfigurationsseite: Sie zeigt die Shop-Adresse und einen 64-stelligen Verbindungsschlüssel.", "Laden Sie im **neuen PrestaShop 9 Shop** **shopmigrator.zip** hoch, installieren Sie es und klicken Sie auf **Konfigurieren**."] }
-    ] },
-    { "title": "Eine Migration durchführen", "content": [
-      { "ol": ["**Verbinden:** Adresse des alten Shops und Schlüssel einfügen und auf **Verbindung testen** klicken. Sie sehen die Version des alten Shops und wie viele Produkte, Kunden und Bestellungen er hat.", "**Daten wählen:** ankreuzen, was kopiert wird. Daten, die andere benötigen, werden automatisch angekreuzt (Bestellungen brauchen Kunden, Produkte und Versanddienste).", "**Geschwindigkeit:** Vorsichtig für Shared Hosting, Normal oder Schnell für einen dedizierten Server.", "**Modus:** Neue Kopie oder Nur neue Daten (siehe unten).", "Auf **Migration starten** klicken und den Fortschrittsbalken folgen.", "**Bericht:** sehen, was kopiert wurde und welche Warnungen es gab, und den Bericht herunterladen."] },
-      { "note": "Sichern Sie den neuen Shop vor einer neuen Kopie: Die ausgewählten Daten werden dort ersetzt." }
-    ] },
-    { "title": "Pause, Fortsetzen und große Shops", "content": [
-      { "p": "Die Migration läuft in kurzen Schritten von wenigen Sekunden und speichert ihre Position nach jedem Block. Sie können jederzeit pausieren und fortsetzen oder die Seite schließen: Beim nächsten Öffnen geht es an derselben Zeile weiter. Netzwerkfehler werden automatisch wiederholt." },
-      { "ul": ["Die Blockgröße passt sich Ihren Servern an (10 bis 5.000 Zeilen pro Anfrage).", "Große Tabellen werden per Schlüssel-Paging gelesen: Zeile 5.000.000 ist so schnell wie Zeile 1.", "Suchindex und Katalog-Preisregeln werden in kleinen Teilen neu aufgebaut und laufen nie in ein Timeout.", "Bei sehr großen Katalogen können Sie die Miniaturansichten überspringen und später unter Design > Bildeinstellungen neu erzeugen."] },
-      { "p": "Gemessen in einem Test-Shop: 2,6 Millionen Zeilen (300.000 Kunden, 300.000 Bestellungen, 100.000 Produkte) in 6 Minuten 16 Sekunden kopiert." }
-    ] },
-    { "title": "Nur neue Daten", "content": [
-      { "p": "Verkaufen Sie im alten Shop weiter, während Sie den neuen vorbereiten. Wenn Sie umstellen, starten Sie die Migration erneut mit **Nur neue Daten**: Es werden nur Bestellungen, Kunden, Produkte und andere Datensätze hinzugefügt, die seit dem letzten Lauf entstanden sind, und alles, was Sie im neuen Shop geändert haben, bleibt erhalten." }
-    ] },
-    { "title": "Passwörter und Mitarbeiter", "content": [
-      { "ul": ["Kunden behalten ihre Passwörter. Alte Passwörter aus PrestaShop 1.6 werden beim ersten Login des Kunden erkannt und automatisch in moderne, sichere Hashes umgewandelt.", "Mitarbeiter, die bereits im neuen Shop sind, werden nie verändert. Alte Mitarbeiter werden nur hinzugefügt, wenn ID und E-Mail frei sind. Mitarbeiter mit altem Passworttyp stehen im Bericht und sollten einmal **Passwort vergessen?** nutzen."] }
-    ] },
-    { "title": "Alte URLs", "content": [
-      { "p": "Nach der Migration werden Links in den Formaten älterer Versionen (zum Beispiel /women/5-faded-short.html, /3_marke oder /2__lieferant aus PrestaShop 1.6) per 301 auf dasselbe Produkt, dieselbe Kategorie, CMS-Seite, Marke oder denselben Lieferanten im neuen Shop umgeleitet, damit Suchmaschinen und Kunden auf der richtigen Seite landen." }
-    ] },
-    { "title": "Fehlerbehebung", "content": [
-      { "ul": ["**Ungültiger Schlüssel:** den Schlüssel erneut von der Seite des Connectors kopieren, ohne Leerzeichen.", "**Alter Shop nicht erreichbar:** Adresse (mit http:// oder https://) prüfen und ob der Shop online ist. Eine Firewall oder der Wartungsmodus kann den Connector blockieren.", "**Sprache nicht installiert:** die fehlende Sprache unter International > Übersetzungen installieren und die Migration erneut starten.", "**Die Migration wurde angehalten:** Fehler lesen, beheben und auf **Fortsetzen** klicken: Es geht dort weiter, wo sie stoppte."] }
-    ] },
-    { "title": "Sicherheit und Aufräumen", "content": [
-      { "p": "Der Connector beantwortet nur POST-Anfragen mit dem Schlüssel und schreibt nie in den alten Shop. Deinstallieren Sie Shop Migrator Bridge nach der Migration im alten Shop oder erstellen Sie einen neuen Schlüssel, um den alten zu deaktivieren." }
-    ] },
-    { "title": "Support", "content": [
-      { "p": "Brauchen Sie Hilfe, eine individuelle Migration oder eine neue Funktion? Schreiben Sie mir an iamshoaibktk@gmail.com, per WhatsApp an +923459016286, oder beauftragen Sie mich auf Fiverr: https://www.fiverr.com/shoaibktk" }
-    ] }
+    {
+      "title": "Überblick",
+      "content": [
+        {
+          "p": "Shop Migrator kopiert Ihre Daten aus einem alten PrestaShop-Shop (1.6, 1.7, 8 oder 9) in einen neuen PrestaShop 9 Shop. Sie installieren einen kleinen Connector im alten Shop, fügen dessen Adresse und Schlüssel im neuen Shop ein, wählen die Daten und klicken auf Starten. Der alte Shop wird nur gelesen, nie verändert."
+        },
+        {
+          "p": "**Was migriert werden kann:**"
+        },
+        {
+          "ul": [
+            "Steuern und Steuerregeln, Marken, Lieferanten, Kategorien, Attribute und Eigenschaften",
+            "Produkte mit Kombinationen, Preisen, Sonderpreisen, Lagerbestand, Paketen, Tags, Anpassungsfeldern und Bildern",
+            "Versanddienste mit Zonen, Preis- und Gewichtsbereichen",
+            "Kunden mit Adressen, Gruppen und Warenkörben, einschließlich ihrer alten Passwörter",
+            "Bestellungen mit Positionen, Verlauf, Versand, Rechnungen, Zahlungen, Gutschriften, Rücksendungen und Nachrichten",
+            "Warenkorbregeln (Gutscheine), Katalog-Preisregeln, CMS-Seiten und -Kategorien, Kundenservice-Kontakte und Mitarbeiter"
+          ]
+        },
+        {
+          "p": "Die IDs bleiben erhalten, daher bleiben Bestellreferenzen, Links und URLs gleich."
+        }
+      ]
+    },
+    {
+      "title": "Voraussetzungen",
+      "content": [
+        {
+          "ul": [
+            "Neuer Shop: PrestaShop 9.0 oder neuer, PHP 8.1 oder neuer. Fehlende Sprachen und Währungen des alten Shops werden automatisch hinzugefügt",
+            "Alter Shop: PrestaShop 1.6, 1.7, 8 oder 9 (PHP 5.6 oder neuer), vom neuen Shop per HTTP oder HTTPS erreichbar"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Installation",
+      "content": [
+        {
+          "ol": [
+            "Laden Sie im **alten Shop** **shopmigratorbridge.zip** unter Module > Modulmanager hoch und installieren Sie es.",
+            "Öffnen Sie die Konfigurationsseite: Sie zeigt die Shop-Adresse und einen 64-stelligen Verbindungsschlüssel.",
+            "Laden Sie im **neuen PrestaShop 9 Shop** **shopmigrator.zip** hoch, installieren Sie es und klicken Sie auf **Konfigurieren**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Eine Migration durchführen",
+      "content": [
+        {
+          "ol": [
+            "**Verbinden:** Adresse des alten Shops und Schlüssel einfügen und auf **Verbindung testen** klicken. Sie sehen die Version des alten Shops und wie viele Produkte, Kunden und Bestellungen er hat.",
+            "**Daten wählen:** ankreuzen, was kopiert wird. Daten, die andere benötigen, werden automatisch angekreuzt (Bestellungen brauchen Kunden, Produkte und Versanddienste).",
+            "**Geschwindigkeit:** Vorsichtig für Shared Hosting, Normal oder Schnell für einen dedizierten Server.",
+            "**Modus:** Neue Kopie oder Nur neue Daten (siehe unten).",
+            "Auf **Migration starten** klicken und den Fortschrittsbalken folgen.",
+            "**Bericht:** sehen, was kopiert wurde und welche Warnungen es gab, und den Bericht herunterladen."
+          ]
+        },
+        {
+          "note": "Sichern Sie den neuen Shop vor einer neuen Kopie: Die ausgewählten Daten werden dort ersetzt."
+        }
+      ]
+    },
+    {
+      "title": "Pause, Fortsetzen und große Shops",
+      "content": [
+        {
+          "p": "Die Migration läuft in kurzen Schritten von wenigen Sekunden und speichert ihre Position nach jedem Block. Sie können jederzeit pausieren und fortsetzen oder die Seite schließen: Beim nächsten Öffnen geht es an derselben Zeile weiter. Netzwerkfehler werden automatisch wiederholt."
+        },
+        {
+          "ul": [
+            "Die Blockgröße passt sich Ihren Servern an (10 bis 5.000 Zeilen pro Anfrage).",
+            "Große Tabellen werden per Schlüssel-Paging gelesen: Zeile 5.000.000 ist so schnell wie Zeile 1.",
+            "Suchindex und Katalog-Preisregeln werden in kleinen Teilen neu aufgebaut und laufen nie in ein Timeout.",
+            "Bei sehr großen Katalogen können Sie die Miniaturansichten überspringen und später unter Design > Bildeinstellungen neu erzeugen."
+          ]
+        },
+        {
+          "p": "Gemessen in einem Test-Shop: 2,6 Millionen Zeilen (300.000 Kunden, 300.000 Bestellungen, 100.000 Produkte) in 6 Minuten 16 Sekunden kopiert."
+        }
+      ]
+    },
+    {
+      "title": "Nur neue Daten",
+      "content": [
+        {
+          "p": "Verkaufen Sie im alten Shop weiter, während Sie den neuen vorbereiten. Wenn Sie umstellen, starten Sie die Migration erneut mit **Nur neue Daten**: Es werden nur Bestellungen, Kunden, Produkte und andere Datensätze hinzugefügt, die seit dem letzten Lauf entstanden sind, und alles, was Sie im neuen Shop geändert haben, bleibt erhalten."
+        }
+      ]
+    },
+    {
+      "title": "Passwörter und Mitarbeiter",
+      "content": [
+        {
+          "ul": [
+            "Kunden behalten ihre Passwörter. Alte Passwörter aus PrestaShop 1.6 werden beim ersten Login des Kunden erkannt und automatisch in moderne, sichere Hashes umgewandelt.",
+            "Mitarbeiter, die bereits im neuen Shop sind, werden nie verändert. Alte Mitarbeiter werden nur hinzugefügt, wenn ID und E-Mail frei sind. Mitarbeiter mit altem Passworttyp stehen im Bericht und sollten einmal **Passwort vergessen?** nutzen."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Alte URLs",
+      "content": [
+        {
+          "p": "Nach der Migration werden Links in den Formaten älterer Versionen (zum Beispiel /women/5-faded-short.html, /3_marke oder /2__lieferant aus PrestaShop 1.6) per 301 auf dasselbe Produkt, dieselbe Kategorie, CMS-Seite, Marke oder denselben Lieferanten im neuen Shop umgeleitet, damit Suchmaschinen und Kunden auf der richtigen Seite landen."
+        }
+      ]
+    },
+    {
+      "title": "Fehlerbehebung",
+      "content": [
+        {
+          "ul": [
+            "**Ungültiger Schlüssel:** den Schlüssel erneut von der Seite des Connectors kopieren, ohne Leerzeichen.",
+            "**Alter Shop nicht erreichbar:** Adresse (mit http:// oder https://) prüfen und ob der Shop online ist. Eine Firewall oder der Wartungsmodus kann den Connector blockieren.",
+            "**Sprache nicht installiert:** die fehlende Sprache unter International > Übersetzungen installieren und die Migration erneut starten.",
+            "**Die Migration wurde angehalten:** Fehler lesen, beheben und auf **Fortsetzen** klicken: Es geht dort weiter, wo sie stoppte."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Sicherheit und Aufräumen",
+      "content": [
+        {
+          "p": "Der Connector beantwortet nur POST-Anfragen mit dem Schlüssel und schreibt nie in den alten Shop. Deinstallieren Sie Shop Migrator Bridge nach der Migration im alten Shop oder erstellen Sie einen neuen Schlüssel, um den alten zu deaktivieren."
+        }
+      ]
+    },
+    {
+      "title": "Support",
+      "content": [
+        {
+          "p": "Brauchen Sie Hilfe, eine individuelle Migration oder eine neue Funktion? Schreiben Sie mir an iamshoaibktk@gmail.com, per WhatsApp an +923459016286, oder beauftragen Sie mich auf Fiverr: https://www.fiverr.com/shoaibktk"
+        }
+      ]
+    }
   ]
 }

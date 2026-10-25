@@ -517,17 +517,6 @@
       "pt-PT": "Iniciar uma nova migração? O progresso e o relatório atuais serão apagados.",
       "ru-RU": "Начать новый перенос? Текущий прогресс и отчёт будут очищены."
     },
-    "Not installed here, its texts will be skipped:": {
-      "fr-FR": "Non installée ici, ses textes seront ignorés :",
-      "es-ES": "No instalado aquí, sus textos se omitirán:",
-      "it-IT": "Non installata qui, i suoi testi verranno saltati:",
-      "pl-PL": "Nie zainstalowano tutaj, teksty zostaną pominięte:",
-      "de-DE": "Hier nicht installiert, die Texte werden übersprungen:",
-      "cs-CZ": "Zde není nainstalováno, texty budou přeskočeny:",
-      "nl-NL": "Hier niet geïnstalleerd, de teksten worden overgeslagen:",
-      "pt-PT": "Não instalado aqui, os textos serão ignorados:",
-      "ru-RU": "Не установлен здесь, тексты будут пропущены:"
-    },
     "Connect": {
       "fr-FR": "Connexion",
       "es-ES": "Conectar",
@@ -857,6 +846,171 @@
       "nl-NL": "Nieuwe migratie",
       "pt-PT": "Nova migração",
       "ru-RU": "Новый перенос"
+    },
+    "\"New data only\" continues a fresh copy made from this same old shop. Run a fresh copy from it first.": {
+      "fr-FR": "« Nouvelles données uniquement » prolonge une copie complète faite depuis cette même ancienne boutique. Lancez d'abord une copie complète depuis celle-ci.",
+      "es-ES": "«Solo datos nuevos» continúa una copia completa hecha desde esta misma tienda antigua. Haga primero una copia completa desde ella.",
+      "it-IT": "«Solo dati nuovi» prosegue una copia completa fatta da questo stesso vecchio negozio. Esegui prima una copia completa da esso.",
+      "pl-PL": "„Tylko nowe dane” kontynuuje pełną kopię wykonaną z tego samego starego sklepu. Najpierw wykonaj z niego pełną kopię.",
+      "de-DE": "„Nur neue Daten“ setzt eine neue Kopie aus genau diesem alten Shop fort. Führen Sie zuerst eine neue Kopie aus diesem Shop durch.",
+      "cs-CZ": "„Pouze nová data“ navazuje na novou kopii z tohoto starého obchodu. Nejprve z něj proveďte novou kopii.",
+      "nl-NL": "'Alleen nieuwe gegevens' gaat verder op een volledige kopie van dezelfde oude winkel. Maak eerst een volledige kopie van die winkel.",
+      "pt-PT": "«Apenas dados novos» continua uma cópia completa feita a partir desta mesma loja antiga. Faça primeiro uma cópia completa a partir dela.",
+      "ru-RU": "«Только новые данные» продолжает полную копию из этого же старого магазина. Сначала сделайте полную копию из него."
+    },
+    "Not installed here, will be added:": {
+      "fr-FR": "Non installée ici, sera ajoutée :",
+      "es-ES": "No instalado aquí, se añadirá:",
+      "it-IT": "Non installata qui, verrà aggiunta:",
+      "pl-PL": "Nie zainstalowano tutaj, zostanie dodany:",
+      "de-DE": "Hier nicht installiert, wird hinzugefügt:",
+      "cs-CZ": "Zde není nainstalováno, bude přidáno:",
+      "nl-NL": "Hier niet geïnstalleerd, wordt toegevoegd:",
+      "pt-PT": "Não instalado aqui, será adicionado:",
+      "ru-RU": "Не установлен здесь, будет добавлен:"
+    },
+    "In progress": {
+      "fr-FR": "En cours",
+      "es-ES": "En curso",
+      "it-IT": "In corso",
+      "pl-PL": "W toku",
+      "de-DE": "Läuft",
+      "cs-CZ": "Probíhá",
+      "nl-NL": "Bezig",
+      "pt-PT": "Em curso",
+      "ru-RU": "Выполняется"
+    },
+    "Done": {
+      "fr-FR": "Terminé",
+      "es-ES": "Hecho",
+      "it-IT": "Fatto",
+      "pl-PL": "Gotowe",
+      "de-DE": "Fertig",
+      "cs-CZ": "Hotovo",
+      "nl-NL": "Klaar",
+      "pt-PT": "Concluído",
+      "ru-RU": "Готово"
+    },
+    "per second": {
+      "fr-FR": "par seconde",
+      "es-ES": "por segundo",
+      "it-IT": "al secondo",
+      "pl-PL": "na sekundę",
+      "de-DE": "pro Sekunde",
+      "cs-CZ": "za sekundu",
+      "nl-NL": "per seconde",
+      "pt-PT": "por segundo",
+      "ru-RU": "в секунду"
+    },
+    "Steps": {
+      "fr-FR": "Étapes",
+      "es-ES": "Pasos",
+      "it-IT": "Passaggi",
+      "pl-PL": "Kroki",
+      "de-DE": "Schritte",
+      "cs-CZ": "Kroky",
+      "nl-NL": "Stappen",
+      "pt-PT": "Passos",
+      "ru-RU": "Шаги"
+    },
+    "New data only": {
+      "fr-FR": "Nouvelles données uniquement",
+      "es-ES": "Solo datos nuevos",
+      "it-IT": "Solo dati nuovi",
+      "pl-PL": "Tylko nowe dane",
+      "de-DE": "Nur neue Daten",
+      "cs-CZ": "Pouze nová data",
+      "nl-NL": "Alleen nieuwe gegevens",
+      "pt-PT": "Apenas dados novos",
+      "ru-RU": "Только новые данные"
+    },
+    "Options": {
+      "fr-FR": "Options",
+      "es-ES": "Opciones",
+      "it-IT": "Opzioni",
+      "pl-PL": "Opcje",
+      "de-DE": "Optionen",
+      "cs-CZ": "Možnosti",
+      "nl-NL": "Opties",
+      "pt-PT": "Opções",
+      "ru-RU": "Параметры"
+    },
+    "Add missing languages and currencies": {
+      "fr-FR": "Ajouter les langues et devises manquantes",
+      "es-ES": "Añadir los idiomas y monedas que faltan",
+      "it-IT": "Aggiungi lingue e valute mancanti",
+      "pl-PL": "Dodaj brakujące języki i waluty",
+      "de-DE": "Fehlende Sprachen und Währungen hinzufügen",
+      "cs-CZ": "Přidat chybějící jazyky a měny",
+      "nl-NL": "Ontbrekende talen en valuta toevoegen",
+      "pt-PT": "Adicionar idiomas e moedas em falta",
+      "ru-RU": "Добавить недостающие языки и валюты"
+    },
+    "Elapsed": {
+      "fr-FR": "Écoulé",
+      "es-ES": "Transcurrido",
+      "it-IT": "Trascorso",
+      "pl-PL": "Upłynęło",
+      "de-DE": "Vergangen",
+      "cs-CZ": "Uplynulo",
+      "nl-NL": "Verstreken",
+      "pt-PT": "Decorrido",
+      "ru-RU": "Прошло"
+    },
+    "Remaining": {
+      "fr-FR": "Restant",
+      "es-ES": "Restante",
+      "it-IT": "Rimanente",
+      "pl-PL": "Pozostało",
+      "de-DE": "Verbleibend",
+      "cs-CZ": "Zbývá",
+      "nl-NL": "Resterend",
+      "pt-PT": "Restante",
+      "ru-RU": "Осталось"
+    },
+    "Store design": {
+      "fr-FR": "Design de boutique",
+      "es-ES": "Diseño de tiendas",
+      "it-IT": "Design del negozio",
+      "pl-PL": "Projektowanie sklepów",
+      "de-DE": "Shop-Design",
+      "cs-CZ": "Design obchodu",
+      "nl-NL": "Winkelontwerp",
+      "pt-PT": "Design de lojas",
+      "ru-RU": "Дизайн магазина"
+    },
+    "Custom module development": {
+      "fr-FR": "Développement de modules sur mesure",
+      "es-ES": "Desarrollo de módulos a medida",
+      "it-IT": "Sviluppo di moduli su misura",
+      "pl-PL": "Moduły na zamówienie",
+      "de-DE": "Individuelle Modulentwicklung",
+      "cs-CZ": "Vývoj modulů na míru",
+      "nl-NL": "Modules op maat",
+      "pt-PT": "Desenvolvimento de módulos à medida",
+      "ru-RU": "Разработка модулей на заказ"
+    },
+    "Custom data migration (blogs, reviews, any platform)": {
+      "fr-FR": "Migration de données sur mesure (blogs, avis, toute plateforme)",
+      "es-ES": "Migración de datos a medida (blogs, reseñas, cualquier plataforma)",
+      "it-IT": "Migrazione dati su misura (blog, recensioni, qualsiasi piattaforma)",
+      "pl-PL": "Migracja danych na zamówienie (blogi, opinie, dowolna platforma)",
+      "de-DE": "Individuelle Datenmigration (Blogs, Bewertungen, jede Plattform)",
+      "cs-CZ": "Migrace dat na míru (blogy, recenze, jakákoli platforma)",
+      "nl-NL": "Gegevensmigratie op maat (blogs, reviews, elk platform)",
+      "pt-PT": "Migração de dados à medida (blogs, avaliações, qualquer plataforma)",
+      "ru-RU": "Перенос данных на заказ (блоги, отзывы, любая платформа)"
+    },
+    "Upgrades and bug fixes": {
+      "fr-FR": "Mises à jour et corrections",
+      "es-ES": "Actualizaciones y corrección de errores",
+      "it-IT": "Aggiornamenti e correzione bug",
+      "pl-PL": "Aktualizacje i poprawki błędów",
+      "de-DE": "Upgrades und Fehlerbehebung",
+      "cs-CZ": "Aktualizace a opravy chyb",
+      "nl-NL": "Upgrades en bugfixes",
+      "pt-PT": "Atualizações e correção de erros",
+      "ru-RU": "Обновления и исправление ошибок"
     }
   }
 }

@@ -1,46 +1,154 @@
 {
   "title": "Shop Migrator - Passer à PrestaShop 9 par transfert de données",
   "subtitle": "Guide d'utilisation",
-  "labels": { "version": "Version", "author": "Auteur", "contact": "Contact", "page": "Page", "contents": "Sommaire", "compat": "Compatibilité" },
+  "labels": {
+    "version": "Version",
+    "author": "Auteur",
+    "contact": "Contact",
+    "page": "Page",
+    "contents": "Sommaire",
+    "compat": "Compatibilité"
+  },
   "sections": [
-    { "title": "Présentation", "content": [
-      { "p": "Shop Migrator copie les données d'une ancienne boutique PrestaShop (1.6, 1.7, 8 ou 9) vers une nouvelle boutique PrestaShop 9. Vous installez un petit connecteur sur l'ancienne boutique, collez son adresse et sa clé dans la nouvelle, choisissez quoi copier et cliquez sur Démarrer. L'ancienne boutique est seulement lue, jamais modifiée." },
-      { "p": "**Ce qui peut être migré :**" },
-      { "ul": ["Taxes et règles de taxes, marques, fournisseurs, catégories, attributs et caractéristiques", "Produits avec déclinaisons, prix, prix spécifiques, stock, packs, mots-clés, champs de personnalisation et images", "Transporteurs avec zones et tranches de prix et de poids", "Clients avec adresses, groupes et paniers, y compris leurs anciens mots de passe", "Commandes avec détails, historique, transporteurs, factures, paiements, avoirs, retours et messages", "Règles panier (bons de réduction), règles de prix catalogue, pages et catégories CMS, contacts du service client et employés"] },
-      { "p": "Les identifiants sont conservés : références de commande, liens et URL restent identiques." }
-    ] },
-    { "title": "Prérequis", "content": [
-      { "ul": ["Nouvelle boutique : PrestaShop 9.0 ou plus récent, PHP 8.1 ou plus récent, avec les langues et devises de l'ancienne boutique installées", "Ancienne boutique : PrestaShop 1.6, 1.7, 8 ou 9 (PHP 5.6 ou plus récent), accessible depuis la nouvelle boutique en HTTP ou HTTPS"] }
-    ] },
-    { "title": "Installation", "content": [
-      { "ol": ["Sur l'**ancienne boutique**, envoyez **shopmigratorbridge.zip** dans Modules > Gestionnaire de modules et installez-le.", "Ouvrez sa page de configuration : elle affiche l'adresse de la boutique et une clé de connexion de 64 caractères.", "Sur la **nouvelle boutique PrestaShop 9**, envoyez et installez **shopmigrator.zip**, puis cliquez sur **Configurer**."] }
-    ] },
-    { "title": "Lancer une migration", "content": [
-      { "ol": ["**Connexion :** collez l'adresse de l'ancienne boutique et la clé, puis cliquez sur **Tester la connexion**. Vous voyez la version de l'ancienne boutique et son nombre de produits, clients et commandes.", "**Choix des données :** cochez ce qu'il faut copier. Les données nécessaires à d'autres sont cochées pour vous (les commandes ont besoin des clients, produits et transporteurs).", "**Vitesse :** Prudent pour un hébergement mutualisé, Normal, ou Rapide pour un serveur dédié.", "**Mode :** Copie complète ou Nouvelles données uniquement (voir plus bas).", "Cliquez sur **Démarrer la migration** et suivez les barres de progression.", "**Rapport :** voyez ce qui a été copié et les éventuels avertissements, puis téléchargez le rapport."] },
-      { "note": "Sauvegardez la nouvelle boutique avant une copie complète : les données sélectionnées y sont remplacées." }
-    ] },
-    { "title": "Pause, reprise et grandes boutiques", "content": [
-      { "p": "La migration avance par courtes étapes de quelques secondes et enregistre sa position après chaque lot. Vous pouvez la mettre en pause et la reprendre à tout moment, ou fermer la page : à votre retour, elle reprend à la même ligne. Une erreur réseau est réessayée automatiquement." },
-      { "ul": ["La taille des lots s'adapte à vos serveurs (de 10 à 5 000 lignes par requête).", "Les grandes tables sont lues par pagination sur clé : la ligne 5 000 000 est aussi rapide que la ligne 1.", "L'index de recherche et les règles de prix catalogue sont reconstruits par petits morceaux et n'expirent jamais.", "Pour les très grands catalogues, vous pouvez ignorer les miniatures pendant la migration et les régénérer ensuite dans Apparence > Paramètres des images."] },
-      { "p": "Mesuré sur une boutique de test : 2,6 millions de lignes (300 000 clients, 300 000 commandes, 100 000 produits) copiées en 6 minutes 16 secondes." }
-    ] },
-    { "title": "Nouvelles données uniquement", "content": [
-      { "p": "Continuez à vendre sur l'ancienne boutique pendant que vous préparez la nouvelle. Au moment de basculer, relancez la migration en mode **Nouvelles données uniquement** : seules les commandes, clients, produits et autres enregistrements créés depuis le dernier passage sont ajoutés, et tout ce que vous avez modifié sur la nouvelle boutique est conservé." }
-    ] },
-    { "title": "Mots de passe et employés", "content": [
-      { "ul": ["Les clients gardent leur mot de passe. Les anciens mots de passe de PrestaShop 1.6 sont reconnus à la première connexion du client et convertis automatiquement en hachages sécurisés modernes.", "Les employés déjà présents sur la nouvelle boutique ne sont jamais modifiés. Les anciens employés sont ajoutés seulement si leur identifiant et leur e-mail sont libres. Les employés avec un ancien type de mot de passe sont listés dans le rapport et doivent utiliser une fois **Mot de passe oublié ?**."] }
-    ] },
-    { "title": "Anciennes URL", "content": [
-      { "p": "Après une migration, les liens au format des anciennes versions (par exemple /women/5-faded-short.html, /3_marque ou /2__fournisseur de PrestaShop 1.6) sont redirigés en 301 vers le même produit, la même catégorie, page CMS, marque ou le même fournisseur sur la nouvelle boutique : moteurs de recherche et clients arrivent sur la bonne page." }
-    ] },
-    { "title": "Dépannage", "content": [
-      { "ul": ["**Clé invalide :** copiez à nouveau la clé depuis la page du connecteur, sans espaces.", "**Impossible de joindre l'ancienne boutique :** vérifiez l'adresse (avec http:// ou https://) et que l'ancienne boutique est en ligne. Un pare-feu ou le mode maintenance peut bloquer le connecteur.", "**Langue non installée :** installez la langue manquante dans International > Traductions et relancez la migration.", "**La migration s'est arrêtée :** lisez l'erreur, corrigez-la et cliquez sur **Reprendre** : elle repart de là où elle s'était arrêtée."] }
-    ] },
-    { "title": "Sécurité et nettoyage", "content": [
-      { "p": "Le connecteur ne répond qu'aux requêtes POST portant la clé et n'écrit jamais dans l'ancienne boutique. Une fois la migration terminée, désinstallez Shop Migrator Bridge de l'ancienne boutique, ou créez une nouvelle clé pour désactiver l'ancienne." }
-    ] },
-    { "title": "Assistance", "content": [
-      { "p": "Besoin d'aide, d'une migration sur mesure ou d'une nouvelle fonctionnalité ? Contactez-moi par e-mail à iamshoaibktk@gmail.com, sur WhatsApp au +923459016286, ou engagez-moi sur Fiverr : https://www.fiverr.com/shoaibktk" }
-    ] }
+    {
+      "title": "Présentation",
+      "content": [
+        {
+          "p": "Shop Migrator copie les données d'une ancienne boutique PrestaShop (1.6, 1.7, 8 ou 9) vers une nouvelle boutique PrestaShop 9. Vous installez un petit connecteur sur l'ancienne boutique, collez son adresse et sa clé dans la nouvelle, choisissez quoi copier et cliquez sur Démarrer. L'ancienne boutique est seulement lue, jamais modifiée."
+        },
+        {
+          "p": "**Ce qui peut être migré :**"
+        },
+        {
+          "ul": [
+            "Taxes et règles de taxes, marques, fournisseurs, catégories, attributs et caractéristiques",
+            "Produits avec déclinaisons, prix, prix spécifiques, stock, packs, mots-clés, champs de personnalisation et images",
+            "Transporteurs avec zones et tranches de prix et de poids",
+            "Clients avec adresses, groupes et paniers, y compris leurs anciens mots de passe",
+            "Commandes avec détails, historique, transporteurs, factures, paiements, avoirs, retours et messages",
+            "Règles panier (bons de réduction), règles de prix catalogue, pages et catégories CMS, contacts du service client et employés"
+          ]
+        },
+        {
+          "p": "Les identifiants sont conservés : références de commande, liens et URL restent identiques."
+        }
+      ]
+    },
+    {
+      "title": "Prérequis",
+      "content": [
+        {
+          "ul": [
+            "Nouvelle boutique : PrestaShop 9.0 ou plus récent, PHP 8.1 ou plus récent. Les langues et devises manquantes de l'ancienne boutique sont ajoutées automatiquement",
+            "Ancienne boutique : PrestaShop 1.6, 1.7, 8 ou 9 (PHP 5.6 ou plus récent), accessible depuis la nouvelle boutique en HTTP ou HTTPS"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Installation",
+      "content": [
+        {
+          "ol": [
+            "Sur l'**ancienne boutique**, envoyez **shopmigratorbridge.zip** dans Modules > Gestionnaire de modules et installez-le.",
+            "Ouvrez sa page de configuration : elle affiche l'adresse de la boutique et une clé de connexion de 64 caractères.",
+            "Sur la **nouvelle boutique PrestaShop 9**, envoyez et installez **shopmigrator.zip**, puis cliquez sur **Configurer**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lancer une migration",
+      "content": [
+        {
+          "ol": [
+            "**Connexion :** collez l'adresse de l'ancienne boutique et la clé, puis cliquez sur **Tester la connexion**. Vous voyez la version de l'ancienne boutique et son nombre de produits, clients et commandes.",
+            "**Choix des données :** cochez ce qu'il faut copier. Les données nécessaires à d'autres sont cochées pour vous (les commandes ont besoin des clients, produits et transporteurs).",
+            "**Vitesse :** Prudent pour un hébergement mutualisé, Normal, ou Rapide pour un serveur dédié.",
+            "**Mode :** Copie complète ou Nouvelles données uniquement (voir plus bas).",
+            "Cliquez sur **Démarrer la migration** et suivez les barres de progression.",
+            "**Rapport :** voyez ce qui a été copié et les éventuels avertissements, puis téléchargez le rapport."
+          ]
+        },
+        {
+          "note": "Sauvegardez la nouvelle boutique avant une copie complète : les données sélectionnées y sont remplacées."
+        }
+      ]
+    },
+    {
+      "title": "Pause, reprise et grandes boutiques",
+      "content": [
+        {
+          "p": "La migration avance par courtes étapes de quelques secondes et enregistre sa position après chaque lot. Vous pouvez la mettre en pause et la reprendre à tout moment, ou fermer la page : à votre retour, elle reprend à la même ligne. Une erreur réseau est réessayée automatiquement."
+        },
+        {
+          "ul": [
+            "La taille des lots s'adapte à vos serveurs (de 10 à 5 000 lignes par requête).",
+            "Les grandes tables sont lues par pagination sur clé : la ligne 5 000 000 est aussi rapide que la ligne 1.",
+            "L'index de recherche et les règles de prix catalogue sont reconstruits par petits morceaux et n'expirent jamais.",
+            "Pour les très grands catalogues, vous pouvez ignorer les miniatures pendant la migration et les régénérer ensuite dans Apparence > Paramètres des images."
+          ]
+        },
+        {
+          "p": "Mesuré sur une boutique de test : 2,6 millions de lignes (300 000 clients, 300 000 commandes, 100 000 produits) copiées en 6 minutes 16 secondes."
+        }
+      ]
+    },
+    {
+      "title": "Nouvelles données uniquement",
+      "content": [
+        {
+          "p": "Continuez à vendre sur l'ancienne boutique pendant que vous préparez la nouvelle. Au moment de basculer, relancez la migration en mode **Nouvelles données uniquement** : seules les commandes, clients, produits et autres enregistrements créés depuis le dernier passage sont ajoutés, et tout ce que vous avez modifié sur la nouvelle boutique est conservé."
+        }
+      ]
+    },
+    {
+      "title": "Mots de passe et employés",
+      "content": [
+        {
+          "ul": [
+            "Les clients gardent leur mot de passe. Les anciens mots de passe de PrestaShop 1.6 sont reconnus à la première connexion du client et convertis automatiquement en hachages sécurisés modernes.",
+            "Les employés déjà présents sur la nouvelle boutique ne sont jamais modifiés. Les anciens employés sont ajoutés seulement si leur identifiant et leur e-mail sont libres. Les employés avec un ancien type de mot de passe sont listés dans le rapport et doivent utiliser une fois **Mot de passe oublié ?**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Anciennes URL",
+      "content": [
+        {
+          "p": "Après une migration, les liens au format des anciennes versions (par exemple /women/5-faded-short.html, /3_marque ou /2__fournisseur de PrestaShop 1.6) sont redirigés en 301 vers le même produit, la même catégorie, page CMS, marque ou le même fournisseur sur la nouvelle boutique : moteurs de recherche et clients arrivent sur la bonne page."
+        }
+      ]
+    },
+    {
+      "title": "Dépannage",
+      "content": [
+        {
+          "ul": [
+            "**Clé invalide :** copiez à nouveau la clé depuis la page du connecteur, sans espaces.",
+            "**Impossible de joindre l'ancienne boutique :** vérifiez l'adresse (avec http:// ou https://) et que l'ancienne boutique est en ligne. Un pare-feu ou le mode maintenance peut bloquer le connecteur.",
+            "**Langue non installée :** installez la langue manquante dans International > Traductions et relancez la migration.",
+            "**La migration s'est arrêtée :** lisez l'erreur, corrigez-la et cliquez sur **Reprendre** : elle repart de là où elle s'était arrêtée."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Sécurité et nettoyage",
+      "content": [
+        {
+          "p": "Le connecteur ne répond qu'aux requêtes POST portant la clé et n'écrit jamais dans l'ancienne boutique. Une fois la migration terminée, désinstallez Shop Migrator Bridge de l'ancienne boutique, ou créez une nouvelle clé pour désactiver l'ancienne."
+        }
+      ]
+    },
+    {
+      "title": "Assistance",
+      "content": [
+        {
+          "p": "Besoin d'aide, d'une migration sur mesure ou d'une nouvelle fonctionnalité ? Contactez-moi par e-mail à iamshoaibktk@gmail.com, sur WhatsApp au +923459016286, ou engagez-moi sur Fiverr : https://www.fiverr.com/shoaibktk"
+        }
+      ]
+    }
   ]
 }

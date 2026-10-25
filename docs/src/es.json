@@ -1,46 +1,154 @@
 {
   "title": "Shop Migrator - Actualizar a PrestaShop 9 por transferencia de datos",
   "subtitle": "Guía de usuario",
-  "labels": { "version": "Versión", "author": "Autor", "contact": "Contacto", "page": "Página", "contents": "Contenido", "compat": "Compatibilidad" },
+  "labels": {
+    "version": "Versión",
+    "author": "Autor",
+    "contact": "Contacto",
+    "page": "Página",
+    "contents": "Contenido",
+    "compat": "Compatibilidad"
+  },
   "sections": [
-    { "title": "Introducción", "content": [
-      { "p": "Shop Migrator copia los datos de una tienda PrestaShop antigua (1.6, 1.7, 8 o 9) a una nueva tienda PrestaShop 9. Instala un pequeño conector en la tienda antigua, pega su dirección y su clave en la nueva, elige qué copiar y pulsa Iniciar. La tienda antigua solo se lee, nunca se modifica." },
-      { "p": "**Qué se puede migrar:**" },
-      { "ul": ["Impuestos y reglas de impuestos, marcas, proveedores, categorías, atributos y características", "Productos con combinaciones, precios, precios específicos, stock, packs, etiquetas, campos de personalización e imágenes", "Transportistas con zonas y rangos de precio y peso", "Clientes con direcciones, grupos y carritos, incluidas sus contraseñas antiguas", "Pedidos con detalles, historial, transportistas, facturas, pagos, facturas por abono, devoluciones y mensajes", "Reglas de carrito (cupones), reglas de precios del catálogo, páginas y categorías CMS, contactos de atención al cliente y empleados"] },
-      { "p": "Los ID se conservan, así que las referencias de pedido, los enlaces y las URL no cambian." }
-    ] },
-    { "title": "Requisitos", "content": [
-      { "ul": ["Tienda nueva: PrestaShop 9.0 o superior, PHP 8.1 o superior, con los idiomas y monedas de la tienda antigua instalados", "Tienda antigua: PrestaShop 1.6, 1.7, 8 o 9 (PHP 5.6 o superior), accesible desde la tienda nueva por HTTP o HTTPS"] }
-    ] },
-    { "title": "Instalación", "content": [
-      { "ol": ["En la **tienda antigua**, suba **shopmigratorbridge.zip** en Módulos > Gestor de módulos e instálelo.", "Abra su página de configuración: muestra la dirección de la tienda y una clave de conexión de 64 caracteres.", "En la **nueva tienda PrestaShop 9**, suba e instale **shopmigrator.zip** y pulse **Configurar**."] }
-    ] },
-    { "title": "Realizar una migración", "content": [
-      { "ol": ["**Conectar:** pegue la dirección de la tienda antigua y la clave y pulse **Probar la conexión**. Verá la versión de la tienda antigua y cuántos productos, clientes y pedidos tiene.", "**Elegir datos:** marque qué copiar. Los datos que otros necesitan se marcan solos (los pedidos necesitan clientes, productos y transportistas).", "**Velocidad:** Prudente para hosting compartido, Normal, o Rápido para un servidor dedicado.", "**Modo:** Copia completa o Solo datos nuevos (ver más abajo).", "Pulse **Iniciar la migración** y siga las barras de progreso.", "**Informe:** vea lo copiado y las advertencias, y descargue el informe."] },
-      { "note": "Haga una copia de seguridad de la tienda nueva antes de una copia completa: los datos seleccionados se sustituyen." }
-    ] },
-    { "title": "Pausa, reanudación y tiendas grandes", "content": [
-      { "p": "La migración avanza en pasos cortos de pocos segundos y guarda su posición tras cada lote. Puede pausarla y reanudarla cuando quiera, o cerrar la página: al volver continúa desde la misma fila. Los errores de red se reintentan automáticamente." },
-      { "ul": ["El tamaño de lote se adapta a sus servidores (de 10 a 5.000 filas por petición).", "Las tablas grandes se leen con paginación por clave: la fila 5.000.000 es tan rápida como la 1.", "El índice de búsqueda y las reglas de precios se reconstruyen en pequeños bloques y nunca agotan el tiempo.", "En catálogos muy grandes puede omitir las miniaturas durante la migración y regenerarlas después en Diseño > Ajustes de imágenes."] },
-      { "p": "Medido en una tienda de prueba: 2,6 millones de filas (300.000 clientes, 300.000 pedidos, 100.000 productos) copiadas en 6 minutos y 16 segundos." }
-    ] },
-    { "title": "Solo datos nuevos", "content": [
-      { "p": "Siga vendiendo en la tienda antigua mientras prepara la nueva. Cuando vaya a cambiar, ejecute de nuevo la migración con **Solo datos nuevos**: solo se añaden los pedidos, clientes, productos y demás registros creados desde la última ejecución, y se conserva todo lo que haya cambiado en la tienda nueva." }
-    ] },
-    { "title": "Contraseñas y empleados", "content": [
-      { "ul": ["Los clientes conservan su contraseña. Las contraseñas antiguas de PrestaShop 1.6 se reconocen en el primer inicio de sesión del cliente y se convierten automáticamente a hashes seguros modernos.", "Los empleados que ya están en la tienda nueva nunca se modifican. Los empleados antiguos solo se añaden si su ID y su email están libres. Los que tienen contraseñas antiguas aparecen en el informe y deben usar una vez **¿Olvidó su contraseña?**."] }
-    ] },
-    { "title": "URL antiguas", "content": [
-      { "p": "Tras la migración, los enlaces con formatos de versiones anteriores (por ejemplo /women/5-faded-short.html, /3_marca o /2__proveedor de PrestaShop 1.6) se redirigen con un 301 al mismo producto, categoría, página CMS, marca o proveedor de la tienda nueva, para que buscadores y clientes lleguen a la página correcta." }
-    ] },
-    { "title": "Solución de problemas", "content": [
-      { "ul": ["**Clave no válida:** copie de nuevo la clave desde la página del conector, sin espacios.", "**No se puede conectar con la tienda antigua:** compruebe la dirección (con http:// o https://) y que la tienda esté en línea. Un cortafuegos o el modo mantenimiento pueden bloquear el conector.", "**Idioma no instalado:** instale el idioma que falta en Internacional > Traducciones y vuelva a ejecutar la migración.", "**La migración se ha detenido:** lea el error, corríjalo y pulse **Reanudar**: continúa donde se detuvo."] }
-    ] },
-    { "title": "Seguridad y limpieza", "content": [
-      { "p": "El conector solo responde a peticiones POST con la clave y nunca escribe en la tienda antigua. Al terminar la migración, desinstale Shop Migrator Bridge de la tienda antigua o cree una clave nueva para desactivar la anterior." }
-    ] },
-    { "title": "Soporte", "content": [
-      { "p": "¿Necesita ayuda, una migración a medida o una función nueva? Escríbame a iamshoaibktk@gmail.com, por WhatsApp al +923459016286, o contráteme en Fiverr: https://www.fiverr.com/shoaibktk" }
-    ] }
+    {
+      "title": "Introducción",
+      "content": [
+        {
+          "p": "Shop Migrator copia los datos de una tienda PrestaShop antigua (1.6, 1.7, 8 o 9) a una nueva tienda PrestaShop 9. Instala un pequeño conector en la tienda antigua, pega su dirección y su clave en la nueva, elige qué copiar y pulsa Iniciar. La tienda antigua solo se lee, nunca se modifica."
+        },
+        {
+          "p": "**Qué se puede migrar:**"
+        },
+        {
+          "ul": [
+            "Impuestos y reglas de impuestos, marcas, proveedores, categorías, atributos y características",
+            "Productos con combinaciones, precios, precios específicos, stock, packs, etiquetas, campos de personalización e imágenes",
+            "Transportistas con zonas y rangos de precio y peso",
+            "Clientes con direcciones, grupos y carritos, incluidas sus contraseñas antiguas",
+            "Pedidos con detalles, historial, transportistas, facturas, pagos, facturas por abono, devoluciones y mensajes",
+            "Reglas de carrito (cupones), reglas de precios del catálogo, páginas y categorías CMS, contactos de atención al cliente y empleados"
+          ]
+        },
+        {
+          "p": "Los ID se conservan, así que las referencias de pedido, los enlaces y las URL no cambian."
+        }
+      ]
+    },
+    {
+      "title": "Requisitos",
+      "content": [
+        {
+          "ul": [
+            "Tienda nueva: PrestaShop 9.0 o superior, PHP 8.1 o superior. Los idiomas y monedas de la tienda antigua que falten se añaden automáticamente",
+            "Tienda antigua: PrestaShop 1.6, 1.7, 8 o 9 (PHP 5.6 o superior), accesible desde la tienda nueva por HTTP o HTTPS"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Instalación",
+      "content": [
+        {
+          "ol": [
+            "En la **tienda antigua**, suba **shopmigratorbridge.zip** en Módulos > Gestor de módulos e instálelo.",
+            "Abra su página de configuración: muestra la dirección de la tienda y una clave de conexión de 64 caracteres.",
+            "En la **nueva tienda PrestaShop 9**, suba e instale **shopmigrator.zip** y pulse **Configurar**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Realizar una migración",
+      "content": [
+        {
+          "ol": [
+            "**Conectar:** pegue la dirección de la tienda antigua y la clave y pulse **Probar la conexión**. Verá la versión de la tienda antigua y cuántos productos, clientes y pedidos tiene.",
+            "**Elegir datos:** marque qué copiar. Los datos que otros necesitan se marcan solos (los pedidos necesitan clientes, productos y transportistas).",
+            "**Velocidad:** Prudente para hosting compartido, Normal, o Rápido para un servidor dedicado.",
+            "**Modo:** Copia completa o Solo datos nuevos (ver más abajo).",
+            "Pulse **Iniciar la migración** y siga las barras de progreso.",
+            "**Informe:** vea lo copiado y las advertencias, y descargue el informe."
+          ]
+        },
+        {
+          "note": "Haga una copia de seguridad de la tienda nueva antes de una copia completa: los datos seleccionados se sustituyen."
+        }
+      ]
+    },
+    {
+      "title": "Pausa, reanudación y tiendas grandes",
+      "content": [
+        {
+          "p": "La migración avanza en pasos cortos de pocos segundos y guarda su posición tras cada lote. Puede pausarla y reanudarla cuando quiera, o cerrar la página: al volver continúa desde la misma fila. Los errores de red se reintentan automáticamente."
+        },
+        {
+          "ul": [
+            "El tamaño de lote se adapta a sus servidores (de 10 a 5.000 filas por petición).",
+            "Las tablas grandes se leen con paginación por clave: la fila 5.000.000 es tan rápida como la 1.",
+            "El índice de búsqueda y las reglas de precios se reconstruyen en pequeños bloques y nunca agotan el tiempo.",
+            "En catálogos muy grandes puede omitir las miniaturas durante la migración y regenerarlas después en Diseño > Ajustes de imágenes."
+          ]
+        },
+        {
+          "p": "Medido en una tienda de prueba: 2,6 millones de filas (300.000 clientes, 300.000 pedidos, 100.000 productos) copiadas en 6 minutos y 16 segundos."
+        }
+      ]
+    },
+    {
+      "title": "Solo datos nuevos",
+      "content": [
+        {
+          "p": "Siga vendiendo en la tienda antigua mientras prepara la nueva. Cuando vaya a cambiar, ejecute de nuevo la migración con **Solo datos nuevos**: solo se añaden los pedidos, clientes, productos y demás registros creados desde la última ejecución, y se conserva todo lo que haya cambiado en la tienda nueva."
+        }
+      ]
+    },
+    {
+      "title": "Contraseñas y empleados",
+      "content": [
+        {
+          "ul": [
+            "Los clientes conservan su contraseña. Las contraseñas antiguas de PrestaShop 1.6 se reconocen en el primer inicio de sesión del cliente y se convierten automáticamente a hashes seguros modernos.",
+            "Los empleados que ya están en la tienda nueva nunca se modifican. Los empleados antiguos solo se añaden si su ID y su email están libres. Los que tienen contraseñas antiguas aparecen en el informe y deben usar una vez **¿Olvidó su contraseña?**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "URL antiguas",
+      "content": [
+        {
+          "p": "Tras la migración, los enlaces con formatos de versiones anteriores (por ejemplo /women/5-faded-short.html, /3_marca o /2__proveedor de PrestaShop 1.6) se redirigen con un 301 al mismo producto, categoría, página CMS, marca o proveedor de la tienda nueva, para que buscadores y clientes lleguen a la página correcta."
+        }
+      ]
+    },
+    {
+      "title": "Solución de problemas",
+      "content": [
+        {
+          "ul": [
+            "**Clave no válida:** copie de nuevo la clave desde la página del conector, sin espacios.",
+            "**No se puede conectar con la tienda antigua:** compruebe la dirección (con http:// o https://) y que la tienda esté en línea. Un cortafuegos o el modo mantenimiento pueden bloquear el conector.",
+            "**Idioma no instalado:** instale el idioma que falta en Internacional > Traducciones y vuelva a ejecutar la migración.",
+            "**La migración se ha detenido:** lea el error, corríjalo y pulse **Reanudar**: continúa donde se detuvo."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Seguridad y limpieza",
+      "content": [
+        {
+          "p": "El conector solo responde a peticiones POST con la clave y nunca escribe en la tienda antigua. Al terminar la migración, desinstale Shop Migrator Bridge de la tienda antigua o cree una clave nueva para desactivar la anterior."
+        }
+      ]
+    },
+    {
+      "title": "Soporte",
+      "content": [
+        {
+          "p": "¿Necesita ayuda, una migración a medida o una función nueva? Escríbame a iamshoaibktk@gmail.com, por WhatsApp al +923459016286, o contráteme en Fiverr: https://www.fiverr.com/shoaibktk"
+        }
+      ]
+    }
   ]
 }

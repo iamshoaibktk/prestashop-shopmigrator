@@ -1,46 +1,154 @@
 {
   "title": "Shop Migrator - Upgrade to PrestaShop 9 by Data Transfer",
   "subtitle": "User guide",
-  "labels": { "version": "Version", "author": "Author", "contact": "Contact", "page": "Page", "contents": "Contents", "compat": "Compatibility" },
+  "labels": {
+    "version": "Version",
+    "author": "Author",
+    "contact": "Contact",
+    "page": "Page",
+    "contents": "Contents",
+    "compat": "Compatibility"
+  },
   "sections": [
-    { "title": "Overview", "content": [
-      { "p": "Shop Migrator copies your data from an old PrestaShop shop (1.6, 1.7, 8 or 9) into a new PrestaShop 9 store. You install a small connector on the old shop, paste its address and key into the new shop, choose what to copy and click Start. The old shop is only read, never changed." },
-      { "p": "**What can be migrated:**" },
-      { "ul": ["Taxes and tax rules, brands, suppliers, categories, attributes and features", "Products with combinations, prices, specific prices, stock, packs, tags, customization fields and images", "Carriers with zones, price and weight ranges", "Customers with addresses, groups and carts, including their old passwords", "Orders with details, history, carriers, invoices, payments, credit slips, returns and messages", "Cart rules (vouchers), catalog price rules, CMS pages and categories, customer service contacts and employees"] },
-      { "p": "IDs are kept, so order references, links and URLs stay the same." }
-    ] },
-    { "title": "Requirements", "content": [
-      { "ul": ["New shop: PrestaShop 9.0 or newer, PHP 8.1 or newer, with the languages and currencies of the old shop installed", "Old shop: PrestaShop 1.6, 1.7, 8 or 9 (PHP 5.6 or newer), reachable from the new shop over HTTP or HTTPS"] }
-    ] },
-    { "title": "Installation", "content": [
-      { "ol": ["On the **old shop**, upload **shopmigratorbridge.zip** in Modules > Module Manager and install it.", "Open its configuration page: it shows the shop address and a 64-character connection key.", "On the **new PrestaShop 9 shop**, upload and install **shopmigrator.zip**, then click **Configure**."] }
-    ] },
-    { "title": "Running a migration", "content": [
-      { "ol": ["**Connect:** paste the old shop address and the key, then click **Test connection**. You see the old shop's version and how many products, customers and orders it has.", "**Choose data:** tick what to copy. Data that other data needs is ticked for you (orders need customers, products and carriers).", "**Speed:** Careful for shared hosting, Normal, or Fast for a dedicated server.", "**Mode:** Fresh copy or New data only (see below).", "Click **Start migration** and follow the progress bars.", "**Report:** see what was copied and any warnings, and download the report."] },
-      { "note": "Back up the new shop before a fresh copy: the selected data on the new shop is replaced." }
-    ] },
-    { "title": "Pause, resume and large shops", "content": [
-      { "p": "The migration runs in short steps of a few seconds and saves its position after each batch. You can pause and resume at any time, or close the page: when you come back it continues from the same row. A network error is retried automatically." },
-      { "ul": ["The batch size adapts itself to your servers (from 10 up to 5,000 rows per request).", "Large tables are read with keyset paging, so row 5,000,000 is as fast as row 1.", "Search indexing and catalog price rules are rebuilt in small chunks, so they never time out.", "For very large catalogs you can skip thumbnails during the migration and regenerate them afterwards in Design > Image Settings."] },
-      { "p": "Measured on a test shop: 2.6 million rows (300,000 customers, 300,000 orders, 100,000 products) copied in 6 minutes 16 seconds." }
-    ] },
-    { "title": "New data only", "content": [
-      { "p": "Keep selling on the old shop while you prepare the new one. When you are ready to switch, run the migration again with **New data only**: only the orders, customers, products and other records created since the last run are added, and everything you changed on the new shop is kept." }
-    ] },
-    { "title": "Passwords and employees", "content": [
-      { "ul": ["Customers keep their passwords. Old-style passwords from PrestaShop 1.6 are recognised at the customer's first login and upgraded to modern secure hashes automatically.", "Employees already on the new shop are never changed. Old employees are added only when their ID and email are free. Employees with old-style passwords are listed in the report and should use **Forgot your password?** once."] }
-    ] },
-    { "title": "Old URLs", "content": [
-      { "p": "After a migration, links in the formats of older versions (for example /women/5-faded-short.html, /3_brand or /2__supplier from PrestaShop 1.6) are sent to the same product, category, CMS page, brand or supplier on the new shop with a 301 redirect, so search engines and customers land on the right page." }
-    ] },
-    { "title": "Troubleshooting", "content": [
-      { "ul": ["**Invalid key:** copy the key again from the connector's page, without spaces.", "**Could not reach the old shop:** check the address (with http:// or https://) and that the old shop is online. A firewall or maintenance mode can block the connector.", "**Language not installed:** install the missing language in International > Translations and run the migration again.", "**The migration stopped:** read the error, fix it and click **Resume**: it continues from where it stopped."] }
-    ] },
-    { "title": "Security and clean-up", "content": [
-      { "p": "The connector only answers POST requests that carry the key, and it never writes to the old shop. When the migration is finished, uninstall Shop Migrator Bridge from the old shop, or create a new key to disable the old one." }
-    ] },
-    { "title": "Support", "content": [
-      { "p": "Need help, a custom migration or a new feature for your store? Contact me by email at iamshoaibktk@gmail.com, on WhatsApp at +923459016286, or hire me on Fiverr: https://www.fiverr.com/shoaibktk" }
-    ] }
+    {
+      "title": "Overview",
+      "content": [
+        {
+          "p": "Shop Migrator copies your data from an old PrestaShop shop (1.6, 1.7, 8 or 9) into a new PrestaShop 9 store. You install a small connector on the old shop, paste its address and key into the new shop, choose what to copy and click Start. The old shop is only read, never changed."
+        },
+        {
+          "p": "**What can be migrated:**"
+        },
+        {
+          "ul": [
+            "Taxes and tax rules, brands, suppliers, categories, attributes and features",
+            "Products with combinations, prices, specific prices, stock, packs, tags, customization fields and images",
+            "Carriers with zones, price and weight ranges",
+            "Customers with addresses, groups and carts, including their old passwords",
+            "Orders with details, history, carriers, invoices, payments, credit slips, returns and messages",
+            "Cart rules (vouchers), catalog price rules, CMS pages and categories, customer service contacts and employees"
+          ]
+        },
+        {
+          "p": "IDs are kept, so order references, links and URLs stay the same."
+        }
+      ]
+    },
+    {
+      "title": "Requirements",
+      "content": [
+        {
+          "ul": [
+            "New shop: PrestaShop 9.0 or newer, PHP 8.1 or newer. Missing languages and currencies of the old shop are added automatically",
+            "Old shop: PrestaShop 1.6, 1.7, 8 or 9 (PHP 5.6 or newer), reachable from the new shop over HTTP or HTTPS"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Installation",
+      "content": [
+        {
+          "ol": [
+            "On the **old shop**, upload **shopmigratorbridge.zip** in Modules > Module Manager and install it.",
+            "Open its configuration page: it shows the shop address and a 64-character connection key.",
+            "On the **new PrestaShop 9 shop**, upload and install **shopmigrator.zip**, then click **Configure**."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Running a migration",
+      "content": [
+        {
+          "ol": [
+            "**Connect:** paste the old shop address and the key, then click **Test connection**. You see the old shop's version and how many products, customers and orders it has.",
+            "**Choose data:** tick what to copy. Data that other data needs is ticked for you (orders need customers, products and carriers).",
+            "**Speed:** Careful for shared hosting, Normal, or Fast for a dedicated server.",
+            "**Mode:** Fresh copy or New data only (see below).",
+            "Click **Start migration** and follow the progress bars.",
+            "**Report:** see what was copied and any warnings, and download the report."
+          ]
+        },
+        {
+          "note": "Back up the new shop before a fresh copy: the selected data on the new shop is replaced."
+        }
+      ]
+    },
+    {
+      "title": "Pause, resume and large shops",
+      "content": [
+        {
+          "p": "The migration runs in short steps of a few seconds and saves its position after each batch. You can pause and resume at any time, or close the page: when you come back it continues from the same row. A network error is retried automatically."
+        },
+        {
+          "ul": [
+            "The batch size adapts itself to your servers (from 10 up to 5,000 rows per request).",
+            "Large tables are read with keyset paging, so row 5,000,000 is as fast as row 1.",
+            "Search indexing and catalog price rules are rebuilt in small chunks, so they never time out.",
+            "For very large catalogs you can skip thumbnails during the migration and regenerate them afterwards in Design > Image Settings."
+          ]
+        },
+        {
+          "p": "Measured on a test shop: 2.6 million rows (300,000 customers, 300,000 orders, 100,000 products) copied in 6 minutes 16 seconds."
+        }
+      ]
+    },
+    {
+      "title": "New data only",
+      "content": [
+        {
+          "p": "Keep selling on the old shop while you prepare the new one. When you are ready to switch, run the migration again with **New data only**: only the orders, customers, products and other records created since the last run are added, and everything you changed on the new shop is kept."
+        }
+      ]
+    },
+    {
+      "title": "Passwords and employees",
+      "content": [
+        {
+          "ul": [
+            "Customers keep their passwords. Old-style passwords from PrestaShop 1.6 are recognised at the customer's first login and upgraded to modern secure hashes automatically.",
+            "Employees already on the new shop are never changed. Old employees are added only when their ID and email are free. Employees with old-style passwords are listed in the report and should use **Forgot your password?** once."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Old URLs",
+      "content": [
+        {
+          "p": "After a migration, links in the formats of older versions (for example /women/5-faded-short.html, /3_brand or /2__supplier from PrestaShop 1.6) are sent to the same product, category, CMS page, brand or supplier on the new shop with a 301 redirect, so search engines and customers land on the right page."
+        }
+      ]
+    },
+    {
+      "title": "Troubleshooting",
+      "content": [
+        {
+          "ul": [
+            "**Invalid key:** copy the key again from the connector's page, without spaces.",
+            "**Could not reach the old shop:** check the address (with http:// or https://) and that the old shop is online. A firewall or maintenance mode can block the connector.",
+            "**Language not installed:** install the missing language in International > Translations and run the migration again.",
+            "**The migration stopped:** read the error, fix it and click **Resume**: it continues from where it stopped."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Security and clean-up",
+      "content": [
+        {
+          "p": "The connector only answers POST requests that carry the key, and it never writes to the old shop. When the migration is finished, uninstall Shop Migrator Bridge from the old shop, or create a new key to disable the old one."
+        }
+      ]
+    },
+    {
+      "title": "Support",
+      "content": [
+        {
+          "p": "Need help, a custom migration or a new feature for your store? Contact me by email at iamshoaibktk@gmail.com, on WhatsApp at +923459016286, or hire me on Fiverr: https://www.fiverr.com/shoaibktk"
+        }
+      ]
+    }
   ]
 }

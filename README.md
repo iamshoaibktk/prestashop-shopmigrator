@@ -21,7 +21,7 @@ Both zips are attached to every release.
 - **Marketing and content:** cart rules (vouchers), catalog price rules, CMS pages and categories, customer service contacts
 - **Employees:** added only when their ID and email are free, so your own account is never touched
 
-IDs are kept, so order references, links and URLs stay the same.
+IDs are kept, so order references, links and URLs stay the same. Languages and currencies the new shop is missing are created automatically (currencies with PrestaShop's official names and symbols, exchange rates from the old shop).
 
 ## How it works
 1. Install **Shop Migrator Bridge** on the old shop and copy its address and 64-character key.
@@ -35,7 +35,9 @@ IDs are kept, so order references, links and URLs stay the same.
 - Runs in short steps (about 6 seconds per request) and saves its position after every batch: **pause, resume or close the tab** at any time; network errors are retried
 - **Keyset paging** on primary keys (tables without one are paged on an index), so row 5,000,000 is as fast as row 1
 - **Adaptive batch size** (10 to 5,000 rows per request), one multi-row upsert per batch, keep-alive connection, gzip
-- Search index, catalog price rules and message conversion are rebuilt in **resumable chunks**
+- Search index, catalog price rules and message conversion are rebuilt in **resumable chunks**; above 20,000 products the search index is left to PrestaShop's own indexer (Shop Parameters > Search) so the migration never waits on it
+- **Images:** 8 downloads at a time, and each original is decoded once for all thumbnail sizes
+- Safe with the wizard open in several tabs: one step runs at a time
 - Optional: skip thumbnails during the run and regenerate them later
 
 Benchmark on a local test machine, PrestaShop 1.7.8 to 9:
@@ -50,7 +52,7 @@ Benchmark on a local test machine, PrestaShop 1.7.8 to 9:
 After a migration, links in older URL formats (`/women/5-faded-short.html`, `/3_brand`, `/2__supplier`, `/old-path/3-clothes`) get a **301** to the same product, category, CMS page, brand or supplier on the new shop.
 
 ## Requirements
-- New shop: PrestaShop 9.0+, PHP 8.1+, with the old shop's languages and currencies installed
+- New shop: PrestaShop 9.0+, PHP 8.1+ (missing languages and currencies of the old shop are added automatically)
 - Old shop: PrestaShop 1.6, 1.7, 8 or 9, PHP 5.6+, reachable from the new shop
 
 ## Languages and docs

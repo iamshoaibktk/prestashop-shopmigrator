@@ -16,6 +16,9 @@ class Runner
 {
     public const TABLE = 'shopmigrator_state';
 
+    /** Above this many products the search index is left to PrestaShop's own indexer. */
+    public const SEARCH_LIMIT = 20000;
+
     private array $s;
 
     public function __construct()
@@ -65,7 +68,7 @@ class Runner
         // Currencies are matched by ISO code (USD → this shop's USD).
         $currencyMap = [];
         foreach ($info['currencies'] ?? [] as $c) {
-            $id = (int) \Currency::getIdByIsoCode($c['iso_code']);
+            $id = (int) \Currency::getIdByIsoCode($c['iso_code'], 0, true);
             if ($id) {
                 $currencyMap[$c['id_currency']] = $id;
             } else {
@@ -104,12 +107,17 @@ class Runner
                 $steps[] = ['k' => 'images', 'kind' => $kind, 't' => $table, 'col' => $col, 'type' => 'images', 'total' => 0, 'done' => 0, 'missing' => 0, 'from' => $after];
             }
         }
+        // Finishing steps only for what was copied: rebuilding the search index of 100,000
+        // products after a customers-only run would waste minutes.
+        $catalog = array_intersect($types, ['products', 'categories']) !== [];
         $posts = array_merge(
-            ['tree', 'product_type'],
+            $catalog ? ['tree', 'product_type'] : [],
             in_array('carriers', $types, true) ? ['carrier_default'] : [],
             in_array('orders', $types, true) ? ['order_messages'] : [],
             in_array('price_rules', $types, true) ? ['price_rules'] : [],
-            ['redirects', 'search', 'cache']
+            ['redirects'],
+            in_array('products', $types, true) ? ['search'] : [],
+            ['cache']
         );
         foreach ($posts as $p) {
             $steps[] = ['k' => 'post', 'p' => $p];
@@ -141,6 +149,12 @@ class Runner
         $this->save();
     }
 
+    /** The old shop's address without scheme, "www." or trailing slash. */
+    public static function sourceKey(string $url): string
+    {
+        return rtrim((string) preg_replace('#^(https?://)?(www\.)?#i', '', strtolower(trim($url))), '/');
+    }
+
     public function pause(): void
     {
         if (($this->s['status'] ?? '') === 'running') {
@@ -163,6 +177,28 @@ class Runner
         if (($this->s['status'] ?? '') !== 'running') {
             return $this->progress();
         }
+        // One step at a time, even with the wizard open in two tabs: a second request
+        // just reports progress while the first one works.
+        $lock = 'shopmigrator_' . _DB_NAME_ . '_' . _DB_PREFIX_;
+        if (!(int) \Db::getInstance()->getValue("SELECT GET_LOCK('" . pSQL($lock) . "', 0)", false)) {
+            usleep(1500000);
+
+            return (new self())->progress();
+        }
+        try {
+            $this->__construct(); // reload: another tab may have just moved the run forward
+            if (($this->s['status'] ?? '') !== 'running') {
+                return $this->progress();
+            }
+
+            return $this->work($seconds);
+        } finally {
+            \Db::getInstance()->getValue("SELECT RELEASE_LOCK('" . pSQL($lock) . "')", false);
+        }
+    }
+
+    private function work(float $seconds): array
+    {
         $until = microtime(true) + $seconds;
         $client = new Client($this->s['url'], $this->s['key']);
         $copier = new Copier($this->s['langMap'], $this->s['shopMap'], $this->s['currencyMap'] ?? []);
@@ -173,6 +209,10 @@ class Runner
             if (!isset($this->s['steps'][$i])) {
                 $this->s['status'] = 'done';
                 $this->s['finished'] = time();
+                if (!empty($this->s['fresh'])) {
+                    // A later "New data only" run may continue from this shop.
+                    \Configuration::updateGlobalValue('SHOPMIGRATOR_LAST_SOURCE', self::sourceKey($this->s['url']));
+                }
                 break;
             }
             $step = &$this->s['steps'][$i];
@@ -340,18 +380,40 @@ class Runner
         }
         $after = (int) ($this->s['cursor'] ?? $step['from'] ?? 0);
         $ids = \Db::getInstance()->executeS('SELECT `' . bqSQL($step['col']) . '` AS id FROM `' . _DB_PREFIX_ . bqSQL($step['t']) . '`
-            WHERE `' . bqSQL($step['col']) . '` > ' . $after . ' ORDER BY `' . bqSQL($step['col']) . '` LIMIT 5') ?: [];
-        foreach ($ids as $row) {
-            $id = (int) $row['id'];
-            if (!$images->copy($step['kind'], $id) && $step['kind'] === 'p') {
+            WHERE `' . bqSQL($step['col']) . '` > ' . $after . ' ORDER BY `' . bqSQL($step['col']) . '` LIMIT 8') ?: [];
+        $ids = array_map('intval', array_column($ids, 'id'));
+        // 8 downloads at a time; the thumbnails are then built one image after another.
+        foreach ($ids ? $images->copyMany($step['kind'], $ids) : [] as $id) {
+            if ($step['kind'] === 'p') {
                 ++$step['missing'];
                 $this->s['warnings'][] = ['type' => 'image', 'id' => $id, 'msg' => 'Product image #' . $id . ' has no file on the old shop.'];
             }
-            ++$step['done'];
-            $this->s['cursor'] = $id;
+        }
+        $step['done'] += count($ids);
+        if ($ids) {
+            $this->s['cursor'] = end($ids);
         }
 
-        return count($ids) < 5;
+        return count($ids) < 8;
+    }
+
+    /**
+     * Old shops can point a product at a default combination it does not own (deleted
+     * combination, broken import); PrestaShop 9 then fails on the product page. Point it at the
+     * product's own default combination, or none.
+     */
+    public static function repairDefaultCombinations(): void
+    {
+        $p = _DB_PREFIX_;
+        foreach (['product', 'product_shop'] as $t) {
+            \Db::getInstance()->execute("UPDATE {$p}{$t} x
+                LEFT JOIN {$p}product_attribute pa ON (pa.id_product_attribute = x.cache_default_attribute AND pa.id_product = x.id_product)
+                SET x.cache_default_attribute = COALESCE(
+                    (SELECT MIN(d.id_product_attribute) FROM {$p}product_attribute_shop d WHERE d.id_product = x.id_product AND d.default_on = 1),
+                    (SELECT MIN(a.id_product_attribute) FROM {$p}product_attribute a WHERE a.id_product = x.id_product),
+                    0)
+                WHERE x.cache_default_attribute > 0 AND pa.id_product_attribute IS NULL");
+        }
     }
 
     /** @return bool true when the step is finished; long ones work in chunks until $until */
@@ -370,6 +432,7 @@ class Runner
                     WHEN EXISTS (SELECT 1 FROM {$p}product_attribute pa WHERE pa.id_product = p.id_product) THEN 'combinations'
                     ELSE 'standard' END
                     WHERE p.product_type = '' OR p.product_type IS NULL OR p.product_type = 'standard'");
+                self::repairDefaultCombinations();
                 break;
             case 'carrier_default':
                 // The default carrier must exist after the old shop's carriers replaced this shop's.
@@ -407,19 +470,36 @@ class Runner
             case 'order_messages':
                 return $this->chunked($until, fn (array $c) => $this->convertOrderMessages((int) ($c['m'] ?? 0)));
             case 'search':
-                // Rebuild the search index 50 products at a time (one call for 1M products would time out).
+                // PrestaShop indexes about 20 products per second once the index is large, so a
+                // big catalog would hold the migration for hours: its products are left flagged
+                // for Shop Parameters > Search ("Add missing products to the index", or the cron).
+                $p = _DB_PREFIX_;
+                $db = \Db::getInstance();
+                $pending = (int) $db->getValue("SELECT COUNT(*) FROM {$p}product WHERE id_product > " . (int) ($this->s['searchFrom'] ?? 0));
+                if ($pending > self::SEARCH_LIMIT && !isset($this->s['postCursor'])) {
+                    if (!isset($this->s['searchFrom'])) {
+                        $db->execute("TRUNCATE {$p}search_index");
+                        $db->execute("TRUNCATE {$p}search_word");
+                    }
+                    $db->execute("UPDATE {$p}product_shop SET indexed = 0 WHERE id_product > " . (int) ($this->s['searchFrom'] ?? 0));
+                    $db->execute("UPDATE {$p}product SET indexed = 0 WHERE id_product > " . (int) ($this->s['searchFrom'] ?? 0));
+                    $this->s['warnings'][] = ['type' => 'search', 'id' => 0, 'msg' => $pending . ' products are waiting for the search index. Build it in Shop Parameters > Search with "Add missing products to the index" (or its cron link).'];
+                    break;
+                }
+
                 return $this->chunked($until, function (array $c) {
                     $p = _DB_PREFIX_;
                     $db = \Db::getInstance();
-                    if (!isset($c['p']) && isset($this->s['searchFrom'])) {
-                        $c['p'] = (int) $this->s['searchFrom'];
-                    }
                     if (!isset($c['p'])) {
-                        $db->execute("TRUNCATE {$p}search_index");
-                        $db->execute("TRUNCATE {$p}search_word");
-                        $db->execute("UPDATE {$p}product_shop SET indexed = 0");
-                        $db->execute("UPDATE {$p}product SET indexed = 0");
-                        $c['p'] = 0;
+                        if (isset($this->s['searchFrom'])) {
+                            $c['p'] = (int) $this->s['searchFrom'];
+                        } else {
+                            $db->execute("TRUNCATE {$p}search_index");
+                            $db->execute("TRUNCATE {$p}search_word");
+                            $db->execute("UPDATE {$p}product_shop SET indexed = 0");
+                            $db->execute("UPDATE {$p}product SET indexed = 0");
+                            $c['p'] = 0;
+                        }
                     }
                     $ids = array_column($db->executeS("SELECT id_product FROM {$p}product WHERE id_product > " . (int) $c['p']
                         . ' ORDER BY id_product LIMIT 50') ?: [], 'id_product');

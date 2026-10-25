@@ -69,6 +69,58 @@ class Client
         return ['rows' => $r['rows'], 'next' => $r['next']];
     }
 
+    /**
+     * Several images downloaded at the same time (one connection each).
+     *
+     * @param int[] $ids
+     *
+     * @return array<int, string|null> id => raw bytes, null when the old shop has no file
+     */
+    public function images(string $kind, array $ids): array
+    {
+        $mh = curl_multi_init();
+        $handles = [];
+        $retry = [];
+        foreach ($ids as $id) {
+            $ch = curl_init($this->endpoint());
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => http_build_query(['key' => $this->key, 'action' => 'image', 'kind' => $kind, 'id' => $id]),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CONNECTTIMEOUT => 15,
+                CURLOPT_TIMEOUT => 120,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_MAXREDIRS => 3,
+                CURLOPT_USERAGENT => 'ShopMigrator/1.0',
+            ]);
+            curl_multi_add_handle($mh, $ch);
+            $handles[$id] = $ch;
+        }
+        do {
+            $status = curl_multi_exec($mh, $running);
+            if ($running) {
+                curl_multi_select($mh, 1.0);
+            }
+        } while ($running && $status === CURLM_OK);
+        $out = [];
+        foreach ($handles as $id => $ch) {
+            $body = curl_multi_getcontent($ch);
+            $code = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+            $out[$id] = $code === 200 && $body !== '' && $body !== null ? $body : null;
+            if ($out[$id] === null && $code !== 404) {
+                $retry[] = $id; // busy server or network hiccup, not a missing file
+            }
+            curl_multi_remove_handle($mh, $ch);
+            curl_close($ch);
+        }
+        curl_multi_close($mh);
+        foreach ($retry as $id) {
+            $out[$id] = $this->image($kind, $id);
+        }
+
+        return $out;
+    }
+
     /** Raw original image bytes, or null when the old shop has no file. */
     public function image(string $kind, int $id): ?string
     {

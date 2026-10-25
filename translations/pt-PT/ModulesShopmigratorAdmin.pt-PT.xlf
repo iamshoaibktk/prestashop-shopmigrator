@@ -190,10 +190,6 @@
         <source>Start a new migration? The current progress and report will be cleared.</source>
         <target>Iniciar uma nova migração? O progresso e o relatório atuais serão apagados.</target>
       </trans-unit>
-      <trans-unit id="c8d72af475035f1a6b582d6589919493">
-        <source>Not installed here, its texts will be skipped:</source>
-        <target>Não instalado aqui, os textos serão ignorados:</target>
-      </trans-unit>
       <trans-unit id="49ab28040dfa07f53544970c6d147e1e">
         <source>Connect</source>
         <target>Ligar</target>
@@ -313,6 +309,66 @@
       <trans-unit id="83b124f2b96f4af7efbef8f7c6b60e17">
         <source>New migration</source>
         <target>Nova migração</target>
+      </trans-unit>
+      <trans-unit id="fb9c10bf24d2568b7bd685472bab7299">
+        <source>&quot;New data only&quot; continues a fresh copy made from this same old shop. Run a fresh copy from it first.</source>
+        <target>«Apenas dados novos» continua uma cópia completa feita a partir desta mesma loja antiga. Faça primeiro uma cópia completa a partir dela.</target>
+      </trans-unit>
+      <trans-unit id="b2beac2c70e91c7db1e1101338703021">
+        <source>Not installed here, will be added:</source>
+        <target>Não instalado aqui, será adicionado:</target>
+      </trans-unit>
+      <trans-unit id="b6e0b0c90cfbddfe767f137f8066d1df">
+        <source>In progress</source>
+        <target>Em curso</target>
+      </trans-unit>
+      <trans-unit id="f92965e2c8a7afb3c1b9a5c09a263636">
+        <source>Done</source>
+        <target>Concluído</target>
+      </trans-unit>
+      <trans-unit id="d7fa059363670751fa89ded2b6307e43">
+        <source>per second</source>
+        <target>por segundo</target>
+      </trans-unit>
+      <trans-unit id="f3a29486bed19a90f2da6d007818b427">
+        <source>Steps</source>
+        <target>Passos</target>
+      </trans-unit>
+      <trans-unit id="ae5de2bba76e2cbef1c06a37c297dc69">
+        <source>New data only</source>
+        <target>Apenas dados novos</target>
+      </trans-unit>
+      <trans-unit id="dae8ace18bdcbcc6ae5aece263e14fe8">
+        <source>Options</source>
+        <target>Opções</target>
+      </trans-unit>
+      <trans-unit id="4dda9e61912568a47e06b2d02ab9020d">
+        <source>Add missing languages and currencies</source>
+        <target>Adicionar idiomas e moedas em falta</target>
+      </trans-unit>
+      <trans-unit id="0149ff06f6ee6467cd142dabe619d0fc">
+        <source>Elapsed</source>
+        <target>Decorrido</target>
+      </trans-unit>
+      <trans-unit id="5a1119ecb764165f27cb37b6f50134f2">
+        <source>Remaining</source>
+        <target>Restante</target>
+      </trans-unit>
+      <trans-unit id="ffbf9ff02b1003b31d0306fa7670c352">
+        <source>Store design</source>
+        <target>Design de lojas</target>
+      </trans-unit>
+      <trans-unit id="9e9767281dac49f7dae5a42b57e08e08">
+        <source>Custom module development</source>
+        <target>Desenvolvimento de módulos à medida</target>
+      </trans-unit>
+      <trans-unit id="227f56a61b5e696248ed78e91360ae2b">
+        <source>Custom data migration (blogs, reviews, any platform)</source>
+        <target>Migração de dados à medida (blogs, avaliações, qualquer plataforma)</target>
+      </trans-unit>
+      <trans-unit id="fbfe78d513908fe2b009a431e7eae128">
+        <source>Upgrades and bug fixes</source>
+        <target>Atualizações e correção de erros</target>
       </trans-unit>
     </body>
   </file>
