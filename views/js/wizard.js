@@ -19,12 +19,12 @@
   var samples = []; // [time, rows done] for the speed and time-remaining figures
   var $ = function (id) { return document.getElementById(id); };
   var icons = {
-    taxes: 'account_balance', manufacturers: 'local_offer', suppliers: 'store', categories: 'category',
+    geo: 'public', taxes: 'account_balance', manufacturers: 'local_offer', suppliers: 'store', categories: 'category',
     attributes: 'tune', products: 'shopping_basket', carriers: 'local_shipping', customers: 'people',
     cart_rules: 'confirmation_number', contacts: 'contact_mail', employees: 'supervisor_account',
     orders: 'receipt_long', price_rules: 'sell', cms: 'description', images: 'image'
   };
-  var typeCount = {taxes: 'tax', manufacturers: 'manufacturer', suppliers: 'supplier', categories: 'category', products: 'product', carriers: 'carrier', customers: 'customer', orders: 'orders', cart_rules: 'cart_rule', contacts: 'contact', employees: 'employee', price_rules: 'specific_price_rule', cms: 'cms'};
+  var typeCount = {geo: 'country', taxes: 'tax', manufacturers: 'manufacturer', suppliers: 'supplier', categories: 'category', products: 'product', carriers: 'carrier', customers: 'customer', orders: 'orders', cart_rules: 'cart_rule', contacts: 'contact', employees: 'employee', price_rules: 'specific_price_rule', cms: 'cms'};
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {

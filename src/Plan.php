@@ -15,6 +15,9 @@ namespace Iamshoaibktk\Shopmigrator;
 class Plan
 {
     public const TYPES = [
+        // Copied first and with the same IDs: tax rules, carrier zones, addresses and cart rules
+        // point at these, and many shops use their own countries and zones (custom IDs).
+        'geo' => ['zone', 'zone_shop', 'country', 'country_lang', 'country_shop', 'state', 'address_format'],
         'taxes' => ['tax', 'tax_lang', 'tax_rules_group', 'tax_rules_group_shop', 'tax_rule'],
         'manufacturers' => ['manufacturer', 'manufacturer_lang', 'manufacturer_shop'],
         'suppliers' => ['supplier', 'supplier_lang', 'supplier_shop'],
@@ -60,8 +63,16 @@ class Plan
     /** Tables that only get rows whose ID and email are new here (see Runner::keepExisting). */
     public const INSERT_ONLY = ['employee', 'employee_shop'];
 
+    /**
+     * Not emptied before a fresh copy: PrestaShop 9 stops answering when its default country is
+     * missing. Rows are overwritten by ID instead, and the countries the old shop doesn't have
+     * are removed once the settings pointing at them have moved (see Runner::geoDefaults).
+     */
+    public const KEEP_ON_CLEAN = ['country', 'country_lang', 'country_shop'];
+
     /** Tables whose rows count as this type's records in the report (images: every file). */
     public const RECORDS = [
+        'geo' => ['country'],
         'taxes' => ['tax'],
         'manufacturers' => ['manufacturer'],
         'suppliers' => ['supplier'],
@@ -81,10 +92,14 @@ class Plan
 
     /** Data types that need another one (selecting products selects categories, taxes…). */
     public const NEEDS = [
-        'products' => ['taxes', 'manufacturers', 'suppliers', 'categories', 'attributes'],
+        // Needs are resolved one level deep, so 'geo' is listed wherever countries or zones are referenced.
+        'taxes' => ['geo'],
+        'products' => ['geo', 'taxes', 'manufacturers', 'suppliers', 'categories', 'attributes'],
         // An order points at its customer, products and carrier; keep them consistent.
-        'orders' => ['customers', 'products', 'carriers', 'cart_rules', 'contacts', 'taxes', 'manufacturers', 'suppliers', 'categories', 'attributes'],
-        'carriers' => ['taxes'],
+        'orders' => ['geo', 'customers', 'products', 'carriers', 'cart_rules', 'contacts', 'taxes', 'manufacturers', 'suppliers', 'categories', 'attributes'],
+        'carriers' => ['geo', 'taxes'],
+        'customers' => ['geo'],
+        'cart_rules' => ['geo'],
     ];
 
     /** Image files copied after the data: type => [image kind on the old shop, table, id column]. */

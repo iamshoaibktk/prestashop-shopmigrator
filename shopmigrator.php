@@ -24,7 +24,7 @@ class Shopmigrator extends Module
     {
         $this->name = 'shopmigrator';
         $this->tab = 'migration_tools';
-        $this->version = '1.0.1';
+        $this->version = '1.0.2';
         $this->author = 'iamshoaibktk@gmail.com';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '9.0.0', 'max' => _PS_VERSION_];
@@ -123,6 +123,7 @@ class Shopmigrator extends Module
     public function typeLabels(): array
     {
         return [
+            'geo' => $this->trans('Countries, zones and states', [], 'Modules.Shopmigrator.Admin'),
             'taxes' => $this->trans('Taxes and tax rules', [], 'Modules.Shopmigrator.Admin'),
             'manufacturers' => $this->trans('Brands', [], 'Modules.Shopmigrator.Admin'),
             'suppliers' => $this->trans('Suppliers', [], 'Modules.Shopmigrator.Admin'),
@@ -171,7 +172,7 @@ class Shopmigrator extends Module
         }
         $client = new Client($url, $key);
         $info = $client->info();
-        $counts = $client->count(array_values(array_intersect(['product', 'product_attribute', 'category', 'image', 'manufacturer', 'supplier', 'tax', 'customer', 'orders', 'carrier', 'cart_rule', 'contact', 'employee', 'specific_price_rule', 'cms'], $info['tables'])));
+        $counts = $client->count(array_values(array_intersect(['country', 'product', 'product_attribute', 'category', 'image', 'manufacturer', 'supplier', 'tax', 'customer', 'orders', 'carrier', 'cart_rule', 'contact', 'employee', 'specific_price_rule', 'cms'], $info['tables'])));
         Configuration::updateValue('SHOPMIGRATOR_URL', $url);
         Configuration::updateValue('SHOPMIGRATOR_KEY', $key);
 

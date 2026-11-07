@@ -62,6 +62,10 @@
         <source>Email</source>
         <target>E-mail</target>
       </trans-unit>
+      <trans-unit id="25394aafdfd85aa87bf478968d66ee0a">
+        <source>Countries, zones and states</source>
+        <target>Kraje, strefy i regiony</target>
+      </trans-unit>
       <trans-unit id="ef4fe0645b9d16a6cf36f16c07d949ca">
         <source>Taxes and tax rules</source>
         <target>Podatki i reguły podatkowe</target>

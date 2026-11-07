@@ -99,6 +99,11 @@ class Runner
                         + ($from[$t] ?? []);
                 }
             }
+            // Right after the countries: move settings off countries the old shop doesn't have,
+            // then remove those countries (see geoDefaults()).
+            if ($type === 'geo' && $fresh && in_array('country', $tables, true)) {
+                $steps[] = ['k' => 'post', 'p' => 'geo'];
+            }
         }
         foreach ($types as $type) {
             if (isset(Plan::IMAGES[$type])) {
@@ -247,7 +252,7 @@ class Runner
     private function clean(Copier $copier): bool
     {
         foreach ($this->s['steps'] as $st) {
-            if ($st['k'] === 'table' && !in_array($st['t'], Plan::INSERT_ONLY, true)) {
+            if ($st['k'] === 'table' && !in_array($st['t'], Plan::INSERT_ONLY, true) && !in_array($st['t'], Plan::KEEP_ON_CLEAN, true)) {
                 $copier->truncate($st['t']);
             }
             if ($st['k'] === 'images') {
@@ -266,6 +271,13 @@ class Runner
         $r = $client->rows($step['t'], $this->s['cursor'] ?? $step['from'] ?? null, $size, $step['filter'] ?? null);
         $rows = in_array($step['t'], Plan::INSERT_ONLY, true) ? $this->keepExisting($step['t'], $r['rows']) : $r['rows'];
         $w = $copier->write($step['t'], $rows);
+        if ($step['t'] === 'country' && !empty($this->s['fresh'])) {
+            // Countries are overwritten, not emptied first (Plan::KEEP_ON_CLEAN): remember the
+            // ones the old shop has, geoDefaults() removes the others.
+            foreach ($rows as $row) {
+                $this->s['geoIds'][] = (int) $row['id_country'];
+            }
+        }
         $took = microtime(true) - $t0;
         $step['batch'] = $took < 0.5 ? min($this->s['batchMax'] ?? 2000, $size * 2) : ($took > 3 ? max(10, intdiv($size, 2)) : $size);
         $step['done'] += count($rows);
@@ -416,10 +428,55 @@ class Runner
         }
     }
 
+    /**
+     * Fresh copy, right after the countries: settings that point at a country the old shop
+     * doesn't have (PrestaShop's own Spain #6 when the old shop replaced it with its own Spain,
+     * for example) move to the old shop's country with the same ISO code, active ones first.
+     * Only then are the countries the old shop doesn't have removed: PrestaShop 9 stops
+     * answering when its default country is missing, and the migration runs in the back office.
+     */
+    private function geoDefaults(): void
+    {
+        $ids = array_values(array_unique(array_map('intval', $this->s['geoIds'] ?? [])));
+        if (!$ids) {
+            return; // the old shop sent no countries: keep this shop's own
+        }
+        $db = \Db::getInstance();
+        $p = _DB_PREFIX_;
+        $in = implode(',', $ids);
+        foreach (['PS_COUNTRY_DEFAULT', 'PS_SHOP_COUNTRY_ID'] as $key) {
+            $id = (int) \Configuration::get($key);
+            if (!$id || in_array($id, $ids, true)) {
+                continue;
+            }
+            $iso = (string) $db->getValue("SELECT iso_code FROM {$p}country WHERE id_country = " . $id);
+            $new = $iso === '' ? 0 : (int) $db->getValue("SELECT id_country FROM {$p}country WHERE id_country IN ({$in}) AND iso_code = '" . pSQL($iso) . "' ORDER BY active DESC, id_country");
+            $new = $new ?: (int) $db->getValue("SELECT id_country FROM {$p}country WHERE id_country IN ({$in}) ORDER BY active DESC, id_country");
+            \Configuration::updateValue($key, $new);
+            $this->s['warnings'][] = ['type' => 'country', 'id' => $id, 'msg' => $key . ' pointed at country #' . $id . ($iso !== '' ? ' (' . $iso . ')' : '') . ', which the old shop does not have; it now points at #' . $new . '.'];
+        }
+        // The shop's own state has to belong to the shop's country.
+        $state = (int) \Configuration::get('PS_SHOP_STATE_ID');
+        if ($state && (int) $db->getValue("SELECT id_country FROM {$p}state WHERE id_state = " . $state) !== (int) \Configuration::get('PS_SHOP_COUNTRY_ID')) {
+            \Configuration::updateValue('PS_SHOP_STATE_ID', 0);
+        }
+        foreach (['country', 'country_lang', 'country_shop'] as $t) {
+            $db->execute("DELETE FROM {$p}{$t} WHERE id_country NOT IN ({$in})");
+        }
+        // Payment modules are enabled per country, and the old shop's countries start with none.
+        $default = (int) \Configuration::get('PS_COUNTRY_DEFAULT');
+        if (!(int) $db->getValue("SELECT COUNT(*) FROM {$p}module_country WHERE id_country = " . $default)) {
+            $this->s['warnings'][] = ['type' => 'country', 'id' => $default, 'msg' => 'No payment method is enabled yet for the countries of the old shop: tick them in Payment > Preferences > Country restrictions.'];
+        }
+    }
+
     /** @return bool true when the step is finished; long ones work in chunks until $until */
     private function post(string $what, float $until): bool
     {
         switch ($what) {
+            case 'geo':
+                $this->geoDefaults();
+                break;
             case 'tree':
                 \Category::regenerateEntireNtree();
                 break;

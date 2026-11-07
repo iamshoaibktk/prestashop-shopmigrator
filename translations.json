@@ -165,6 +165,17 @@
       "pt-PT": "E-mail",
       "ru-RU": "E-mail"
     },
+    "Countries, zones and states": {
+      "fr-FR": "Pays, zones et États",
+      "es-ES": "Países, zonas y provincias",
+      "it-IT": "Paesi, zone e province",
+      "pl-PL": "Kraje, strefy i regiony",
+      "de-DE": "Länder, Zonen und Bundesländer",
+      "cs-CZ": "Země, zóny a regiony",
+      "nl-NL": "Landen, zones en provincies",
+      "pt-PT": "Países, zonas e regiões",
+      "ru-RU": "Страны, зоны и регионы"
+    },
     "Taxes and tax rules": {
       "fr-FR": "Taxes et règles de taxes",
       "es-ES": "Impuestos y reglas de impuestos",

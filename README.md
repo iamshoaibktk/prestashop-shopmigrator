@@ -14,6 +14,7 @@ Free and open source (AFL-3.0). Two modules work together:
 Both zips are attached to every release.
 
 ## What it migrates
+- **Countries:** zones, countries, states and address formats, with their IDs, so shops that use their own countries and zones keep them. If the new shop's default country doesn't exist on the old shop, it moves to the old shop's country with the same ISO code.
 - **Catalog:** taxes and tax rules, brands, suppliers, categories, attributes and features, products with combinations, prices, specific prices, stock, packs, tags, customization fields and images (thumbnails rebuilt in every format: jpg, webp, avif)
 - **Shipping:** carriers with zones, price and weight ranges
 - **Customers:** addresses, groups, carts, and their **old passwords** (PrestaShop 1.6 MD5 hashes are recognised at first login and upgraded to bcrypt)
