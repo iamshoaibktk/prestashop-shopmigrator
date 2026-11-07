@@ -15,8 +15,9 @@ namespace Iamshoaibktk\Shopmigrator;
 class Plan
 {
     public const TYPES = [
-        // Copied first and with the same IDs: tax rules, carrier zones, addresses and cart rules
-        // point at these, and many shops use their own countries and zones (custom IDs).
+        // Not copied table by table: matched to this shop's own countries, zones and states by ISO
+        // code and name first (see Geo), so tax rules, carrier zones, addresses and cart rules can
+        // be translated to this shop's IDs as they are copied.
         'geo' => ['zone', 'zone_shop', 'country', 'country_lang', 'country_shop', 'state', 'address_format'],
         'taxes' => ['tax', 'tax_lang', 'tax_rules_group', 'tax_rules_group_shop', 'tax_rule'],
         'manufacturers' => ['manufacturer', 'manufacturer_lang', 'manufacturer_shop'],
@@ -64,11 +65,51 @@ class Plan
     public const INSERT_ONLY = ['employee', 'employee_shop'];
 
     /**
-     * Not emptied before a fresh copy: PrestaShop 9 stops answering when its default country is
-     * missing. Rows are overwritten by ID instead, and the countries the old shop doesn't have
-     * are removed once the settings pointing at them have moved (see Runner::geoDefaults).
+     * Tables whose id_lang is a person's preferred language, not the language of a text: a row
+     * whose language the old shop deleted (or 0) gets the default language instead of being
+     * left out. Texts in a language this shop doesn't have are still left out.
      */
-    public const KEEP_ON_CLEAN = ['country', 'country_lang', 'country_shop'];
+    public const LANG_FALLBACK = ['customer', 'cart', 'orders', 'customer_thread', 'employee'];
+
+    /**
+     * Rules that apply to a country, state or zone: a row pointing at one the old shop deleted
+     * never applied there, and its old ID may now be another country here (PrestaShop's own Spain
+     * #6, say), so it is left out rather than applied to the wrong place.
+     */
+    public const GEO_RULES = ['tax_rule', 'carrier_zone', 'delivery', 'cart_rule_country', 'specific_price', 'specific_price_rule'];
+
+    /**
+     * PrestaShop 1.7 renamed most native modules: old name => new name, so customer-group access
+     * and payment restrictions set on a 1.6 shop apply to the same module here.
+     */
+    public const MODULE_ALIASES = [
+        'bankwire' => 'ps_wirepayment',
+        'cheque' => 'ps_checkpayment',
+        'cashondelivery' => 'ps_cashondelivery',
+        'blocklayered' => 'ps_facetedsearch',
+        'blockcart' => 'ps_shoppingcart',
+        'blocksearch' => 'ps_searchbar',
+        'blocknewsletter' => 'ps_emailsubscription',
+        'homeslider' => 'ps_imageslider',
+        'blockcategories' => 'ps_categorytree',
+        'blocklanguages' => 'ps_languageselector',
+        'blockcurrencies' => 'ps_currencyselector',
+        'blockuserinfo' => 'ps_customersignin',
+        'blockmyaccount' => 'ps_customeraccountlinks',
+        'blocksocial' => 'ps_socialfollow',
+        'blockcontact' => 'ps_contactinfo',
+        'blockbestsellers' => 'ps_bestsellers',
+        'blocknewproducts' => 'ps_newproducts',
+        'blockspecials' => 'ps_specials',
+        'homefeatured' => 'ps_featuredproducts',
+        'blocktopmenu' => 'ps_mainmenu',
+        'blockmanufacturer' => 'ps_brandlist',
+        'blocksupplier' => 'ps_supplierlist',
+        'blockviewed' => 'ps_viewedproduct',
+        'blockcmsinfo' => 'ps_customtext',
+        'blockbanner' => 'ps_banner',
+        'blockcms' => 'ps_linklist',
+    ];
 
     /** Tables whose rows count as this type's records in the report (images: every file). */
     public const RECORDS = [
@@ -100,6 +141,8 @@ class Plan
         'carriers' => ['geo', 'taxes'],
         'customers' => ['geo'],
         'cart_rules' => ['geo'],
+        // Catalog price rules can be limited to a country.
+        'price_rules' => ['geo'],
     ];
 
     /** Image files copied after the data: type => [image kind on the old shop, table, id column]. */

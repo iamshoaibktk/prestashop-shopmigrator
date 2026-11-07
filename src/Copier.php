@@ -21,15 +21,33 @@ class Copier
     /** @var string[] notes for the report */
     public array $warnings = [];
 
+    /** @var array<string, int> table => rows whose language the old shop no longer has (given the default one) */
+    public array $langFallbacks = [];
+
+    /** @var array<string, int> table => rules left out: their country, state or zone was deleted on the old shop */
+    public array $geoDropped = [];
+
     /**
      * @param array<int, int> $langMap old id_lang => new id_lang
      * @param array<int, int> $shopMap old id_shop => new id_shop
      * @param array<int, int> $currencyMap old id_currency => new id_currency (matched by ISO code)
+     * @param array{country?: array<int, int>, state?: array<int, int>, zone?: array<int, int>} $geoMap old => new (see Geo)
+     * @param int $langDefault language for customers, orders… whose language the old shop deleted
      */
-    public function __construct(private array $langMap, private array $shopMap, private array $currencyMap = [])
-    {
+    public function __construct(
+        private array $langMap,
+        private array $shopMap,
+        private array $currencyMap = [],
+        private array $geoMap = [],
+        private int $langDefault = 0,
+    ) {
         // Older versions stored values (zero dates, empty enums) that strict MySQL would refuse.
         \Db::getInstance()->execute("SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
+    }
+
+    public function setGeoMap(array $geoMap): void
+    {
+        $this->geoMap = $geoMap;
     }
 
     public function hasTable(string $table): bool
@@ -103,9 +121,38 @@ class Copier
         if (array_key_exists('id_lang', $row)) {
             $lang = $this->langMap[(int) $row['id_lang']] ?? null;
             if ($lang === null) {
-                return null; // language not installed on the new shop
+                // A text in a language this shop doesn't have is left out. But a customer, cart or
+                // order is never dropped because of its language: one the old shop deleted long
+                // ago (or 0) becomes the default language.
+                if (!$this->langDefault || !in_array($table, Plan::LANG_FALLBACK, true)) {
+                    return null;
+                }
+                $lang = $this->langDefault;
+                $this->langFallbacks[$table] = ($this->langFallbacks[$table] ?? 0) + 1;
             }
             $row['id_lang'] = $lang;
+        }
+        // Countries, states and zones are this shop's own (matched by ISO code and name, see
+        // Geo): translate the old IDs.
+        foreach (['id_country' => 'country', 'id_state' => 'state', 'id_zone' => 'zone'] as $col => $kind) {
+            if (empty($row[$col]) || empty($this->geoMap[$kind])) {
+                continue; // 0 = any country/state; no map = no countries in this run
+            }
+            $old = (int) $row[$col];
+            if (isset($this->geoMap[$kind][$old])) {
+                $row[$col] = $this->geoMap[$kind][$old];
+                continue;
+            }
+            // It points at one the old shop deleted. A rule is left out (it couldn't apply there,
+            // and the old ID may be another country here); an address is kept without its state.
+            if (in_array($table, Plan::GEO_RULES, true)) {
+                $this->geoDropped[$table] = ($this->geoDropped[$table] ?? 0) + 1;
+
+                return null;
+            }
+            if ($col === 'id_state') {
+                $row[$col] = 0;
+            }
         }
         foreach (['id_shop', 'id_shop_default'] as $key) {
             if (array_key_exists($key, $row) && (int) $row[$key] > 0) {

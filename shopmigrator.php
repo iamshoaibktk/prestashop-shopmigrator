@@ -24,7 +24,7 @@ class Shopmigrator extends Module
     {
         $this->name = 'shopmigrator';
         $this->tab = 'migration_tools';
-        $this->version = '1.0.2';
+        $this->version = '1.0.3';
         $this->author = 'iamshoaibktk@gmail.com';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '9.0.0', 'max' => _PS_VERSION_];
@@ -55,6 +55,7 @@ class Shopmigrator extends Module
         Configuration::deleteByName('SHOPMIGRATOR_PASSWORD_SALT');
         Configuration::deleteByName('SHOPMIGRATOR_REDIRECTS');
         Configuration::deleteByName('SHOPMIGRATOR_LAST_SOURCE');
+        Configuration::deleteByName(\Iamshoaibktk\Shopmigrator\Geo::CONFIG);
 
         return Runner::uninstall() && parent::uninstall();
     }

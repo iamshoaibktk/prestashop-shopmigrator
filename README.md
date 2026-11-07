@@ -14,15 +14,16 @@ Free and open source (AFL-3.0). Two modules work together:
 Both zips are attached to every release.
 
 ## What it migrates
-- **Countries:** zones, countries, states and address formats, with their IDs, so shops that use their own countries and zones keep them. If the new shop's default country doesn't exist on the old shop, it moves to the old shop's country with the same ISO code.
+- **Countries:** zones, countries, states and address formats, matched to the new shop's own: countries by ISO code, zones by name, states by ISO code or name. PrestaShop 9 numbers countries differently from older versions, so matching keeps the new shop's default country, installed modules and own data working. What the new shop doesn't have is added (custom countries and zones included). In a fresh copy, the matched countries take the old shop's settings and names, and the default country and shop address come from the old shop. Tax rules, carrier zones, addresses, cart rules and specific prices follow the new IDs; rules that pointed at a country the old shop had deleted are left out, as they never applied there
 - **Catalog:** taxes and tax rules, brands, suppliers, categories, attributes and features, products with combinations, prices, specific prices, stock, packs, tags, customization fields and images (thumbnails rebuilt in every format: jpg, webp, avif)
 - **Shipping:** carriers with zones, price and weight ranges
-- **Customers:** addresses, groups, carts, and their **old passwords** (PrestaShop 1.6 MD5 hashes are recognised at first login and upgraded to bcrypt)
+- **Customers:** addresses, groups, carts, and their **old passwords** (PrestaShop 1.6 MD5 hashes are recognised at first login and upgraded to bcrypt). Customers, carts and orders in a language the old shop has since deleted get the default language instead of being skipped
 - **Orders:** details, history, carriers, invoices, payments, credit slips, returns, messages (1.6 order notes become customer threads)
 - **Marketing and content:** cart rules (vouchers), catalog price rules, CMS pages and categories, customer service contacts
 - **Employees:** added only when their ID and email are free, so your own account is never touched
+- **Module settings:** which customer groups see each module, and the countries, currencies and carriers each payment module accepts, matched by module name (PrestaShop 1.6 names such as bankwire included)
 
-IDs are kept, so order references, links and URLs stay the same. Languages and currencies the new shop is missing are created automatically (currencies with PrestaShop's official names and symbols, exchange rates from the old shop).
+IDs are kept (countries, zones and states are matched instead, see above), so order references, links and URLs stay the same. Languages and currencies the new shop is missing are created automatically (currencies with PrestaShop's official names and symbols, exchange rates from the old shop).
 
 ## How it works
 1. Install **Shop Migrator Bridge** on the old shop and copy its address and 64-character key.
@@ -37,7 +38,8 @@ IDs are kept, so order references, links and URLs stay the same. Languages and c
 - **Keyset paging** on primary keys (tables without one are paged on an index), so row 5,000,000 is as fast as row 1
 - **Adaptive batch size** (10 to 5,000 rows per request), one multi-row upsert per batch, keep-alive connection, gzip
 - Search index, catalog price rules and message conversion are rebuilt in **resumable chunks**; above 20,000 products the search index is left to PrestaShop's own indexer (Shop Parameters > Search) so the migration never waits on it
-- **Images:** 8 downloads at a time, and each original is decoded once for all thumbnail sizes
+- **Images:** 8 downloads at a time, and each original is decoded once for all thumbnail sizes (transparent PNGs stay transparent). A file cut off in transit is downloaded again; one that stays incomplete is reported instead of being saved, so it can't break the shop's pages
+- **Network errors:** a request the old server doesn't answer is tried again automatically, and a run stopped by an error continues with **Resume**
 - Safe with the wizard open in several tabs: one step runs at a time
 - Optional: skip thumbnails during the run and regenerate them later
 
@@ -54,7 +56,7 @@ After a migration, links in older URL formats (`/women/5-faded-short.html`, `/3_
 
 ## Requirements
 - New shop: PrestaShop 9.0+, PHP 8.1+ (missing languages and currencies of the old shop are added automatically)
-- Old shop: PrestaShop 1.6, 1.7, 8 or 9, PHP 5.6+, reachable from the new shop
+- Old shop: PrestaShop 1.6, 1.7, 8 or 9, PHP 5.6+, reachable from the new shop (a PrestaShop 9 old shop needs Shop Migrator Bridge 1.0.2 or later: PrestaShop 9 blocks PHP files in /modules, and 1.0.2 allows its api.php)
 
 ## Languages and docs
 English, French, Spanish, Italian, Polish, German, Czech, Dutch, Portuguese, Russian. PDF user guide in all 10 languages in [`docs/`](docs/).

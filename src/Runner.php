@@ -86,23 +86,25 @@ class Runner
 
         // "New data only": start each table after the highest ID already here, measured now,
         // before anything is copied (product_lang starts after the last product, too).
-        $from = $fresh ? [] : self::startCursors($tables, $types);
+        $from = $fresh ? [] : self::startCursors(array_values(array_diff($tables, Plan::TYPES['geo'])), $types);
 
         $steps = [];
         if ($fresh) {
             $steps[] = ['k' => 'clean'];
         }
         foreach ($types as $type) {
+            if ($type === 'geo') {
+                // Matched to this shop's own countries, zones and states, not copied by ID (see Geo).
+                if (in_array('country', $tables, true)) {
+                    $steps[] = ['k' => 'geo', 't' => 'country', 'type' => 'geo', 'total' => (int) ($counts['country'] ?? 0), 'done' => 0];
+                }
+                continue;
+            }
             foreach (Plan::TYPES[$type] as $t) {
                 if (in_array($t, $tables, true)) {
                     $steps[] = ['k' => 'table', 't' => $t, 'type' => $type, 'total' => (int) ($counts[$t] ?? 0), 'done' => 0]
                         + ($from[$t] ?? []);
                 }
-            }
-            // Right after the countries: move settings off countries the old shop doesn't have,
-            // then remove those countries (see geoDefaults()).
-            if ($type === 'geo' && $fresh && in_array('country', $tables, true)) {
-                $steps[] = ['k' => 'post', 'p' => 'geo'];
             }
         }
         foreach ($types as $type) {
@@ -118,6 +120,8 @@ class Runner
         $posts = array_merge(
             $catalog ? ['tree', 'product_type'] : [],
             in_array('carriers', $types, true) ? ['carrier_default'] : [],
+            // Customer-group access to modules and payment restrictions (see Restrictions).
+            array_intersect($types, ['geo', 'customers', 'carriers']) ? ['modules'] : [],
             in_array('orders', $types, true) ? ['order_messages'] : [],
             in_array('price_rules', $types, true) ? ['price_rules'] : [],
             ['redirects'],
@@ -141,6 +145,12 @@ class Runner
             // New data only: just the new products get indexed for search.
             'searchFrom' => $fresh ? null : (int) \Db::getInstance()->getValue('SELECT MAX(id_product) FROM `' . _DB_PREFIX_ . 'product`'),
             'fresh' => $fresh,
+            'srcTables' => $info['tables'],
+            'srcLang' => (int) ($info['default_lang'] ?? 0),
+            // Customers, carts and orders in a language the old shop deleted get this one.
+            'langDefault' => (int) ($langMap[(int) ($info['default_lang'] ?? 0)] ?? \Configuration::get('PS_LANG_DEFAULT')),
+            // Filled by the geo step; a run without countries uses the last map from this old shop.
+            'geoMap' => in_array('geo', $types, true) ? [] : self::savedGeoMap($url),
             'langMap' => $langMap,
             'shopMap' => $shopMap,
             'currencyMap' => $currencyMap,
@@ -168,10 +178,13 @@ class Runner
         }
     }
 
+    /** Continues a paused run, or one stopped by an error (the step goes on from where it stopped). */
     public function resume(): void
     {
-        if (($this->s['status'] ?? '') === 'paused') {
+        if (in_array($this->s['status'] ?? '', ['paused', 'error'], true)) {
             $this->s['status'] = 'running';
+            $this->s['retries'] = 0;
+            unset($this->s['error']);
             $this->save();
         }
     }
@@ -206,7 +219,7 @@ class Runner
     {
         $until = microtime(true) + $seconds;
         $client = new Client($this->s['url'], $this->s['key']);
-        $copier = new Copier($this->s['langMap'], $this->s['shopMap'], $this->s['currencyMap'] ?? []);
+        $copier = new Copier($this->s['langMap'], $this->s['shopMap'], $this->s['currencyMap'] ?? [], $this->s['geoMap'] ?? [], (int) ($this->s['langDefault'] ?? 0));
         $images = new Images($client, $this->s['thumbs'] ?? true);
 
         while (microtime(true) < $until && $this->s['status'] === 'running') {
@@ -214,6 +227,7 @@ class Runner
             if (!isset($this->s['steps'][$i])) {
                 $this->s['status'] = 'done';
                 $this->s['finished'] = time();
+                $this->finalNotes();
                 if (!empty($this->s['fresh'])) {
                     // A later "New data only" run may continue from this shop.
                     \Configuration::updateGlobalValue('SHOPMIGRATOR_LAST_SOURCE', self::sourceKey($this->s['url']));
@@ -224,11 +238,21 @@ class Runner
             try {
                 $next = match ($step['k']) {
                     'clean' => $this->clean($copier),
+                    'geo' => $this->geo($step, $client, $copier),
                     'table' => $this->table($step, $client, $copier),
                     'images' => $this->images($step, $images),
-                    'post' => $this->post($step['p'], $until),
+                    'post' => $this->post($step['p'], $until, $client),
                 };
+                $this->s['retries'] = 0;
             } catch (\Throwable $e) {
+                if ($e->getCode() === Client::NETWORK && ($this->s['retries'] ?? 0) < 5) {
+                    // The old server didn't answer (busy, restarting, network): the next request
+                    // tries this step again from where it stopped.
+                    $this->s['retries'] = ($this->s['retries'] ?? 0) + 1;
+                    unset($step);
+                    $this->save();
+                    break;
+                }
                 $this->s['status'] = 'error';
                 $this->s['error'] = $e->getMessage();
                 $next = false;
@@ -252,7 +276,7 @@ class Runner
     private function clean(Copier $copier): bool
     {
         foreach ($this->s['steps'] as $st) {
-            if ($st['k'] === 'table' && !in_array($st['t'], Plan::INSERT_ONLY, true) && !in_array($st['t'], Plan::KEEP_ON_CLEAN, true)) {
+            if ($st['k'] === 'table' && !in_array($st['t'], Plan::INSERT_ONLY, true)) {
                 $copier->truncate($st['t']);
             }
             if ($st['k'] === 'images') {
@@ -263,6 +287,36 @@ class Runner
         return true;
     }
 
+    /** Countries, zones and states matched to this shop's own; the map is used by every later step. */
+    private function geo(array &$step, Client $client, Copier $copier): bool
+    {
+        $geo = new Geo(
+            $client,
+            new Copier($this->s['langMap'], $this->s['shopMap'], $this->s['currencyMap'] ?? []),
+            !empty($this->s['fresh']),
+            self::sourceKey($this->s['url']),
+            $this->s['srcTables'] ?? [],
+            (int) ($this->s['srcLang'] ?? 0)
+        );
+        $this->s['geoMap'] = $geo->run();
+        $this->s['geoAdded'] = $geo->added;
+        $copier->setGeoMap($this->s['geoMap']);
+        foreach ($geo->notes as $note) {
+            $this->s['warnings'][] = ['type' => 'geo', 'id' => 0, 'msg' => $note];
+        }
+        $step['done'] = $step['total'];
+
+        return true;
+    }
+
+    /** @return array the map of the last run from this old shop (see Geo) */
+    private static function savedGeoMap(string $url): array
+    {
+        $saved = json_decode((string) \Configuration::getGlobalValue(Geo::CONFIG), true);
+
+        return is_array($saved) ? ($saved[self::sourceKey($url)] ?? []) : [];
+    }
+
     private function table(array &$step, Client $client, Copier $copier): bool
     {
         // Batch size adapts to the two servers: aim for about 1.5 s per batch (fetch + write).
@@ -271,12 +325,11 @@ class Runner
         $r = $client->rows($step['t'], $this->s['cursor'] ?? $step['from'] ?? null, $size, $step['filter'] ?? null);
         $rows = in_array($step['t'], Plan::INSERT_ONLY, true) ? $this->keepExisting($step['t'], $r['rows']) : $r['rows'];
         $w = $copier->write($step['t'], $rows);
-        if ($step['t'] === 'country' && !empty($this->s['fresh'])) {
-            // Countries are overwritten, not emptied first (Plan::KEEP_ON_CLEAN): remember the
-            // ones the old shop has, geoDefaults() removes the others.
-            foreach ($rows as $row) {
-                $this->s['geoIds'][] = (int) $row['id_country'];
+        foreach (['langFallbacks', 'geoDropped'] as $counter) {
+            foreach ($copier->$counter as $t => $n) {
+                $this->s[$counter][$t] = ($this->s[$counter][$t] ?? 0) + $n;
             }
+            $copier->$counter = [];
         }
         $took = microtime(true) - $t0;
         $step['batch'] = $took < 0.5 ? min($this->s['batchMax'] ?? 2000, $size * 2) : ($took > 3 ? max(10, intdiv($size, 2)) : $size);
@@ -401,6 +454,16 @@ class Runner
                 $this->s['warnings'][] = ['type' => 'image', 'id' => $id, 'msg' => 'Product image #' . $id . ' has no file on the old shop.'];
             }
         }
+        $label = ['p' => 'Product image', 'c' => 'Category image', 'm' => 'Brand logo', 'su' => 'Supplier logo', 's' => 'Carrier logo'][$step['kind']] ?? 'Image';
+        foreach ($images->damaged as $id) {
+            $step['damaged'] = ($step['damaged'] ?? 0) + 1;
+            $this->s['warnings'][] = ['type' => 'image', 'id' => $id, 'msg' => $label . ' #' . $id . ' arrived cut off twice, or its file is damaged on the old shop, so it was not copied: upload it again here.'];
+        }
+        foreach ($images->noThumbs as $id) {
+            $this->s['warnings'][] = ['type' => 'image', 'id' => $id, 'msg' => $label . ' #' . $id . ' was copied without thumbnails (too large for PHP\'s memory_limit, or unreadable): raise memory_limit, then use Regenerate thumbnails in Design > Image Settings.'];
+        }
+        $images->damaged = [];
+        $images->noThumbs = [];
         $step['done'] += count($ids);
         if ($ids) {
             $this->s['cursor'] = end($ids);
@@ -428,55 +491,10 @@ class Runner
         }
     }
 
-    /**
-     * Fresh copy, right after the countries: settings that point at a country the old shop
-     * doesn't have (PrestaShop's own Spain #6 when the old shop replaced it with its own Spain,
-     * for example) move to the old shop's country with the same ISO code, active ones first.
-     * Only then are the countries the old shop doesn't have removed: PrestaShop 9 stops
-     * answering when its default country is missing, and the migration runs in the back office.
-     */
-    private function geoDefaults(): void
-    {
-        $ids = array_values(array_unique(array_map('intval', $this->s['geoIds'] ?? [])));
-        if (!$ids) {
-            return; // the old shop sent no countries: keep this shop's own
-        }
-        $db = \Db::getInstance();
-        $p = _DB_PREFIX_;
-        $in = implode(',', $ids);
-        foreach (['PS_COUNTRY_DEFAULT', 'PS_SHOP_COUNTRY_ID'] as $key) {
-            $id = (int) \Configuration::get($key);
-            if (!$id || in_array($id, $ids, true)) {
-                continue;
-            }
-            $iso = (string) $db->getValue("SELECT iso_code FROM {$p}country WHERE id_country = " . $id);
-            $new = $iso === '' ? 0 : (int) $db->getValue("SELECT id_country FROM {$p}country WHERE id_country IN ({$in}) AND iso_code = '" . pSQL($iso) . "' ORDER BY active DESC, id_country");
-            $new = $new ?: (int) $db->getValue("SELECT id_country FROM {$p}country WHERE id_country IN ({$in}) ORDER BY active DESC, id_country");
-            \Configuration::updateValue($key, $new);
-            $this->s['warnings'][] = ['type' => 'country', 'id' => $id, 'msg' => $key . ' pointed at country #' . $id . ($iso !== '' ? ' (' . $iso . ')' : '') . ', which the old shop does not have; it now points at #' . $new . '.'];
-        }
-        // The shop's own state has to belong to the shop's country.
-        $state = (int) \Configuration::get('PS_SHOP_STATE_ID');
-        if ($state && (int) $db->getValue("SELECT id_country FROM {$p}state WHERE id_state = " . $state) !== (int) \Configuration::get('PS_SHOP_COUNTRY_ID')) {
-            \Configuration::updateValue('PS_SHOP_STATE_ID', 0);
-        }
-        foreach (['country', 'country_lang', 'country_shop'] as $t) {
-            $db->execute("DELETE FROM {$p}{$t} WHERE id_country NOT IN ({$in})");
-        }
-        // Payment modules are enabled per country, and the old shop's countries start with none.
-        $default = (int) \Configuration::get('PS_COUNTRY_DEFAULT');
-        if (!(int) $db->getValue("SELECT COUNT(*) FROM {$p}module_country WHERE id_country = " . $default)) {
-            $this->s['warnings'][] = ['type' => 'country', 'id' => $default, 'msg' => 'No payment method is enabled yet for the countries of the old shop: tick them in Payment > Preferences > Country restrictions.'];
-        }
-    }
-
     /** @return bool true when the step is finished; long ones work in chunks until $until */
-    private function post(string $what, float $until): bool
+    private function post(string $what, float $until, Client $client): bool
     {
         switch ($what) {
-            case 'geo':
-                $this->geoDefaults();
-                break;
             case 'tree':
                 \Category::regenerateEntireNtree();
                 break;
@@ -500,6 +518,22 @@ class Runner
                     if ($first) {
                         \Configuration::updateValue('PS_CARRIER_DEFAULT', $first);
                     }
+                }
+                break;
+            case 'modules':
+                $restrictions = new Restrictions(
+                    $client,
+                    $this->s['srcTables'] ?? [],
+                    $this->s['shopMap'],
+                    $this->s['currencyMap'] ?? [],
+                    $this->s['geoMap'] ?? [],
+                    $this->s['geoAdded']['country'] ?? [],
+                    !empty($this->s['fresh']),
+                    $this->s['types'] ?? []
+                );
+                $restrictions->run();
+                foreach ($restrictions->notes as $note) {
+                    $this->s['warnings'][] = ['type' => 'modules', 'id' => 0, 'msg' => $note];
                 }
                 break;
             case 'price_rules':
@@ -647,6 +681,22 @@ class Runner
         } while (microtime(true) < $until);
 
         return false;
+    }
+
+    /** Report lines that sum up the whole run. */
+    private function finalNotes(): void
+    {
+        $what = ['customer' => 'customers', 'cart' => 'carts', 'orders' => 'orders', 'customer_thread' => 'customer service threads', 'employee' => 'employees'];
+        $lang = \Language::getLanguage((int) ($this->s['langDefault'] ?? 0));
+        foreach ($this->s['langFallbacks'] ?? [] as $table => $n) {
+            $this->s['warnings'][] = ['type' => 'language', 'id' => 0, 'msg' => $n . ' ' . ($what[$table] ?? $table)
+                . ' had a language the old shop no longer has (or none); they now use ' . ($lang['name'] ?? 'the default language') . '.'];
+        }
+        $rules = ['tax_rule' => 'tax rules', 'carrier_zone' => 'carrier zones', 'delivery' => 'shipping prices', 'cart_rule_country' => 'cart rule countries', 'specific_price' => 'specific prices', 'specific_price_rule' => 'catalog price rules'];
+        foreach ($this->s['geoDropped'] ?? [] as $table => $n) {
+            $this->s['warnings'][] = ['type' => 'geo', 'id' => 0, 'msg' => $n . ' ' . ($rules[$table] ?? $table)
+                . ' were left out: they point at countries, states or zones deleted on the old shop, so they did not apply there either.'];
+        }
     }
 
     public function progress(): array
