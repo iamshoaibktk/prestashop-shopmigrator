@@ -24,7 +24,7 @@ class Shopmigrator extends Module
     {
         $this->name = 'shopmigrator';
         $this->tab = 'migration_tools';
-        $this->version = '1.0.3';
+        $this->version = '1.0.4';
         $this->author = 'iamshoaibktk@gmail.com';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '9.0.0', 'max' => _PS_VERSION_];

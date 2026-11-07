@@ -374,6 +374,18 @@
         <source>Upgrades and bug fixes</source>
         <target>Mises à jour et corrections</target>
       </trans-unit>
+      <trans-unit id="a35ddbb21fb0048f67062a127b3c3bb4">
+        <source>Free PrestaShop 9 modules and themes</source>
+        <target>Modules et thèmes PrestaShop 9 gratuits</target>
+      </trans-unit>
+      <trans-unit id="3d20dda23d8e7a8b9e8aa85f350bee54">
+        <source>Open source and in 10 languages. Every theme has a live demo.</source>
+        <target>Open source et en 10 langues. Chaque thème a une démo en ligne.</target>
+      </trans-unit>
+      <trans-unit id="7b2f76ccc798b6dfed18dc3a1ed3325f">
+        <source>See all on GitHub</source>
+        <target>Tout voir sur GitHub</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

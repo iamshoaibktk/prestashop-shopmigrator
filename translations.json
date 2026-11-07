@@ -1022,6 +1022,39 @@
       "nl-NL": "Upgrades en bugfixes",
       "pt-PT": "Atualizações e correção de erros",
       "ru-RU": "Обновления и исправление ошибок"
+    },
+    "Free PrestaShop 9 modules and themes": {
+      "fr-FR": "Modules et thèmes PrestaShop 9 gratuits",
+      "es-ES": "Módulos y temas gratuitos para PrestaShop 9",
+      "it-IT": "Moduli e temi gratuiti per PrestaShop 9",
+      "pl-PL": "Darmowe moduły i motywy do PrestaShop 9",
+      "de-DE": "Kostenlose Module und Themes für PrestaShop 9",
+      "cs-CZ": "Bezplatné moduly a šablony pro PrestaShop 9",
+      "nl-NL": "Gratis modules en thema's voor PrestaShop 9",
+      "pt-PT": "Módulos e temas gratuitos para PrestaShop 9",
+      "ru-RU": "Бесплатные модули и темы для PrestaShop 9"
+    },
+    "Open source and in 10 languages. Every theme has a live demo.": {
+      "fr-FR": "Open source et en 10 langues. Chaque thème a une démo en ligne.",
+      "es-ES": "De código abierto y en 10 idiomas. Cada tema tiene una demo en vivo.",
+      "it-IT": "Open source e in 10 lingue. Ogni tema ha una demo dal vivo.",
+      "pl-PL": "Open source, w 10 językach. Każdy motyw ma demo na żywo.",
+      "de-DE": "Open Source und in 10 Sprachen. Jedes Theme hat eine Live-Demo.",
+      "cs-CZ": "Open source, v 10 jazycích. Každá šablona má živé demo.",
+      "nl-NL": "Open source en in 10 talen. Elk thema heeft een live demo.",
+      "pt-PT": "Código aberto e em 10 idiomas. Cada tema tem uma demonstração ao vivo.",
+      "ru-RU": "Открытый код и 10 языков. У каждой темы есть живое демо."
+    },
+    "See all on GitHub": {
+      "fr-FR": "Tout voir sur GitHub",
+      "es-ES": "Ver todo en GitHub",
+      "it-IT": "Vedi tutto su GitHub",
+      "pl-PL": "Zobacz wszystko na GitHub",
+      "de-DE": "Alle auf GitHub ansehen",
+      "cs-CZ": "Zobrazit vše na GitHubu",
+      "nl-NL": "Alles bekijken op GitHub",
+      "pt-PT": "Ver tudo no GitHub",
+      "ru-RU": "Смотреть все на GitHub"
     }
   }
 }
