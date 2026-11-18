@@ -33,6 +33,8 @@ class Copier
      * @param array<int, int> $currencyMap old id_currency => new id_currency (matched by ISO code)
      * @param array{country?: array<int, int>, state?: array<int, int>, zone?: array<int, int>} $geoMap old => new (see Geo)
      * @param int $langDefault language for customers, orders… whose language the old shop deleted
+     * @param int[]|null $ownShops multistore: old shops kept as their own shop (null: every shop)
+     * @param array<int, int> $groupMap old id_shop_group => new id_shop_group
      */
     public function __construct(
         private array $langMap,
@@ -40,6 +42,8 @@ class Copier
         private array $currencyMap = [],
         private array $geoMap = [],
         private int $langDefault = 0,
+        private ?array $ownShops = null,
+        private array $groupMap = [],
     ) {
         // Older versions stored values (zero dates, empty enums) that strict MySQL would refuse.
         \Db::getInstance()->execute("SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
@@ -154,14 +158,29 @@ class Copier
                 $row[$col] = 0;
             }
         }
+        // Multistore: a shop merged into another brings its customers, carts and orders, but not
+        // its own copy of prices, texts and stock (the shop it joins keeps its own, see Shops).
+        if ($this->ownShops !== null && !empty($row['id_shop']) && !in_array($table, Plan::SHOP_ENTITIES, true)
+            && !in_array((int) $row['id_shop'], $this->ownShops, true)) {
+            return null;
+        }
         foreach (['id_shop', 'id_shop_default'] as $key) {
             if (array_key_exists($key, $row) && (int) $row[$key] > 0) {
                 $shop = $this->shopMap[(int) $row[$key]] ?? null;
                 if ($shop === null) {
+                    if ($key === 'id_shop_default') {
+                        // A product or category whose default shop was left out still belongs here.
+                        $row[$key] = (int) \Configuration::get('PS_SHOP_DEFAULT');
+                        continue;
+                    }
+
                     return null;
                 }
                 $row[$key] = $shop;
             }
+        }
+        if ($this->groupMap && !empty($row['id_shop_group'])) {
+            $row['id_shop_group'] = $this->groupMap[(int) $row['id_shop_group']] ?? reset($this->groupMap);
         }
         if (array_key_exists('id_currency', $row) && isset($this->currencyMap[(int) $row['id_currency']])) {
             $row['id_currency'] = $this->currencyMap[(int) $row['id_currency']];

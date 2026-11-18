@@ -39,13 +39,16 @@ class Runner
     }
 
     /** Builds the step list for a new run. */
-    public function start(string $url, string $key, array $types, int $batch, bool $fresh, bool $thumbs = true): void
+    /**
+     * @param array<int, string> $shopPlan multistore: old id_shop => "own" | "skip" | "into:<old id_shop>" (see Shops)
+     */
+    public function start(string $url, string $key, array $types, int $batch, bool $fresh, bool $thumbs = true, array $shopPlan = []): void
     {
         $client = new Client($url, $key);
         $info = $client->info();
         $types = Plan::resolve($types);
 
-        // Languages are matched by ISO code; shops all go to this shop for now.
+        // Languages are matched by ISO code.
         $langMap = [];
         $warnings = [];
         foreach ($info['languages'] as $l) {
@@ -56,14 +59,16 @@ class Runner
                 $warnings[] = ['type' => 'language', 'id' => $l['id_lang'], 'msg' => 'Language "' . $l['name'] . '" (' . $l['iso_code'] . ') is not installed here; its texts were skipped. Install it in International > Translations and run again.'];
             }
         }
+        // One old shop goes to this shop. Several (multistore) follow the shop plan: the shops step
+        // makes them here first and replaces this map (see Shops).
         $shopMap = [];
         $target = (int) \Configuration::get('PS_SHOP_DEFAULT');
         foreach ($info['shops'] as $sh) {
             $shopMap[$sh['id_shop']] = $target;
         }
-        if (count($info['shops']) > 1) {
-            $warnings[] = ['type' => 'shop', 'id' => 0, 'msg' => 'The old shop has ' . count($info['shops']) . ' shops; all were copied into this shop.'];
-        }
+        $multistore = count($info['shops']) > 1;
+        $oldDefaultShop = $multistore ? Shops::oldDefault($client, $info['shops']) : (int) ($info['shops'][0]['id_shop'] ?? 1);
+        $shopPlan = $multistore ? Shops::plan($info['shops'], $oldDefaultShop, $shopPlan) : [];
 
         // Currencies are matched by ISO code (USD → this shop's USD).
         $currencyMap = [];
@@ -89,6 +94,10 @@ class Runner
         $from = $fresh ? [] : self::startCursors(array_values(array_diff($tables, Plan::TYPES['geo'])), $types);
 
         $steps = [];
+        if ($multistore) {
+            $own = count(array_filter($shopPlan, fn ($c) => $c === 'own'));
+            $steps[] = ['k' => 'shops', 't' => 'shop', 'type' => 'shops', 'total' => $own, 'done' => 0];
+        }
         if ($fresh) {
             $steps[] = ['k' => 'clean'];
         }
@@ -124,6 +133,8 @@ class Runner
             array_intersect($types, ['geo', 'customers', 'carriers']) ? ['modules'] : [],
             in_array('orders', $types, true) ? ['order_messages'] : [],
             in_array('price_rules', $types, true) ? ['price_rules'] : [],
+            // Each shop's own name, email, default language, currency and country (see Shops).
+            $multistore ? ['shop_settings'] : [],
             ['redirects'],
             in_array('products', $types, true) ? ['search'] : [],
             ['cache']
@@ -153,6 +164,11 @@ class Runner
             'geoMap' => in_array('geo', $types, true) ? [] : self::savedGeoMap($url),
             'langMap' => $langMap,
             'shopMap' => $shopMap,
+            'shopPlan' => $shopPlan,
+            'oldDefaultShop' => $oldDefaultShop,
+            // Filled by the shops step (multistore only): old shops kept as their own, and groups.
+            'ownShops' => null,
+            'groupMap' => [],
             'currencyMap' => $currencyMap,
             'steps' => $steps,
             'i' => 0,
@@ -219,7 +235,7 @@ class Runner
     {
         $until = microtime(true) + $seconds;
         $client = new Client($this->s['url'], $this->s['key']);
-        $copier = new Copier($this->s['langMap'], $this->s['shopMap'], $this->s['currencyMap'] ?? [], $this->s['geoMap'] ?? [], (int) ($this->s['langDefault'] ?? 0));
+        $copier = $this->copier();
         $images = new Images($client, $this->s['thumbs'] ?? true);
 
         while (microtime(true) < $until && $this->s['status'] === 'running') {
@@ -235,8 +251,10 @@ class Runner
                 break;
             }
             $step = &$this->s['steps'][$i];
+            $kind = $step['k'];
             try {
                 $next = match ($step['k']) {
+                    'shops' => $this->shops($step, $client),
                     'clean' => $this->clean($copier),
                     'geo' => $this->geo($step, $client, $copier),
                     'table' => $this->table($step, $client, $copier),
@@ -261,6 +279,9 @@ class Runner
             if ($next) {
                 ++$this->s['i'];
                 $this->s['cursor'] = null;
+                if ($kind === 'shops') {
+                    $copier = $this->copier(); // the shops now exist here: use their map
+                }
             }
             $this->save();
         }
@@ -270,6 +291,43 @@ class Runner
         $this->save();
 
         return $this->progress();
+    }
+
+    private function copier(): Copier
+    {
+        return new Copier(
+            $this->s['langMap'],
+            $this->s['shopMap'],
+            $this->s['currencyMap'] ?? [],
+            $this->s['geoMap'] ?? [],
+            (int) ($this->s['langDefault'] ?? 0),
+            $this->s['ownShops'] ?? null,
+            $this->s['groupMap'] ?? []
+        );
+    }
+
+    /** Multistore: makes the old shops here as planned; the map is used by every later step. */
+    private function shops(array &$step, Client $client): bool
+    {
+        $shops = new Shops($client);
+        $r = $shops->apply(
+            $this->s['shopPlan'],
+            (int) $this->s['oldDefaultShop'],
+            !empty($this->s['fresh']),
+            self::sourceKey($this->s['url']),
+            $this->s['langMap'],
+            $this->s['currencyMap'] ?? [],
+            in_array('categories', $this->s['types'], true)
+        );
+        $this->s['shopMap'] = $r['shopMap'];
+        $this->s['ownShops'] = $r['own'];
+        $this->s['groupMap'] = $r['groupMap'];
+        foreach ($shops->notes as $note) {
+            $this->s['warnings'][] = ['type' => 'shop', 'id' => 0, 'msg' => $note];
+        }
+        $step['done'] = $step['total'];
+
+        return true;
     }
 
     /** @return bool true when the step is finished */
@@ -292,7 +350,7 @@ class Runner
     {
         $geo = new Geo(
             $client,
-            new Copier($this->s['langMap'], $this->s['shopMap'], $this->s['currencyMap'] ?? []),
+            new Copier($this->s['langMap'], $this->s['shopMap'], $this->s['currencyMap'] ?? [], [], 0, $this->s['ownShops'] ?? null, $this->s['groupMap'] ?? []),
             !empty($this->s['fresh']),
             self::sourceKey($this->s['url']),
             $this->s['srcTables'] ?? [],
@@ -554,6 +612,15 @@ class Runner
 
                     return ['r' => $rule, 'p' => (int) end($ids)];
                 });
+            case 'shop_settings':
+                (new Shops($client))->settings(
+                    $this->s['shopMap'],
+                    $this->s['ownShops'] ?? [],
+                    $this->s['langMap'],
+                    $this->s['currencyMap'] ?? [],
+                    $this->s['geoMap'] ?? []
+                );
+                break;
             case 'redirects':
                 // Old links (other URL formats of PrestaShop 1.6/1.7) now lead to the same page here.
                 \Configuration::updateGlobalValue('SHOPMIGRATOR_REDIRECTS', 1);

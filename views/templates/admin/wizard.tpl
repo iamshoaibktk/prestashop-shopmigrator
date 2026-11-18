@@ -26,7 +26,12 @@
      data-t-nolang="{l s='Not installed here, will be added:' d='Modules.Shopmigrator.Admin'}"
      data-t-inprogress="{l s='In progress' d='Modules.Shopmigrator.Admin'}"
      data-t-finished="{l s='Done' d='Modules.Shopmigrator.Admin'}"
-     data-t-persec="{l s='per second' d='Modules.Shopmigrator.Admin'}">
+     data-t-persec="{l s='per second' d='Modules.Shopmigrator.Admin'}"
+     data-t-shop-own="{l s='Its own shop' d='Modules.Shopmigrator.Admin'}"
+     data-t-shop-default="{l s='Default shop' d='Modules.Shopmigrator.Admin'}"
+     data-t-shop-into="{l s='Merge into %s' d='Modules.Shopmigrator.Admin'}"
+     data-t-shop-skip="{l s='Leave out' d='Modules.Shopmigrator.Admin'}"
+     data-t-shop-here="{l s='already here as shop #%s' d='Modules.Shopmigrator.Admin'}">
 
   <ol class="sm-stepper" aria-label="{l s='Steps' d='Modules.Shopmigrator.Admin'}">
     <li data-step="1"><span class="sm-dot">1</span><span>{l s='Connect' d='Modules.Shopmigrator.Admin'}</span></li>
@@ -75,6 +80,18 @@
     </header>
     <div class="sm-card-body">
       <div id="sm-typelist" class="sm-tiles"></div>
+
+      <div class="sm-shops" id="sm-shops" hidden>
+        <div class="sm-setting-label">{l s='Shops' d='Modules.Shopmigrator.Admin'}</div>
+        <p class="sm-shops-help">{l s='The old installation has several shops. Keep a shop as its own shop here (its prices, texts, languages, currencies and orders stay its own), merge it into another shop (its customers and orders move there), or leave it out.' d='Modules.Shopmigrator.Admin'}</p>
+        <div class="sm-shops-table" role="table">
+          <div class="sm-shops-row sm-shops-head" role="row">
+            <span role="columnheader">{l s='Old shop' d='Modules.Shopmigrator.Admin'}</span>
+            <span role="columnheader">{l s='On this shop' d='Modules.Shopmigrator.Admin'}</span>
+          </div>
+          <div id="sm-shoplist"></div>
+        </div>
+      </div>
 
       <div class="sm-settings">
         <div class="sm-setting">

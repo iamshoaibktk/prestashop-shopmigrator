@@ -61,6 +61,14 @@ class Plan
         'cms' => ['cms_category', 'cms_category_lang', 'cms_category_shop', 'cms', 'cms_lang', 'cms_shop'],
     ];
 
+    /**
+     * Multistore: tables whose id_shop says which shop a customer, cart or order belongs to. A
+     * shop merged into another (see Shops) brings these rows along. In every other table id_shop
+     * marks that shop's own copy of a price, text or stock, which only shops kept as their own
+     * bring along.
+     */
+    public const SHOP_ENTITIES = ['customer', 'cart', 'cart_product', 'orders', 'order_detail', 'customer_thread'];
+
     /** Tables that only get rows whose ID and email are new here (see Runner::keepExisting). */
     public const INSERT_ONLY = ['employee', 'employee_shop'];
 
