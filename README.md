@@ -21,6 +21,7 @@ Both zips are attached to every release.
 - **Orders:** details, history, carriers, invoices, payments, credit slips, returns, messages (1.6 order notes become customer threads)
 - **Marketing and content:** cart rules (vouchers), catalog price rules, CMS pages and categories, customer service contacts
 - **Employees:** added only when their ID and email are free, so your own account is never touched
+- **Several shops (multistore):** each old shop is kept as its own shop (same ID when free, web address, languages, currencies, main settings, and its own prices, texts, stock, customers and orders), merged into another shop (its customers, carts and orders move there; its prices and texts are not copied) or left out. The old default shop stays the default shop, and customers, orders and stock are shared between shops as on the old installation. A second run finds the shops made by the first
 - **Module settings:** which customer groups see each module, and the countries, currencies and carriers each payment module accepts, matched by module name (PrestaShop 1.6 names such as bankwire included)
 
 IDs are kept (countries, zones and states are matched instead, see above), so order references, links and URLs stay the same. Languages and currencies the new shop is missing are created automatically (currencies with PrestaShop's official names and symbols, exchange rates from the old shop).
@@ -28,7 +29,7 @@ IDs are kept (countries, zones and states are matched instead, see above), so or
 ## How it works
 1. Install **Shop Migrator Bridge** on the old shop and copy its address and 64-character key.
 2. Install **Shop Migrator** on the new shop, paste them and click **Test connection**.
-3. Choose what to migrate, the speed and the mode, then **Start migration**.
+3. Choose what to migrate, the speed and the mode (and, if the old installation has several shops, what becomes of each one), then **Start migration**.
 4. Read the report (with warnings) and download it.
 
 **Fresh copy** replaces the selected data on the new shop. **New data only** adds what was created on the old shop since the last run and keeps everything you changed on the new one: keep selling on the old shop and sync the last orders on switch day.

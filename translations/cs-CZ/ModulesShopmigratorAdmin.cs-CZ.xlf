@@ -386,6 +386,42 @@
         <source>See all on GitHub</source>
         <target>Zobrazit vše na GitHubu</target>
       </trans-unit>
+      <trans-unit id="12a521af593422cd508f7707662c9eb2">
+        <source>Shops</source>
+        <target>Obchody</target>
+      </trans-unit>
+      <trans-unit id="c01448a3f66aebcb782364dc7e6e7f62">
+        <source>The old installation has several shops. Keep a shop as its own shop here (its prices, texts, languages, currencies and orders stay its own), merge it into another shop (its customers and orders move there), or leave it out.</source>
+        <target>Stará instalace má několik obchodů. Ponechte obchod jako samostatný obchod zde (jeho ceny, texty, jazyky, měny a objednávky zůstanou jeho), slučte ho s jiným obchodem (jeho zákazníci a objednávky se přesunou tam), nebo ho vynechte.</target>
+      </trans-unit>
+      <trans-unit id="19f9704334eadcbf7f34cf2cb5984604">
+        <source>Old shop</source>
+        <target>Starý obchod</target>
+      </trans-unit>
+      <trans-unit id="75007d043a109dfb6dcc4b29914c7c5c">
+        <source>On this shop</source>
+        <target>V tomto obchodě</target>
+      </trans-unit>
+      <trans-unit id="e868ca5e6e18e1db3a6b617a4cb64e55">
+        <source>Its own shop</source>
+        <target>Samostatný obchod</target>
+      </trans-unit>
+      <trans-unit id="8cdf1c6345219fcfde50615a78ad3ce6">
+        <source>Default shop</source>
+        <target>Výchozí obchod</target>
+      </trans-unit>
+      <trans-unit id="dfdb84873ae135e552d67c0651a2c271">
+        <source>Merge into %s</source>
+        <target>Sloučit s %s</target>
+      </trans-unit>
+      <trans-unit id="71b0b20effb2fb435f9c7afefebe1921">
+        <source>Leave out</source>
+        <target>Vynechat</target>
+      </trans-unit>
+      <trans-unit id="7a6384c4206a3c5de58e07aae561c1d4">
+        <source>already here as shop #%s</source>
+        <target>již zde jako obchod č. %s</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

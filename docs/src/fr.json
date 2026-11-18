@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Plusieurs boutiques (multiboutique)",
+      "content": [
+        {
+          "p": "Si l'ancienne installation a plusieurs boutiques, une liste **Boutiques** apparaît après **Tester la connexion**, avec un choix par ancienne boutique :"
+        },
+        {
+          "ul": [
+            "**Boutique à part :** la boutique est créée ici, avec le même ID s'il est libre, son adresse web, ses langues, ses devises et ses principaux réglages (nom, e-mail, adresse de la boutique, langue, devise et pays par défaut). Elle garde ses propres prix, textes, stock, clients et commandes.",
+            "**Fusionner avec… :** ses clients, paniers et commandes passent dans la boutique choisie. Ses propres prix et textes ne sont pas copiés : cette boutique garde les siens.",
+            "**Laisser de côté :** rien de la boutique n'est copié."
+          ]
+        },
+        {
+          "p": "L'ancienne boutique par défaut reste toujours une boutique à part et devient la boutique par défaut ici. Clients, commandes et stock sont partagés entre boutiques comme sur l'ancienne installation. Si vous relancez la migration, les boutiques créées la première fois sont retrouvées et réutilisées."
+        },
+        {
+          "note": "Si les anciennes boutiques ne partageaient pas les comptes clients, un client d'une boutique fusionnée qui avait aussi un compte dans la boutique qu'elle rejoint y a désormais deux comptes avec le même e-mail. Le rapport le signale."
+        }
+      ]
+    },
+    {
       "title": "Pause, reprise et grandes boutiques",
       "content": [
         {

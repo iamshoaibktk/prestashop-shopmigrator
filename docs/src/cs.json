@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Více obchodů (multistore)",
+      "content": [
+        {
+          "p": "Pokud má stará instalace více obchodů, po kliknutí na **Otestovat připojení** se zobrazí seznam **Obchody** s jednou volbou pro každý starý obchod:"
+        },
+        {
+          "ul": [
+            "**Samostatný obchod:** obchod se vytvoří zde, se stejným ID, pokud je volné, se svou webovou adresou, jazyky, měnami a hlavním nastavením (název, e-mail, adresa obchodu, výchozí jazyk, měna a země). Ponechá si vlastní ceny, texty, sklad, zákazníky a objednávky.",
+            "**Sloučit s…:** jeho zákazníci, košíky a objednávky přejdou do zvoleného obchodu. Jeho vlastní ceny a texty se nekopírují: ten obchod si ponechá své.",
+            "**Vynechat:** z obchodu se nic nezkopíruje."
+          ]
+        },
+        {
+          "p": "Starý výchozí obchod vždy zůstane samostatným obchodem a stane se zde výchozím obchodem. Zákazníci, objednávky a sklad se mezi obchody sdílejí stejně jako ve staré instalaci. Když migraci spustíte znovu, obchody vytvořené napoprvé se rozpoznají a použijí znovu."
+        },
+        {
+          "note": "Pokud staré obchody nesdílely zákaznické účty, zákazník sloučeného obchodu, který měl účet i v obchodě, ke kterému se připojuje, tam bude mít dva účty se stejným e-mailem. Zpráva na to upozorní."
+        }
+      ]
+    },
+    {
       "title": "Pozastavení, pokračování a velké obchody",
       "content": [
         {

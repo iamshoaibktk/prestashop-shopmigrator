@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Várias lojas (multiloja)",
+      "content": [
+        {
+          "p": "Se a instalação antiga tiver várias lojas, aparece uma lista **Lojas** depois de **Testar ligação**, com uma opção por cada loja antiga:"
+        },
+        {
+          "ul": [
+            "**Loja própria:** a loja é criada aqui, com o mesmo ID se estiver livre, o seu endereço web, idiomas, moedas e definições principais (nome, email, morada da loja, idioma, moeda e país predefinidos). Mantém os seus próprios preços, textos, stock, clientes e encomendas.",
+            "**Juntar a…:** os seus clientes, carrinhos e encomendas passam para a loja que escolher. Os seus próprios preços e textos não são copiados: essa loja mantém os seus.",
+            "**Deixar de fora:** nada da loja é copiado."
+          ]
+        },
+        {
+          "p": "A antiga loja predefinida continua sempre a ser uma loja própria e passa a ser a loja predefinida aqui. Clientes, encomendas e stock são partilhados entre lojas como na instalação antiga. Se voltar a executar a migração, as lojas criadas da primeira vez são reconhecidas e usadas de novo."
+        },
+        {
+          "note": "Se as lojas antigas não partilhavam contas de cliente, um cliente de uma loja junta que também tinha conta na loja a que se junta fica lá com duas contas com o mesmo email. O relatório indica-o."
+        }
+      ]
+    },
+    {
       "title": "Pausa, retoma e lojas grandes",
       "content": [
         {

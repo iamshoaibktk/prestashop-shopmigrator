@@ -1055,6 +1055,105 @@
       "nl-NL": "Alles bekijken op GitHub",
       "pt-PT": "Ver tudo no GitHub",
       "ru-RU": "Смотреть все на GitHub"
+    },
+    "Shops": {
+      "fr-FR": "Boutiques",
+      "es-ES": "Tiendas",
+      "it-IT": "Negozi",
+      "pl-PL": "Sklepy",
+      "de-DE": "Shops",
+      "cs-CZ": "Obchody",
+      "nl-NL": "Winkels",
+      "pt-PT": "Lojas",
+      "ru-RU": "Магазины"
+    },
+    "The old installation has several shops. Keep a shop as its own shop here (its prices, texts, languages, currencies and orders stay its own), merge it into another shop (its customers and orders move there), or leave it out.": {
+      "fr-FR": "L'ancienne installation a plusieurs boutiques. Gardez une boutique comme boutique à part ici (ses prix, textes, langues, devises et commandes restent les siens), fusionnez-la avec une autre boutique (ses clients et commandes y sont déplacés), ou laissez-la de côté.",
+      "es-ES": "La instalación antigua tiene varias tiendas. Mantenga una tienda como tienda propia aquí (sus precios, textos, idiomas, monedas y pedidos siguen siendo suyos), únala a otra tienda (sus clientes y pedidos pasan a ella) o déjela fuera.",
+      "it-IT": "La vecchia installazione ha più negozi. Mantieni un negozio come negozio a sé qui (prezzi, testi, lingue, valute e ordini restano suoi), uniscilo a un altro negozio (i suoi clienti e ordini passano lì) oppure escludilo.",
+      "pl-PL": "Stara instalacja ma kilka sklepów. Zachowaj sklep jako osobny sklep tutaj (jego ceny, teksty, języki, waluty i zamówienia pozostają jego), połącz go z innym sklepem (jego klienci i zamówienia zostaną tam przeniesieni) albo go pomiń.",
+      "de-DE": "Die alte Installation hat mehrere Shops. Behalten Sie einen Shop hier als eigenen Shop (seine Preise, Texte, Sprachen, Währungen und Bestellungen bleiben seine eigenen), führen Sie ihn mit einem anderen Shop zusammen (seine Kunden und Bestellungen wandern dorthin) oder lassen Sie ihn weg.",
+      "cs-CZ": "Stará instalace má několik obchodů. Ponechte obchod jako samostatný obchod zde (jeho ceny, texty, jazyky, měny a objednávky zůstanou jeho), slučte ho s jiným obchodem (jeho zákazníci a objednávky se přesunou tam), nebo ho vynechte.",
+      "nl-NL": "De oude installatie heeft meerdere winkels. Houd een winkel hier als eigen winkel (zijn prijzen, teksten, talen, valuta en bestellingen blijven van hemzelf), voeg hem samen met een andere winkel (zijn klanten en bestellingen gaan daarheen) of laat hem weg.",
+      "pt-PT": "A instalação antiga tem várias lojas. Mantenha uma loja como loja própria aqui (os seus preços, textos, idiomas, moedas e encomendas continuam seus), junte-a a outra loja (os seus clientes e encomendas passam para lá) ou deixe-a de fora.",
+      "ru-RU": "В старой установке несколько магазинов. Оставьте магазин отдельным магазином здесь (его цены, тексты, языки, валюты и заказы остаются его собственными), объедините его с другим магазином (его клиенты и заказы перейдут туда) или не переносите его."
+    },
+    "Old shop": {
+      "fr-FR": "Ancienne boutique",
+      "es-ES": "Tienda antigua",
+      "it-IT": "Vecchio negozio",
+      "pl-PL": "Stary sklep",
+      "de-DE": "Alter Shop",
+      "cs-CZ": "Starý obchod",
+      "nl-NL": "Oude winkel",
+      "pt-PT": "Loja antiga",
+      "ru-RU": "Старый магазин"
+    },
+    "On this shop": {
+      "fr-FR": "Sur cette boutique",
+      "es-ES": "En esta tienda",
+      "it-IT": "In questo negozio",
+      "pl-PL": "W tym sklepie",
+      "de-DE": "In diesem Shop",
+      "cs-CZ": "V tomto obchodě",
+      "nl-NL": "In deze winkel",
+      "pt-PT": "Nesta loja",
+      "ru-RU": "В этом магазине"
+    },
+    "Its own shop": {
+      "fr-FR": "Boutique à part",
+      "es-ES": "Tienda propia",
+      "it-IT": "Negozio a sé",
+      "pl-PL": "Osobny sklep",
+      "de-DE": "Eigener Shop",
+      "cs-CZ": "Samostatný obchod",
+      "nl-NL": "Eigen winkel",
+      "pt-PT": "Loja própria",
+      "ru-RU": "Отдельный магазин"
+    },
+    "Default shop": {
+      "fr-FR": "Boutique par défaut",
+      "es-ES": "Tienda predeterminada",
+      "it-IT": "Negozio predefinito",
+      "pl-PL": "Sklep domyślny",
+      "de-DE": "Standard-Shop",
+      "cs-CZ": "Výchozí obchod",
+      "nl-NL": "Standaardwinkel",
+      "pt-PT": "Loja predefinida",
+      "ru-RU": "Магазин по умолчанию"
+    },
+    "Merge into %s": {
+      "fr-FR": "Fusionner avec %s",
+      "es-ES": "Unir a %s",
+      "it-IT": "Unisci a %s",
+      "pl-PL": "Połącz z %s",
+      "de-DE": "Zusammenführen mit %s",
+      "cs-CZ": "Sloučit s %s",
+      "nl-NL": "Samenvoegen met %s",
+      "pt-PT": "Juntar a %s",
+      "ru-RU": "Объединить с %s"
+    },
+    "Leave out": {
+      "fr-FR": "Laisser de côté",
+      "es-ES": "Dejar fuera",
+      "it-IT": "Escludi",
+      "pl-PL": "Pomiń",
+      "de-DE": "Weglassen",
+      "cs-CZ": "Vynechat",
+      "nl-NL": "Weglaten",
+      "pt-PT": "Deixar de fora",
+      "ru-RU": "Не переносить"
+    },
+    "already here as shop #%s": {
+      "fr-FR": "déjà ici comme boutique n°%s",
+      "es-ES": "ya está aquí como tienda n.º %s",
+      "it-IT": "già qui come negozio n. %s",
+      "pl-PL": "już tutaj jako sklep nr %s",
+      "de-DE": "bereits hier als Shop Nr. %s",
+      "cs-CZ": "již zde jako obchod č. %s",
+      "nl-NL": "al hier als winkel nr. %s",
+      "pt-PT": "já aqui como loja n.º %s",
+      "ru-RU": "уже здесь как магазин № %s"
     }
   }
 }

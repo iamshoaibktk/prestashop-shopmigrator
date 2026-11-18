@@ -386,6 +386,42 @@
         <source>See all on GitHub</source>
         <target>Ver tudo no GitHub</target>
       </trans-unit>
+      <trans-unit id="12a521af593422cd508f7707662c9eb2">
+        <source>Shops</source>
+        <target>Lojas</target>
+      </trans-unit>
+      <trans-unit id="c01448a3f66aebcb782364dc7e6e7f62">
+        <source>The old installation has several shops. Keep a shop as its own shop here (its prices, texts, languages, currencies and orders stay its own), merge it into another shop (its customers and orders move there), or leave it out.</source>
+        <target>A instalação antiga tem várias lojas. Mantenha uma loja como loja própria aqui (os seus preços, textos, idiomas, moedas e encomendas continuam seus), junte-a a outra loja (os seus clientes e encomendas passam para lá) ou deixe-a de fora.</target>
+      </trans-unit>
+      <trans-unit id="19f9704334eadcbf7f34cf2cb5984604">
+        <source>Old shop</source>
+        <target>Loja antiga</target>
+      </trans-unit>
+      <trans-unit id="75007d043a109dfb6dcc4b29914c7c5c">
+        <source>On this shop</source>
+        <target>Nesta loja</target>
+      </trans-unit>
+      <trans-unit id="e868ca5e6e18e1db3a6b617a4cb64e55">
+        <source>Its own shop</source>
+        <target>Loja própria</target>
+      </trans-unit>
+      <trans-unit id="8cdf1c6345219fcfde50615a78ad3ce6">
+        <source>Default shop</source>
+        <target>Loja predefinida</target>
+      </trans-unit>
+      <trans-unit id="dfdb84873ae135e552d67c0651a2c271">
+        <source>Merge into %s</source>
+        <target>Juntar a %s</target>
+      </trans-unit>
+      <trans-unit id="71b0b20effb2fb435f9c7afefebe1921">
+        <source>Leave out</source>
+        <target>Deixar de fora</target>
+      </trans-unit>
+      <trans-unit id="7a6384c4206a3c5de58e07aae561c1d4">
+        <source>already here as shop #%s</source>
+        <target>já aqui como loja n.º %s</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

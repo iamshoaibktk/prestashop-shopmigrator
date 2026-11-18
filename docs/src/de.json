@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Mehrere Shops (Multistore)",
+      "content": [
+        {
+          "p": "Hat die alte Installation mehrere Shops, erscheint nach **Verbindung testen** eine Liste **Shops** mit einer Auswahl pro altem Shop:"
+        },
+        {
+          "ul": [
+            "**Eigener Shop:** Der Shop wird hier angelegt, mit derselben ID, wenn sie frei ist, mit seiner Webadresse, seinen Sprachen, Währungen und wichtigsten Einstellungen (Name, E-Mail, Shop-Adresse, Standardsprache, -währung und -land). Er behält seine eigenen Preise, Texte, Bestände, Kunden und Bestellungen.",
+            "**Zusammenführen mit …:** Seine Kunden, Warenkörbe und Bestellungen wandern in den gewählten Shop. Seine eigenen Preise und Texte werden nicht kopiert: Jener Shop behält seine eigenen.",
+            "**Weglassen:** Von dem Shop wird nichts kopiert."
+          ]
+        },
+        {
+          "p": "Der alte Standard-Shop bleibt immer ein eigener Shop und wird hier zum Standard-Shop. Kunden, Bestellungen und Bestände werden zwischen den Shops so geteilt wie in der alten Installation. Wenn Sie die Migration erneut starten, werden die beim ersten Lauf angelegten Shops erkannt und wieder verwendet."
+        },
+        {
+          "note": "Haben die alten Shops keine Kundenkonten geteilt, hat ein Kunde eines zusammengeführten Shops, der auch im Ziel-Shop ein Konto hatte, dort danach zwei Konten mit derselben E-Mail. Der Bericht weist darauf hin."
+        }
+      ]
+    },
+    {
       "title": "Pause, Fortsetzen und große Shops",
       "content": [
         {

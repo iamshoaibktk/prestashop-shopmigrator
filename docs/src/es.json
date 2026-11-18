@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Varias tiendas (multitienda)",
+      "content": [
+        {
+          "p": "Si la instalación antigua tiene varias tiendas, aparece una lista **Tiendas** después de **Probar la conexión**, con una opción por cada tienda antigua:"
+        },
+        {
+          "ul": [
+            "**Tienda propia:** la tienda se crea aquí, con el mismo ID si está libre, su dirección web, idiomas, monedas y ajustes principales (nombre, correo, dirección de la tienda, idioma, moneda y país predeterminados). Conserva sus propios precios, textos, stock, clientes y pedidos.",
+            "**Unir a…:** sus clientes, carritos y pedidos pasan a la tienda que elija. Sus propios precios y textos no se copian: esa tienda conserva los suyos.",
+            "**Dejar fuera:** no se copia nada de la tienda."
+          ]
+        },
+        {
+          "p": "La antigua tienda predeterminada siempre sigue siendo una tienda propia y pasa a ser la tienda predeterminada aquí. Clientes, pedidos y stock se comparten entre tiendas como en la instalación antigua. Si vuelve a ejecutar la migración, las tiendas creadas la primera vez se reconocen y se vuelven a usar."
+        },
+        {
+          "note": "Si las tiendas antiguas no compartían las cuentas de cliente, un cliente de una tienda unida que también tenía cuenta en la tienda a la que se une tendrá allí dos cuentas con el mismo correo. El informe lo indica."
+        }
+      ]
+    },
+    {
       "title": "Pausa, reanudación y tiendas grandes",
       "content": [
         {

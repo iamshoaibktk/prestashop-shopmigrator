@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Kilka sklepów (multistore)",
+      "content": [
+        {
+          "p": "Jeśli stara instalacja ma kilka sklepów, po kliknięciu **Testuj połączenie** pojawia się lista **Sklepy** z jednym wyborem dla każdego starego sklepu:"
+        },
+        {
+          "ul": [
+            "**Osobny sklep:** sklep zostaje utworzony tutaj, z tym samym ID, jeśli jest wolne, z jego adresem internetowym, językami, walutami i głównymi ustawieniami (nazwa, e-mail, adres sklepu, domyślny język, waluta i kraj). Zachowuje własne ceny, teksty, stany magazynowe, klientów i zamówienia.",
+            "**Połącz z…:** jego klienci, koszyki i zamówienia przechodzą do wybranego sklepu. Jego własne ceny i teksty nie są kopiowane: tamten sklep zachowuje swoje.",
+            "**Pomiń:** nic z tego sklepu nie jest kopiowane."
+          ]
+        },
+        {
+          "p": "Stary sklep domyślny zawsze pozostaje osobnym sklepem i staje się tutaj sklepem domyślnym. Klienci, zamówienia i stany magazynowe są współdzielone między sklepami tak jak w starej instalacji. Przy ponownym uruchomieniu migracji sklepy utworzone za pierwszym razem są rozpoznawane i używane ponownie."
+        },
+        {
+          "note": "Jeśli stare sklepy nie współdzieliły kont klientów, klient połączonego sklepu, który miał też konto w sklepie, do którego dołącza, będzie miał tam dwa konta z tym samym adresem e-mail. Raport o tym informuje."
+        }
+      ]
+    },
+    {
       "title": "Pauza, wznawianie i duże sklepy",
       "content": [
         {

@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Più negozi (multinegozio)",
+      "content": [
+        {
+          "p": "Se la vecchia installazione ha più negozi, dopo **Prova connessione** compare un elenco **Negozi**, con una scelta per ogni vecchio negozio:"
+        },
+        {
+          "ul": [
+            "**Negozio a sé:** il negozio viene creato qui, con lo stesso ID se è libero, il suo indirizzo web, le lingue, le valute e le impostazioni principali (nome, email, indirizzo del negozio, lingua, valuta e paese predefiniti). Mantiene i propri prezzi, testi, magazzino, clienti e ordini.",
+            "**Unisci a…:** i suoi clienti, carrelli e ordini passano al negozio scelto. I suoi prezzi e testi non vengono copiati: quel negozio mantiene i propri.",
+            "**Escludi:** del negozio non viene copiato nulla."
+          ]
+        },
+        {
+          "p": "Il vecchio negozio predefinito resta sempre un negozio a sé e diventa qui il negozio predefinito. Clienti, ordini e magazzino sono condivisi tra i negozi come nella vecchia installazione. Se esegui di nuovo la migrazione, i negozi creati la prima volta vengono riconosciuti e riutilizzati."
+        },
+        {
+          "note": "Se i vecchi negozi non condividevano gli account cliente, un cliente di un negozio unito che aveva un account anche nel negozio a cui si unisce avrà lì due account con la stessa email. Il report lo segnala."
+        }
+      ]
+    },
+    {
       "title": "Pausa, ripresa e negozi grandi",
       "content": [
         {

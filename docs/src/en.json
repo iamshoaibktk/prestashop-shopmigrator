@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Several shops (multistore)",
+      "content": [
+        {
+          "p": "If the old installation has several shops, a **Shops** list appears after **Test connection**, with one choice per old shop:"
+        },
+        {
+          "ul": [
+            "**Its own shop:** the shop is created here, with the same ID when it is free, its web address, languages, currencies and main settings (name, email, shop address, default language, currency and country). It keeps its own prices, texts, stock, customers and orders.",
+            "**Merge into…:** its customers, carts and orders move to the shop you choose. Its own prices and texts are not copied: that shop keeps its own.",
+            "**Leave out:** nothing of the shop is copied."
+          ]
+        },
+        {
+          "p": "The old default shop always stays its own shop and becomes the default shop here. Customers, orders and stock are shared between shops as they were on the old installation. When you run the migration again, the shops made by the first run are found and used again."
+        },
+        {
+          "note": "If the old shops did not share customer accounts, a customer of a merged shop who also had an account in the shop it joins ends up with two accounts there with the same email. The report mentions it."
+        }
+      ]
+    },
+    {
       "title": "Pause, resume and large shops",
       "content": [
         {

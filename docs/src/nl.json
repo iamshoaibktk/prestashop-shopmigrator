@@ -76,6 +76,27 @@
       ]
     },
     {
+      "title": "Meerdere winkels (multistore)",
+      "content": [
+        {
+          "p": "Heeft de oude installatie meerdere winkels, dan verschijnt na **Verbinding testen** een lijst **Winkels**, met één keuze per oude winkel:"
+        },
+        {
+          "ul": [
+            "**Eigen winkel:** de winkel wordt hier aangemaakt, met hetzelfde ID als dat vrij is, met zijn webadres, talen, valuta en belangrijkste instellingen (naam, e-mail, winkeladres, standaardtaal, -valuta en -land). Hij houdt zijn eigen prijzen, teksten, voorraad, klanten en bestellingen.",
+            "**Samenvoegen met…:** zijn klanten, winkelwagens en bestellingen gaan naar de winkel die u kiest. Zijn eigen prijzen en teksten worden niet gekopieerd: die winkel houdt de zijne.",
+            "**Weglaten:** van de winkel wordt niets gekopieerd."
+          ]
+        },
+        {
+          "p": "De oude standaardwinkel blijft altijd een eigen winkel en wordt hier de standaardwinkel. Klanten, bestellingen en voorraad worden tussen winkels gedeeld zoals in de oude installatie. Als u de migratie opnieuw uitvoert, worden de winkels van de eerste keer herkend en opnieuw gebruikt."
+        },
+        {
+          "note": "Als de oude winkels geen klantaccounts deelden, heeft een klant van een samengevoegde winkel die ook een account had in de winkel waarbij hij komt, daar daarna twee accounts met hetzelfde e-mailadres. Het rapport vermeldt dit."
+        }
+      ]
+    },
+    {
       "title": "Pauzeren, hervatten en grote winkels",
       "content": [
         {
