@@ -222,3 +222,15 @@
   #sm-app .sm-setting { grid-template-columns: 1fr; }
   #sm-app .sm-stepper li span:last-child { display: none; }
 }
+
+/* Multistore: one choice per old shop */
+.sm-shops { margin-top: 24px; }
+.sm-shops-help { color: var(--sm-muted); margin: 4px 0 12px; max-width: 760px; }
+.sm-shops-table { border: 1px solid var(--sm-line); border-radius: 12px; overflow: hidden; }
+.sm-shops-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 280px); gap: 16px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--sm-line-2); }
+.sm-shops-head { border-top: 0; background: var(--sm-canvas); font-size: 12px; font-weight: 600; color: var(--sm-muted); text-transform: uppercase; letter-spacing: .03em; }
+.sm-shop-name { display: flex; flex-direction: column; min-width: 0; }
+.sm-shop-name small { color: var(--sm-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sm-shop-choice { width: 100%; min-height: 38px; border: 1px solid var(--sm-line); border-radius: 8px; padding: 0 10px; background: var(--sm-surface); color: var(--sm-ink); }
+.sm-shops-row .sm-tag { justify-self: start; }
+@media (max-width: 640px) { .sm-shops-row { grid-template-columns: 1fr; gap: 6px; } }

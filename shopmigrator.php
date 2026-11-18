@@ -17,6 +17,7 @@ use Iamshoaibktk\Shopmigrator\Client;
 use Iamshoaibktk\Shopmigrator\Plan;
 use Iamshoaibktk\Shopmigrator\Redirects;
 use Iamshoaibktk\Shopmigrator\Runner;
+use Iamshoaibktk\Shopmigrator\Shops;
 
 class Shopmigrator extends Module
 {
@@ -140,6 +141,7 @@ class Shopmigrator extends Module
             'price_rules' => $this->trans('Catalog price rules', [], 'Modules.Shopmigrator.Admin'),
             'cms' => $this->trans('CMS pages and categories', [], 'Modules.Shopmigrator.Admin'),
             'images' => $this->trans('Images and thumbnails', [], 'Modules.Shopmigrator.Admin'),
+            'shops' => $this->trans('Shops', [], 'Modules.Shopmigrator.Admin'),
         ];
     }
 
@@ -184,6 +186,30 @@ class Shopmigrator extends Module
             }
         }
 
+        // Multistore: each old shop with its address and order count, for the shop plan.
+        $shopList = [];
+        if (count($info['shops']) > 1) {
+            $urls = [];
+            foreach ($client->allRows('shop_url') as $u) {
+                if (!isset($urls[(int) $u['id_shop']]) || (int) $u['main']) {
+                    $urls[(int) $u['id_shop']] = $u['domain'] . $u['physical_uri'] . $u['virtual_uri'];
+                }
+            }
+            $default = Shops::oldDefault($client, $info['shops']);
+            $saved = json_decode((string) Configuration::getGlobalValue(Shops::CONFIG), true);
+            $previous = is_array($saved) ? ($saved[Runner::sourceKey($url)] ?? []) : [];
+            foreach ($info['shops'] as $s) {
+                $id = (int) $s['id_shop'];
+                $shopList[] = [
+                    'id' => $id,
+                    'name' => $s['name'],
+                    'url' => $urls[$id] ?? '',
+                    'default' => $id === $default,
+                    'here' => isset($previous[$id]) ? (int) $previous[$id] : null,
+                ];
+            }
+        }
+
         return ['info' => [
             'ps_version' => $info['ps_version'],
             'php_version' => $info['php_version'],
@@ -191,6 +217,7 @@ class Shopmigrator extends Module
             'shop_url' => $info['shop_url'],
             'languages' => array_map(fn ($l) => $l['iso_code'], $info['languages']),
             'shops' => count($info['shops']),
+            'shopList' => $shopList,
             'missingLanguages' => $missing,
         ], 'counts' => $counts];
     }
@@ -216,7 +243,8 @@ class Shopmigrator extends Module
             $types,
             (int) Tools::getValue('sm_batch', 100),
             Tools::getValue('sm_mode') !== 'new',
-            Tools::getValue('sm_thumbs') !== '0'
+            Tools::getValue('sm_thumbs') !== '0',
+            array_map('strval', (array) Tools::getValue('sm_shops', []))
         );
 
         return $runner->progress();

@@ -55,7 +55,12 @@
     var body = new FormData();
     body.append('sm_action', action);
     Object.keys(data || {}).forEach(function (k) {
-      [].concat(data[k]).forEach(function (v) { body.append(Array.isArray(data[k]) ? k + '[]' : k, v); });
+      var v = data[k];
+      if (v && typeof v === 'object' && !Array.isArray(v)) {
+        Object.keys(v).forEach(function (sub) { body.append(k + '[' + sub + ']', v[sub]); });
+        return;
+      }
+      [].concat(v).forEach(function (x) { body.append(Array.isArray(v) ? k + '[]' : k, x); });
     });
     return fetch(t.ajax, {method: 'POST', body: body, credentials: 'same-origin'}).then(function (r) { return r.json(); });
   }
@@ -102,6 +107,7 @@
       $('sm-source-line').textContent = i.shop_name + ' · PrestaShop ' + i.ps_version;
       $('sm-next').disabled = false;
       buildTypes();
+      buildShops(i.shopList || []);
     }).catch(function (e) {
       loading(btn, false);
       msg.innerHTML = '<div class="sm-note sm-note-error">' + icon('error_outline') + '<span>' + esc(e.message) + '</span></div>';
@@ -110,8 +116,33 @@
   $('sm-next').addEventListener('click', function () { show(2); });
 
   /* ---------- step 2: choose ---------- */
+  // Multistore: one choice per old shop (own shop here, merge into another, leave out).
+  function buildShops(list) {
+    $('sm-shops').hidden = list.length < 2;
+    $('sm-shoplist').innerHTML = list.map(function (s) {
+      var label = '<span class="sm-shop-name"><strong>' + esc(s.name) + '</strong>'
+        + (s.url ? '<small>' + esc(s.url) + '</small>' : '')
+        + (s.here ? '<small>' + esc(t.tShopHere.replace('%s', s.here)) + '</small>' : '') + '</span>';
+      if (s['default']) {
+        return '<div class="sm-shops-row" role="row">' + label + '<span class="sm-tag">' + esc(t.tShopDefault) + '</span></div>';
+      }
+      var options = '<option value="own">' + esc(t.tShopOwn) + '</option>'
+        + list.filter(function (o) { return o.id !== s.id; }).map(function (o) {
+          return '<option value="into:' + o.id + '">' + esc(t.tShopInto.replace('%s', o.name)) + '</option>';
+        }).join('')
+        + '<option value="skip">' + esc(t.tShopSkip) + '</option>';
+      return '<div class="sm-shops-row" role="row">' + label
+        + '<select class="sm-shop-choice" data-shop="' + s.id + '" aria-label="' + esc(s.name) + '">' + options + '</select></div>';
+    }).join('');
+  }
+  function shopPlan() {
+    var plan = {};
+    app.querySelectorAll('.sm-shop-choice').forEach(function (sel) { plan[sel.dataset.shop] = sel.value; });
+    return plan;
+  }
+
   function buildTypes() {
-    $('sm-typelist').innerHTML = Object.keys(types).filter(function (k) { return k !== 'images'; }).map(function (k) {
+    $('sm-typelist').innerHTML = Object.keys(types).filter(function (k) { return k !== 'images' && k !== 'shops'; }).map(function (k) {
       var c = counts[typeCount[k]];
       var label = String(types[k]);
       var paren = label.indexOf(' (');
@@ -146,7 +177,8 @@
     loading(btn, true);
     post('start', {
       sm_types: chosen, sm_batch: radio('sm-batch') || 100, sm_mode: mode,
-      sm_thumbs: $('sm-thumbs').checked ? '1' : '0', sm_addloc: $('sm-addloc').checked ? '1' : '0'
+      sm_thumbs: $('sm-thumbs').checked ? '1' : '0', sm_addloc: $('sm-addloc').checked ? '1' : '0',
+      sm_shops: shopPlan()
     }).then(function (r) {
       loading(btn, false);
       if (!r.ok) {
